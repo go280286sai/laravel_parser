@@ -1,0 +1,10 @@
+@import "./assets/bootstrap.css";
+@import "./assets/font-awesome.css";
+@import "./assets/custom.css";
+@import "./assets/fontawesome.css";
+@import "./assets/templatemo-space-dynamic.css";
+@import "./assets/animated.css";
+@import "./assets/owl.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
