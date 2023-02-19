@@ -19,7 +19,7 @@ Route::get('/front', function (){
     return view('front.layout.layout');
 });
 Route::get('/', function () {
-    return view('welcome');
+    return view('front.pages.index');
 });
 
 Route::middleware([

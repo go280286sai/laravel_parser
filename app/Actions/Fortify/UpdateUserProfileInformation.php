@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
@@ -13,7 +14,8 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     /**
      * Validate and update the given user's profile information.
      *
-     * @param  array<string, string>  $input
+     * @param array<string, string> $input
+     * @throws ValidationException
      */
     public function update(User $user, array $input): void
     {
@@ -21,6 +23,8 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'phone'=>['numeric', 'min:9'],
+//            'birthday'=>['date']
         ])->validateWithBag('updateProfileInformation');
 
         if (isset($input['photo'])) {
@@ -34,6 +38,22 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             $user->forceFill([
                 'name' => $input['name'],
                 'email' => $input['email'],
+            ])->save();
+        }
+
+        if(isset($input['phone'])) {
+            $user->forceFill([
+                'phone' => $input['phone']
+            ])->save();
+        }
+        if(isset($input['birthday'])) {
+            $user->forceFill([
+                'birthday' => $input['birthday']
+            ])->save();
+        }
+        if(isset($input['gender'])) {
+            $user->forceFill([
+                'gender' => $input['gender']
             ])->save();
         }
     }
