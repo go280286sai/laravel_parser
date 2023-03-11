@@ -16,9 +16,10 @@ class IsAuthUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::user()){
+        if (! Auth::user()) {
             return redirect()->route('login');
         }
-       return $next($request);
+
+        return $next($request);
     }
 }

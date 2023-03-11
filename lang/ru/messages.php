@@ -1,4 +1,5 @@
 <?php
+
 return [
     'delete_list' => 'Список удаленных',
     'recovery_all' => 'Восстановить все',

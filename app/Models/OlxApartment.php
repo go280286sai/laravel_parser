@@ -13,6 +13,7 @@ class OlxApartment extends Model
 
     protected $fillable = ['title', 'url', 'rooms', 'floor', 'etajnost', 'price', 'description',
         'status', 'comment', 'location', 'date', 'type'];
+
     public static function add(array $fields)
     {
         $object = new self();
@@ -34,10 +35,11 @@ class OlxApartment extends Model
 
     public static function removeSelect(array $fields)
     {
-        foreach ($fields as $item){
+        foreach ($fields as $item) {
             self::removeId($item);
         }
     }
+
     public static function addComment(int $id, string $comment)
     {
         $object = self::find($id);

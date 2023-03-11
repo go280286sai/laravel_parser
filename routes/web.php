@@ -32,7 +32,7 @@ Route::get('/', function () {
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
-    'verified'
+    'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
@@ -43,7 +43,6 @@ Route::group(['prefix' => 'user', 'middleware' => IsAuthUser::class], function (
         Route::post('/runParser', 'index');
 
         Route::post('/csv', 'getCsv');
-
     });
     Route::controller(ResearchController::class)->group(function () {
         Route::post('url_edit', 'update');

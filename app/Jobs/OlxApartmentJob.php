@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Models\OlxApartment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -20,7 +19,6 @@ class OlxApartmentJob implements ShouldQueue
     public function __construct(string $data)
     {
         $this->data = $data;
-
     }
 
     /**
