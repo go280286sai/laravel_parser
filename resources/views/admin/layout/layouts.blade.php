@@ -3,10 +3,15 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    @section('csfr')
+    @show
+
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <title></title>
+    <title>{{$title??'Parser'}}</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- My style CSS -->
+    <link rel="stylesheet" href="{{env('APP_URL').'/assets/css/my_css.css'}}">
     <link rel="stylesheet" href="{{env('APP_URL').'/assets/css/blog.css'}}">
     <!-- Bootstrap 3.3.6 -->
     <link rel="stylesheet" href="{{env('APP_URL').'/assets/bootstrap/css/bootstrap.min.css'}}">
@@ -33,10 +38,8 @@
 @show
 
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
-<!-- Site wrapper -->
+<body class="hold-transition skin-red sidebar-collapse">
 <div class="wrapper">
-
     <header class="main-header">
         <!-- Logo -->
         <a href="../../index2.html" class="logo">

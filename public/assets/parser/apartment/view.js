@@ -23,27 +23,15 @@ class ApartmentView {
     url = []
     time = []
     location = []
-    view = []
     floor = []
     etajnost = []
     rooms = []
     type = []
     description = []
     main = []
+
     constructor(text) {
         this.getText(text)
-        // try {
-        //     for(let i=1;i<3;i++){
-        //         if (i===1){
-        //             this.getText(text)
-        //         }else {
-        //             this.getText(`${text}?page=${i}`)
-        //         }
-        // }
-        //
-        // }catch (e) {
-        //     console.log(e.message)
-        // }
     }
 
     async getText(text) {
@@ -81,78 +69,76 @@ class ApartmentView {
                 console.log(err.message)
             })
     }
-        getTitle(text)
-        {
-            for (let item of text) {
-                let obj = item.match(this.pattern_title_item)[1];
-                this.title.push(obj);
-            }
-        }
 
-        getFloor(text){
-            for (let item of text) {
-                let obj = item.match(this.pattern_floor_item)[1];
-                this.floor.push(parseInt(obj));
-            }
+    getTitle(text) {
+        for (let item of text) {
+            let obj = item.match(this.pattern_title_item)[1];
+            this.title.push(obj);
         }
-      getRoom(text){
-            for (let item of text) {
-                let obj = item.match(this.pattern_room_item)[1];
-                this.rooms.push(parseInt(obj));
-            }
+    }
+
+    getFloor(text) {
+        for (let item of text) {
+            let obj = item.match(this.pattern_floor_item)[1];
+            this.floor.push(parseInt(obj));
         }
-       getEtajnost(text){
-            for (let item of text) {
-                let obj = item.match(this.pattern_etajnost_item)[1];
-                this.etajnost.push(parseInt(obj));
-            }
+    }
+
+    getRoom(text) {
+        for (let item of text) {
+            let obj = item.match(this.pattern_room_item)[1];
+            this.rooms.push(parseInt(obj));
         }
-         getType(text){
-            for (let item of text) {
-                let obj = item.match(this.pattern_type_item)[1];
-                this.type.push(obj);
-            }
+    }
+
+    getEtajnost(text) {
+        for (let item of text) {
+            let obj = item.match(this.pattern_etajnost_item)[1];
+            this.etajnost.push(parseInt(obj));
         }
-         getPrice(text)
-        {
-            for (let item of text) {
-                let obj = item.match(this.pattern_price_item)[1];
-                let get_number = '';
-                for (let i = 0; i < obj.length; i++) {
-                    if (obj[i] === '.') {
-                        break;
-                    }
-                    if (isFinite(obj[i]) && obj[i] !== ' ') {
-                        get_number += obj[i]
-                    }
+    }
+
+    getType(text) {
+        for (let item of text) {
+            let obj = item.match(this.pattern_type_item)[1];
+            this.type.push(obj);
+        }
+    }
+
+    getPrice(text) {
+        for (let item of text) {
+            let obj = item.match(this.pattern_price_item)[1];
+            let get_number = '';
+            for (let i = 0; i < obj.length; i++) {
+                if (obj[i] === '.') {
+                    break;
                 }
-                if (get_number.length > 0) {
-                    this.price.push(get_number);
+                if (isFinite(obj[i]) && obj[i] !== ' ') {
+                    get_number += obj[i]
                 }
             }
-        }
-
-        async getReference(text) {
-            for (let item of text) {
-                let obj = item.match(this.pattern_reference_item)[1];
-                let address = 'https://www.olx.ua' + obj;
-                this.url.push(address);
-                await this.getFullText(address)
+            if (get_number.length > 0) {
+                this.price.push(get_number);
             }
         }
+    }
 
-         getTime_location(text)
-        {
-            for (let item of text) {
-                let obj = item.match(this.pattern_time_location_item)[1];
-                obj = obj.split('<!-- --> - <!-- -->')
-                this.location.push(obj[0]);
-                this.time.push(obj[1]);
-
-            }
+    async getReference(text) {
+        for (let item of text) {
+            let obj = item.match(this.pattern_reference_item)[1];
+            let address = 'https://www.olx.ua' + obj;
+            this.url.push(address);
+            await this.getFullText(address)
         }
+    }
 
+    getTime_location(text) {
+        for (let item of text) {
+            let obj = item.match(this.pattern_time_location_item)[1];
+            obj = obj.split('<!-- --> - <!-- -->')
+            this.location.push(obj[0]);
+            this.time.push(obj[1]);
 
+        }
+    }
 }
-
-

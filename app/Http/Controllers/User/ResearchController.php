@@ -11,6 +11,6 @@ class ResearchController extends Controller
     public function update(Request $request)
     {
         Research::edit($request->get('id'), $request->all());
-        return route('settings');
+        return back();
     }
 }
