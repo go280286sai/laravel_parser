@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     @section('csfr')
     @show
-
+    @vite('resources/css/app.css')
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>{{$title??'Parser'}}</title>
     <!-- Tell the browser to be responsive to screen width -->
@@ -34,7 +34,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 @section('style')
-
 @show
 
 </head>
@@ -42,146 +41,48 @@
 <div class="wrapper">
     <header class="main-header">
         <!-- Logo -->
-        <a href="../../index2.html" class="logo">
+        <a href="{{env('APP_URL')}}" class="logo" title="{{__('messages.ref_to_site')}}">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>A</b>LT</span>
+            <span class="logo-mini"><b>{{env('APP_NAME')}}</b></span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>Admin</b>LTE</span>
+            <span class="logo-lg"><b>{{env('APP_NAME')}}</b></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
             <!-- Sidebar toggle button-->
-            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                <span class="sr-only">Toggle navigation</span>
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button" title="{{__('messages.hide_show')}}">
+                <span class="sr-only"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-
-            <div class="navbar-custom-menu">
+            <div class="navbar-custom-menu mr-10">
                 <ul class="nav navbar-nav">
-                    <!-- Messages: style can be found in dropdown.less-->
-                    <li class="dropdown messages-menu">
+                    <li class="dropdown user user-menu ">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-envelope-o"></i>
-                            <span class="label label-success">4</span>
+                            <img src="{{env('APP_URL').'/storage/'.\Illuminate\Support\Facades\Auth::user()->profile_photo_path}}" class="user-image" alt="{{\Illuminate\Support\Facades\Auth::user()->name}}">
+                            <span class="hidden-xs">{{\Illuminate\Support\Facades\Auth::user()->name}}</span>
                         </a>
-                        <ul class="dropdown-menu">
-                            <li class="header">You have 4 messages</li>
-                            <li>
-                                <!-- inner menu: contains the actual data -->
-                                <ul class="menu">
-                                    <li><!-- start message -->
-                                        <a href="#">
-                                            <div class="pull-left">
-                                                <img src="" class="img-circle" alt="User Image">
-                                            </div>
-                                            <h4>
-                                                Support Team
-                                                <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                                            </h4>
-                                            <p>Why not buy a new awesome theme?</p>
-                                        </a>
-                                    </li>
-                                    <!-- end message -->
-                                </ul>
-                            </li>
-                            <li class="footer"><a href="#">See All Messages</a></li>
-                        </ul>
-                    </li>
-                    <!-- Notifications: style can be found in dropdown.less -->
-                    <li class="dropdown notifications-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-bell-o"></i>
-                            <span class="label label-warning">10</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="header">You have 10 notifications</li>
-                            <li>
-                                <!-- inner menu: contains the actual data -->
-                                <ul class="menu">
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="footer"><a href="#">View all</a></li>
-                        </ul>
-                    </li>
-                    <!-- Tasks: style can be found in dropdown.less -->
-                    <li class="dropdown tasks-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-flag-o"></i>
-                            <span class="label label-danger">9</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="header">You have 9 tasks</li>
-                            <li>
-                                <!-- inner menu: contains the actual data -->
-                                <ul class="menu">
-                                    <li><!-- Task item -->
-                                        <a href="#">
-                                            <h3>
-                                                Design some buttons
-                                                <small class="pull-right">20%</small>
-                                            </h3>
-                                            <div class="progress xs">
-                                                <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                                    <span class="sr-only">20% Complete</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <!-- end task item -->
-                                </ul>
-                            </li>
-                            <li class="footer">
-                                <a href="#">View all tasks</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- User Account: style can be found in dropdown.less -->
-                    <li class="dropdown user user-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="{{env('APP_URL').'/storage/'.\Illuminate\Support\Facades\Auth::user()->profile_photo_path}}" class="user-image" alt="User Image">
-                            <span class="hidden-xs">Alexander Pierce</span>
-                        </a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu ">
                             <!-- User image -->
                             <li class="user-header">
-                                <img src="{{env('APP_URL').'/storage/'.\Illuminate\Support\Facades\Auth::user()->profile_photo_path}}" class="img-circle" alt="User Image">
-
+                                <img
+                                        src="{{env('APP_URL').'/storage/'.\Illuminate\Support\Facades\Auth::user()->profile_photo_path}}"
+                                        class="img-circle inline" alt="{{\Illuminate\Support\Facades\Auth::user()->name}}">
                                 <p>
                                   {{\Illuminate\Support\Facades\Auth::user()->name}}
                                 </p>
                             </li>
-                            <!-- Menu Body -->
-                            <li class="user-body">
-                                <div class="row">
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Followers</a>
-                                    </div>
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Sales</a>
-                                    </div>
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Friends</a>
-                                    </div>
-                                </div>
-                                <!-- /.row -->
-                            </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="{{env('APP_URL').'/user/profile'}}" class="btn btn-default btn-flat">Profile</a>
+                                    <a href="{{env('APP_URL').'/user/profile'}}" class="btn btn-default btn-flat">{{__('messages.profile')}}</a>
                                 </div>
                                 <div class="pull-right">
-                                    <form action="/logout" method="post">
-                                        <input type="hidden" name="name" value="{{\Illuminate\Support\Facades\Auth::user()}}">
+                                    <form action="{{env('APP_URL').'/user/exit'}}" method="post">
+{{--                                        <input type="hidden" name="name" value="{{\Illuminate\Support\Facades\Auth::user()}}">--}}
                                         @csrf
-                                        <input type="submit" class="btn btn-default btn-flat" name="submit" value="Logouts">
+                                        <input type="submit" class="btn btn-default btn-flat" name="submit" value="{{__('messages.logout')}}">
                                     </form>
                                 </div>
                             </li>
@@ -189,14 +90,12 @@
                     </li>
                     <!-- Control Sidebar Toggle Button -->
                     <li>
-                        <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+{{--                        <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>--}}
                     </li>
                 </ul>
             </div>
         </nav>
     </header>
-
-    <!-- =============================================== -->
 
     <!-- Left side column. contains the sidebar -->
     <aside class="main-sidebar">
@@ -449,6 +348,9 @@
          immediately after the control sidebar -->
     <div class="control-sidebar-bg"></div>
 </div>
+@vite('resources/js/app.js')
+
+<script src="https://unpkg.com/vue@next"></script>
 <!-- ./wrapper -->
 <!-- jQuery 2.2.3 -->
 <script src="{{env('APP_URL').'/assets/plugins/jQuery/jquery-2.2.3.min.js'}}"></script>

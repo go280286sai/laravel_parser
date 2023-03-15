@@ -1,4 +1,4 @@
-class ApartmentView {
+export class ApartmentView {
 
     pattern_title = /<h6 class=\"css-16v5mdi er34gjf0\">(.*?)<\/h6>/ig;
     pattern_title_item = /<h6 class=\"css-16v5mdi er34gjf0\">(.*?)<\/h6>/i;

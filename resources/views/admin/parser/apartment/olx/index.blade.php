@@ -6,7 +6,6 @@
 @section('style')
     <link rel="stylesheet" href="{{env('APP_URL').'/assets/plugins/datatables/dataTables.bootstrap.css'}}">
 @endsection
-
 @section('text')
     <div class="content-wrapper">
         <section class="content-header">
@@ -34,30 +33,39 @@
                     <div class="form-group">
                         <table>
                             <tr>
-                                <td><button v-on:click="send_check" class="btn btn_table">{{__('messages.delete')}}</button></td>
-                                <td class="tbl_btn"><button onclick="document.location.reload();"
-                                             class="btn btn_table">{{__('messages.update_list')}}</button></td>
-                                <td><button v-on:click="getRecursia"
-                                             class="btn btn_table">{{__('messages.start_update')}}</button></td>
-                                <td><button v-on:click="cleanDb" class="btn btn_table"
-                                              onclick="confirm('{{__('messages.are_you_sure')}}')">{{__('messages.clean_db')}}</button></td>
+                                <td>
+                                    <button v-on:click="send_check"
+                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">{{__('messages.delete')}}</button>
+                                </td>
+                                <td class="tbl_btn">
+                                    <button onclick="document.location.reload();"
+                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">{{__('messages.update_list')}}</button>
+                                </td>
+                                <td>
+                                    <button v-on:click="getApartment" v-bind:disabled="update_status"
+                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">{{__('messages.start_update')}}</button>
+                                </td>
+                                <td>
+                                    <button v-on:click="cleanDb"
+                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">{{__('messages.clean_db')}}</button>
+                                </td>
                                 <td><a href="{{env('APP_URL')}}/user/olx_apartment_delete_index">
-                                        <button class="btn btn_table">{{__('messages.delete_list')}}</button>
+                                        <button
+                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">{{__('messages.delete_list')}}</button>
                                     </a></td>
                                 <td>
                                     <form action="{{env('APP_URL')}}/user/saveJson" method="post">
                                         @csrf
-                                        <button class="btn btn_table tbl_btn" >{{__('messages.save_as')}}</button>
-                                    </form></td>
+                                        <button
+                                            class="mr-3 mt-6 bg-orange-600 hover:bg-orange-300 text-white btn">{{__('messages.save_as')}}</button>
+                                    </form>
+                                </td>
                             </tr>
                         </table>
-
-
-
                     </div>
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
-                        <tr>
+                        <tr class="bg-orange-400">
                             <th scope="col">
                             </th>
                             <th scope="col">Title</th>
@@ -76,23 +84,32 @@
                         <tbody>
                         @foreach($apartments as $apartment)
                             <tr>
-                                <td><div class="form-check">
-                                        <input v-model="check_items" name="check_items" class="form-check-input" type="checkbox" value="{{$apartment->id}}" id="flexCheckDefault">
-                                    </div></td>
-                                <td> {{$apartment->title}}</td>
-                                <td> {{$apartment->rooms}}</td>
-                                <td>{{$apartment->floor}} </td>
-                                <td>{{$apartment->etajnost}} </td>
-                                <td><a href="{{$apartment->url}}"
-                                       title="{{$apartment->description}}"
-                                       target="_blank">{{\Illuminate\Support\Str::substr($apartment->description, 0, 150) }}</a>
+                                <td class="{{$apartment->status==0?"bg-orange-200":''}}">
+                                    <div class="form-check">
+                                        <input v-model="check_items" name="check_items"
+                                               class="form-check rounded text-danger" type="checkbox"
+                                               value="{{$apartment->id}}" id="flexCheckDefault">
+                                    </div>
                                 </td>
-                                <td>{{$apartment->price}} </td>
-                                <td>{{$apartment->type}} </td>
-                                <td> {{$apartment->location}}</td>
-                                <td>{{$apartment->date}} </td>
-                                <td>{{$apartment->comment}} </td>
-                                <td>
+                                <td class="{{$apartment->status==0?"bg-orange-200":''}}"> {{$apartment->title}}</td>
+                                <td class="{{$apartment->status==0?"bg-orange-200":''}}"> {{$apartment->rooms}}</td>
+                                <td class="{{$apartment->status==0?"bg-orange-200":''}}">{{$apartment->floor}} </td>
+                                <td class="{{$apartment->status==0?"bg-orange-200":''}}">{{$apartment->etajnost}} </td>
+                                <td class="{{$apartment->status==0?"bg-orange-200":''}}">
+                                    <a href="{{$apartment->url}}"
+                                       title="{{$apartment->description}}"
+                                       target="_blank">{{\Illuminate\Support\Str::substr($apartment->description, 0, 150)}}
+                                    </a>
+                                </td>
+                                <td class="{{$apartment->status==0?"bg-orange-200":''}}">{{$apartment->price}} </td>
+                                <td class="{{$apartment->status==0?"bg-orange-200":''}}">{{$apartment->type}} </td>
+                                <td class="{{$apartment->status==0?"bg-orange-200":''}}"> {{$apartment->location}}</td>
+                                <td class="{{$apartment->status==0?"bg-orange-200":''}}">{{\Illuminate\Support\Carbon::createFromFormat('Y-m-d', $apartment->date)->format('d-m-Y')}} </td>
+                                <td class="{{$apartment->status==0?"bg-orange-200":''}}">{{$apartment->comment}} </td>
+                                <td class="{{$apartment->status==0?"bg-orange-200":''}}">
+                                    @if($apartment->status==0)
+                                        @{{ getStatus($apartment->id) }}
+                                    @endif
                                     <form action="{{env('APP_URL')}}/user/olx_apartment_comment"
                                           method="get">
                                         @csrf
@@ -127,11 +144,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
             integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
             crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/vue@next"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    {{--    <script src="{{env('APP_URL').'/assets/parser/apartment/index.js'}}"></script>--}}
-    <script src="{{env('APP_URL').'/assets/parser/apartment/view.js'}}"></script>
-    <script src="{{env('APP_URL').'/assets/parser/apartment/olx.js'}}"></script>
     <script>
         $(function () {
             $("#example1").DataTable();

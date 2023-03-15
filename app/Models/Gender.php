@@ -10,6 +10,9 @@ class Gender extends Model
 {
     use HasFactory;
 
+    /**
+     * @return HasMany
+     */
     public function user(): HasMany
     {
         return $this->hasMany(User::class);

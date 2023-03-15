@@ -2,48 +2,77 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Events\OlxApartmentEvent;
 use App\Http\Controllers\Controller;
+use App\Jobs\OlxApartmentJob;
 use App\Models\OlxApartment;
 use App\Models\Research;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response as Back;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Response;
 
 class OlxApartmentController extends Controller
 {
-    public function index()
+    /**
+     * @return View
+     */
+    public function index(): View
     {
         $olx = Research::find(1);
-        $OlxApartment = OlxApartment::all();
+        $OlxApartment = OlxApartment::all()->sortByDesc('date');
 
-        return view('admin.parser.apartment.olx.index', ['title' => 'Parser OLX', 'apartments' => $OlxApartment, 'olx' => $olx]);
+        return view('admin.parser.apartment.olx.index',
+            [
+                'title' => 'Parser OLX',
+                'apartments' => $OlxApartment,
+                'olx' => $olx
+            ]);
     }
 
-    public function addOlxApartment(Request $request)
+    /**
+     * @param Request $request
+     * @return void
+     */
+    public function addOlxApartment(Request $request): void
     {
         $request->validate([
             'title' => 'unique:olx_apartments',
         ]);
-        OlxApartment::add($request->all());
+//        OlxApartment::add($request->all());
+        OlxApartmentJob::dispatch($request->all())->onQueue('olx_apartment');
     }
 
-    public function cleanDb()
+    /**
+     * @return RedirectResponse
+     */
+    public function cleanDb(): RedirectResponse
     {
         OlxApartment::cleanBase();
 
         return back();
     }
 
-    public function saveJson()
+    /**
+     * @return Back
+     */
+    public function saveJson(): Back
     {
         $data = OlxApartment::all('title', 'type', 'rooms', 'floor', 'etajnost', 'description', 'price', 'date');
         $now = Carbon::now()->format('d_m_Y');
-        $name = 'Olx_Apartment_'.$now;
+        $name = 'Olx_Apartment_' . $now;
 
-        return Response::make($data)->header('Content-Type', 'application/json;charset=utf-8')->header('Content-Disposition', "attachment;filename=$name.json");
+        return Response::make($data)->header('Content-Type', 'application/json;charset=utf-8')
+            ->header('Content-Disposition', "attachment;filename=$name.json");
     }
 
-    public function remove(Request $request)
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function remove(Request $request): RedirectResponse
     {
         $id = $request->get('id');
         OlxApartment::removeId($id);
@@ -51,28 +80,41 @@ class OlxApartmentController extends Controller
         return back();
     }
 
-    public function olx_soft_delete_index()
+    /**
+     * @return View
+     */
+    public function olx_soft_delete_index(): View
     {
         $data = OlxApartment::onlyTrashed()->get();
 
         return view('admin.parser.apartment.olx.trash', ['trash' => $data]);
     }
 
-    public function olx_soft_delete_all()
+    /**
+     * @return RedirectResponse
+     */
+    public function olx_soft_delete_all(): RedirectResponse
     {
         OlxApartment::onlyTrashed()->forceDelete();
 
         return redirect()->route('olx_apartment');
     }
 
-    public function olx_soft_recovery_all()
+    /**
+     * @return RedirectResponse
+     */
+    public function olx_soft_recovery_all(): RedirectResponse
     {
         OlxApartment::onlyTrashed()->restore();
 
         return redirect()->route('olx_apartment');
     }
 
-    public function olx_soft_delete_item(Request $request)
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function olx_soft_delete_item(Request $request): RedirectResponse
     {
         $item = $request->get('id');
         OlxApartment::onlyTrashed()->find($item)->forceDelete();
@@ -80,7 +122,11 @@ class OlxApartmentController extends Controller
         return redirect()->route('olx_apartment');
     }
 
-    public function olx_soft_recovery_item(Request $request)
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function olx_soft_recovery_item(Request $request): RedirectResponse
     {
         $item = $request->get('id');
         OlxApartment::onlyTrashed()->find($item)->restore();
@@ -88,7 +134,11 @@ class OlxApartmentController extends Controller
         return redirect()->route('olx_apartment');
     }
 
-    public function comment_view(Request $request)
+    /**
+     * @param Request $request
+     * @return View
+     */
+    public function comment_view(Request $request): View
     {
         $id = $request->get('id');
         $data = OlxApartment::find($id);
@@ -96,7 +146,11 @@ class OlxApartmentController extends Controller
         return view('admin.parser.apartment.olx.comment', ['data' => $data]);
     }
 
-    public function comment_add(Request $request)
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function comment_add(Request $request): RedirectResponse
     {
         $id = $request->get('id');
         $comment = $request->get('comment');
@@ -105,11 +159,35 @@ class OlxApartmentController extends Controller
         return redirect()->route('olx_apartment');
     }
 
-    public function checks_remove(Request $request)
+    /**
+     * @param Request $request
+     * @return void
+     */
+    public function checks_remove(Request $request): void
     {
         $data = $request->get('checks');
         foreach ($data as $item) {
             OlxApartment::removeId($item);
         }
     }
+
+    /**
+     * @param Request $request
+     * @return void
+     */
+    public function setStatus(Request $request): void
+    {
+        OlxApartment::setStatus($request->get('id'));
+    }
+
+    /**
+     * @param Request $request
+     * @return void
+     */
+    public function sendPushMessage(Request $request): void
+    {
+        $text = $request->get('text');
+        event(new OlxApartmentEvent($text));
+    }
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\OlxApartment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -13,12 +14,13 @@ class OlxApartmentJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public array $data;
     /**
      * Create a new job instance.
      */
-    public function __construct(string $data)
+    public function __construct(array $data)
     {
-        $this->data = $data;
+       $this->data = $data;
     }
 
     /**
@@ -26,6 +28,6 @@ class OlxApartmentJob implements ShouldQueue
      */
     public function handle()
     {
-        Log::info($this->data);
+        OlxApartment::add($this->data);
     }
 }

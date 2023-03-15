@@ -41,7 +41,6 @@ Route::middleware([
 Route::group(['prefix' => 'user', 'middleware' => IsAuthUser::class], function () {
     Route::controller(ParserController::class)->group(function () {
         Route::post('/runParser', 'index');
-
         Route::post('/csv', 'getCsv');
     });
     Route::controller(ResearchController::class)->group(function () {
@@ -49,6 +48,7 @@ Route::group(['prefix' => 'user', 'middleware' => IsAuthUser::class], function (
     });
     Route::controller(MainController::class)->group(function () {
         Route::get('/dashboard', 'index');
+        Route::post('/exit', 'logout');
     });
     Route::controller(OlxApartmentController::class)->group(function () {
         Route::post('/cleanDb', 'cleanDb');
@@ -64,5 +64,7 @@ Route::group(['prefix' => 'user', 'middleware' => IsAuthUser::class], function (
         Route::post('/olx_apartment_recovery_all', 'olx_soft_recovery_all');
         Route::post('/olx_apartment_recovery_item', 'olx_soft_recovery_item');
         Route::post('/checks_remove', 'checks_remove');
+        Route::post('/set_status', 'setStatus');
+        Route::post('/sendPushMessage', 'sendPushMessage');
     });
 });

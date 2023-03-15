@@ -21,7 +21,7 @@
                                         @csrf
                                         <button title="{{__('messages.recovery_all')}}?"
                                                 onclick="return confirm('{{__('messages.are_you_sure')}}')"
-                                                class="btn btn_table"><i>{{__('messages.recovery_all')}}</i></button>
+                                                class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn"><i>{{__('messages.recovery_all')}}</i></button>
                                     </form>
                                 </td>
                                 <td>
@@ -29,7 +29,7 @@
                                         @csrf
                                         <button title="{{__('messages.delete_all')}}?"
                                                 onclick="return confirm('{{__('messages.are_you_sure')}}')"
-                                                class="btn btn_table"><i>{{__('messages.delete_all')}}</i>
+                                                class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn"><i>{{__('messages.delete_all')}}</i>
                                         </button>
                                     </form>
                                 </td>

@@ -1,4 +1,8 @@
+import {ApartmentView} from "./view";
+
+'./view';
 let GET_URL = $('#url_olx').val();
+
 Vue.createApp({
     data() {
         return {
@@ -19,41 +23,35 @@ Vue.createApp({
             obj_type: [],
             status: false,
             get_url_olx: GET_URL,
-            i: 0,
             get_url_status: true,
-            check_items:[]
+            check_items: [],
+            update_status: false
         }
     },
     methods: {
-        send_check(){
+        send_check() {
             axios.post('/user/checks_remove', {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                'checks':this.check_items
+                'checks': this.check_items
             }).then(() => {
                 location.reload()
             }).catch((err) => {
                 console.log(err.message)
             })
         },
-        getRecursia() {
-            // while (this.get_url_status){
-            //     axios.get(GET_URL).then(data=>{
-            //         if(data.status !== 200){
-            //             this.get_url_status = false;
-            //            throw new Error('This url is false')
-            //         }else {
-            //                 getApartment(GET_URL);
-            //                 GET_URL=`${GET_URL}?page=${this.i++}`
-            //         }
-            //     }).catch(err=>{
-            //         console.log('the end')
-            //     })
-            //
-            // }
-            this.getApartment(GET_URL)
+        sendPushMessage($text) {
+            axios.post('/user/sendPushMessage', {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'text': $text,
+            }).then(data => {
+                console.log(data.status)
+            }).catch(err => {
+                console.log(err.message)
+            })
         },
-        getApartment(text) {
-            const obj = new ApartmentView(text)
+        getApartment() {
+            const obj = new ApartmentView(GET_URL)
+            this.update_status = true;
             setTimeout(() => {
                 this.obj_title = obj.title
                 this.obj_price = obj.price
@@ -78,15 +76,30 @@ Vue.createApp({
                             'type': this.obj_type[i],
                             'description': this.obj_description[i],
                             'location': this.obj_location[i],
-                            'date': '2000-02-02'
+                            'date': this.obj_time[i],
                         }).then(data => {
-                            console.log(data)
+
                         }).catch(err => {
                             console.log(err.message)
                         })
                     }
                 }, 5000)
+                setTimeout(() => {
+                    this.sendPushMessage('Данные обновлены');
+                    this.update_status = false;
+                }, 20000)
             }, 35000);
+        },
+        getStatus(text){
+            setTimeout(()=>{
+                axios.post('/user/set_status', {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'id':text
+            }).then(()=>{
+                    console.log('status ok')}).catch((err)=>{
+                    console.log(err.message);
+                })
+            }, 300000)
         },
         saveList() {
             axios.post('/user/saveJson', {

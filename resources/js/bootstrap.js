@@ -3,7 +3,7 @@
  * to our Laravel back-end. This library automatically handles sending the
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
-
+import './parser/apartment/olx/olx';
 import axios from 'axios';
 window.axios = axios;
 
@@ -16,10 +16,10 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  */
 
 // import Echo from 'laravel-echo';
-
-// import Pusher from 'pusher-js';
-// window.Pusher = Pusher;
-
+//
+import Pusher from 'pusher-js';
+window.Pusher = Pusher;
+//
 // window.Echo = new Echo({
 //     broadcaster: 'pusher',
 //     key: import.meta.env.VITE_PUSHER_APP_KEY,
@@ -29,4 +29,17 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     wssPort: import.meta.env.VITE_PUSHER_PORT ?? 443,
 //     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
 //     enabledTransports: ['ws', 'wss'],
+// }).channel('app_apartment').listen('OlxApartmentEvent', (e) => {
+//     alert('kkk');
 // });
+
+Pusher.logToConsole = true;
+
+const pusher = new Pusher('57db0e1503aef7489228', {
+    cluster: 'eu'
+});
+
+const channel = pusher.subscribe('olx_apartment');
+channel.bind('olx_apartment', function(data) {
+    alert(data);
+});

@@ -31,7 +31,7 @@
                         </div>
                     </div>
                     <div class="box-footer">
-                        <button class="btn btn_table" onclick="window.history.back()">Back</button>
+                        <button class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn" onclick="window.history.back()">Back</button>
                         <input type="submit" class="btn btn-success pull-right" name="submit"
                                value="Send">
                     </div>
