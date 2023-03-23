@@ -1,8 +1,5 @@
 @extends('admin.layout.layouts')
 
-@section('csfr')
-    <meta name="csrf-token" content="{{ csrf_token() }}"/>
-@show
 @section('style')
     <link rel="stylesheet" href="{{env('APP_URL').'/assets/plugins/datatables/dataTables.bootstrap.css'}}">
 @endsection
@@ -54,6 +51,11 @@
                                             class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">{{__('messages.delete_list')}}</button>
                                     </a></td>
                                 <td>
+                                        <button v-on:click="getNewPrice('{{$data}}')"
+                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">{{__('messages.get_new_price')}}</button>
+
+                                </td>
+                                <td>
                                     <form action="{{env('APP_URL')}}/user/saveJson" method="post">
                                         @csrf
                                         <button
@@ -74,6 +76,7 @@
                             <th scope="col">Etajnost</th>
                             <th scope="col">Description</th>
                             <th scope="col">Price</th>
+                            <th scope="col">Corr_price</th>
                             <th scope="col">Type</th>
                             <th scope="col">Location</th>
                             <th scope="col">Time</th>
@@ -102,13 +105,30 @@
                                     </a>
                                 </td>
                                 <td class="{{$apartment->status==0?"bg-orange-200":''}}">{{$apartment->price}} </td>
+                                <td class="{{$apartment->status==0?"bg-orange-200":''}}">{{$apartment->real_price}} </td>
                                 <td class="{{$apartment->status==0?"bg-orange-200":''}}">{{$apartment->type}} </td>
                                 <td class="{{$apartment->status==0?"bg-orange-200":''}}"> {{$apartment->location}}</td>
                                 <td class="{{$apartment->status==0?"bg-orange-200":''}}">{{\Illuminate\Support\Carbon::createFromFormat('Y-m-d', $apartment->date)->format('d-m-Y')}} </td>
                                 <td class="{{$apartment->status==0?"bg-orange-200":''}}">{{$apartment->comment}} </td>
                                 <td class="{{$apartment->status==0?"bg-orange-200":''}}">
                                     @if($apartment->status==0)
-                                        @{{ getStatus($apartment->id) }}
+                                        <script>
+                                            getStatus({{$apartment->id}})
+                                            function getStatus(text)
+                                            {
+                                                console.log(text)
+                                                setTimeout(() => {
+                                                    axios.post('/user/set_status', {
+                                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                                                        'id': text
+                                                    }).then(() => {
+                                                        console.log('status ok')
+                                                    }).catch((err) => {
+                                                        console.log(err.message);
+                                                    })
+                                                }, 300000)
+                                            }
+                                        </script>
                                     @endif
                                     <form action="{{env('APP_URL')}}/user/olx_apartment_comment"
                                           method="get">
@@ -134,7 +154,7 @@
         </section>
     </div>
 @endsection
-
+<script src="https://unpkg.com/vue@next"></script>
 @section('js')
     <script src="{{env('APP_URL').'/assets/plugins/datatables/jquery.dataTables.min.js'}}"></script>
     <script src="{{env('APP_URL').'/assets/plugins/datatables/dataTables.bootstrap.min.js'}}"></script>

@@ -10,6 +10,7 @@
         "laravel/framework": "^10.0",
         "laravel/jetstream": "^3.0",
         "laravel/sanctum": "^3.2",
+        "laravel/telescope": "^4.14",
         "laravel/tinker": "^2.8",
         "laravelcollective/html": "^6.3",
         "livewire/livewire": "^2.11",

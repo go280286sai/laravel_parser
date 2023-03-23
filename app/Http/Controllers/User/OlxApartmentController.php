@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as Back;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Response;
 
 class OlxApartmentController extends Controller
@@ -21,14 +22,17 @@ class OlxApartmentController extends Controller
      */
     public function index(): View
     {
+        OlxApartment::setIdexLocation();
         $olx = Research::find(1);
         $OlxApartment = OlxApartment::all()->sortByDesc('date');
+        $data = OlxApartment::all('id', 'rooms', 'floor', 'etajnost', 'area', 'metro', 'shops','repair', 'service','location_index', 'price', 'date');
 
         return view('admin.parser.apartment.olx.index',
             [
                 'title' => 'Parser OLX',
                 'apartments' => $OlxApartment,
-                'olx' => $olx
+                'olx' => $olx,
+                'data'=>$data
             ]);
     }
 
@@ -60,7 +64,7 @@ class OlxApartmentController extends Controller
      */
     public function saveJson(): Back
     {
-        $data = OlxApartment::all('title', 'type', 'rooms', 'floor', 'etajnost', 'description', 'price', 'date');
+        $data = OlxApartment::all('title', 'type', 'rooms', 'floor', 'etajnost', 'description', 'price', 'date', 'location');
         $now = Carbon::now()->format('d_m_Y');
         $name = 'Olx_Apartment_' . $now;
 
@@ -188,6 +192,13 @@ class OlxApartmentController extends Controller
     {
         $text = $request->get('text');
         event(new OlxApartmentEvent($text));
+    }
+
+    public function getNewPrice()
+    {
+        $data = OlxApartment::all('id', 'rooms', 'floor', 'etajnost', 'area', 'metro', 'shops','repair', 'service','location_index', 'price', 'date');
+      //        Response::view('admin.parser.apartment.olx.getNewPrice', ['data' => $data]);
+
     }
 
 }

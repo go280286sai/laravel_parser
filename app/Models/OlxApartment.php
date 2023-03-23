@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class OlxApartment extends Model
 {
@@ -16,7 +17,7 @@ class OlxApartment extends Model
      * @var string[]
      */
     protected $fillable = ['title', 'url', 'rooms', 'floor', 'etajnost', 'price', 'description',
-        'status', 'comment', 'location', 'type'];
+        'status', 'comment', 'location', 'type', 'area', 'real_price'];
 
     /**
      * @param array $fields
@@ -26,7 +27,11 @@ class OlxApartment extends Model
     {
         $object = new self();
         $object->fill($fields);
-        $object->date=$object->getDateNew($fields['date']);
+        $object->date = $object->getDateNew($fields['date']);
+        $object->repair=$object->isRepair($fields['description']);
+        $object->service=$object->isService($fields['description']);
+        $object->shops=$object->isShop($fields['description']);
+        $object->metro=$object->isMetro($fields['description']);
         $object->save();
     }
 
@@ -110,9 +115,76 @@ class OlxApartment extends Model
      */
     public static function setStatus($field): void
     {
-            $object = self::find($field);
-            $object->status = 1;
-            $object->save();
+        $object = self::find($field);
+        $object->status = 1;
+        $object->save();
     }
 
+    public function isMetro(string $text)
+    {
+        if (Str::contains(Str::lower($text), 'метро')) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    public function isRepair(string $text)
+    {
+        if (!Str::contains(Str::lower($text), 'без ремонт') && Str::contains(Str::lower($text), 'ремонт')) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    public function isService(string $text)
+    {
+        if (Str::contains(Str::lower($text), 'двер') || Str::contains(Str::lower($text), 'пластик') ||
+            Str::contains(Str::lower($text), 'окна')) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    public function isShop(string $text)
+    {
+        $count = 0;
+        if (Str::contains(Str::lower($text), 'магазин') || Str::contains(Str::lower($text), 'сильпо') ||
+            Str::contains(Str::lower($text), 'рост') ||
+            Str::contains(Str::lower($text), 'класс')) {
+            $count = +1;
+        };
+        if (Str::contains(Str::lower($text), 'рынок')) {
+            $count = +1;
+        };
+        if (Str::contains(Str::lower($text), 'школ')) {
+            $count = +1;
+        };
+        if (Str::contains(Str::lower($text), 'садик')) {
+            $count = +1;
+        };
+        if (Str::contains(Str::lower($text), 'больница') || Str::contains(Str::lower($text), 'поликлиника')) {
+            $count = +1;
+        };
+        if (Str::contains(Str::lower($text), 'остановка') || Str::contains(Str::lower($text), 'транспорт')) {
+            $count = +1;
+        };
+        return $count;
+
+    }
+
+    public static function setIdexLocation()
+    {
+        $loc= self::all()->pluck('location');
+        $list=array_unique($loc->toArray());
+        foreach ($list as $item=>$value){
+            $obj=self::all()->where('location','=', $value);
+            foreach ($obj as $arr){
+                $arr->location_index=$item;
+                $arr->save();
+            }
+        }
+    }
 }

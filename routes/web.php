@@ -66,5 +66,6 @@ Route::group(['prefix' => 'user', 'middleware' => IsAuthUser::class], function (
         Route::post('/checks_remove', 'checks_remove');
         Route::post('/set_status', 'setStatus');
         Route::post('/sendPushMessage', 'sendPushMessage');
+        Route::post('/getNewPrice', 'getNewPrice');
     });
 });

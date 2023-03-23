@@ -12,6 +12,8 @@ export class ApartmentView {
     pattern_floor_item = /\"css-b5m1rv er34gjf0\">Поверх:(.*?)<\/p>/i
     pattern_room = /\"css-b5m1rv er34gjf0\">Кількість кімнат:(.*?)<\/p>/ig
     pattern_room_item = /\"css-b5m1rv er34gjf0\">Кількість кімнат:(.*?)<\/p>/i
+    pattern_area = /\"css-b5m1rv er34gjf0\">Загальна площа:(.*?)<\/p>/ig
+    pattern_area_item = /\"css-b5m1rv er34gjf0\">Загальна площа:(.*?)<\/p>/i
     pattern_type = /\"css-b5m1rv er34gjf0\"><span>(.*?)<\/span><\/p>/ig
     pattern_type_item = /\"css-b5m1rv er34gjf0\"><span>(.*?)<\/span><\/p>/i
     pattern_etajnost = /\"css-b5m1rv er34gjf0\">Поверховість:(.*?)<\/p>/ig
@@ -29,6 +31,7 @@ export class ApartmentView {
     type = []
     description = []
     main = []
+    area = []
 
     constructor(text) {
         this.getText(text)
@@ -63,6 +66,8 @@ export class ApartmentView {
                     await this.getType(type)
                     let etajnost = data.request.responseText.match(this.pattern_etajnost);
                     await this.getEtajnost(etajnost)
+                    let area = data.request.responseText.match(this.pattern_area);
+                    await this.getArea(area)
                     let description = data.request.responseText.match(this.pattern_description);
                     this.description.push(description[1])
                 }).catch(err => {
@@ -95,6 +100,12 @@ export class ApartmentView {
         for (let item of text) {
             let obj = item.match(this.pattern_etajnost_item)[1];
             this.etajnost.push(parseInt(obj));
+        }
+    }
+    getArea(text) {
+        for (let item of text) {
+            let obj = item.match(this.pattern_area_item)[1];
+            this.area.push(parseInt(obj));
         }
     }
 

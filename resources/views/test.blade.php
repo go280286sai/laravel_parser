@@ -1,14 +1,28 @@
-@extends('admin.layout.layouts')
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div id="text">{{$data}}</div>
+{{--<div id="text">[@foreach($data as $item){"id":"{{$item->id}}","rooms":"{{$item->rooms}}","floor":"{{$item->floor}}", "etajnost":"{{$item->etajnost}}","price":"{{$item->price}}","date":"{{$item->date}}"},@endforeach]</div>--}}
 
-<script src="{{env('APP_URL').'/assets/plugins/datatables/jquery.dataTables.min.js'}}"></script>
-<script src="{{env('APP_URL').'/assets/plugins/datatables/dataTables.bootstrap.min.js'}}"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
-        integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
-        crossorigin="anonymous"></script>
-<script src="https://unpkg.com/vue@next"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="{{env('APP_URL').'/assets/parser/apartment/index.js'}}"></script>
+</body>
+</html>
+<script src="{{env('APP_URL').'/assets/plugins/jQuery/jquery-2.2.3.min.js'}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+    let text = {{$data}}
+    console.log(text)
+    axios.post('http://localhost:8000/olx_apartment',text).then((data) => {
+        console.log(data)
+    }).catch((err) => {
+        console.log(err.message);
+    })
+</script>
 

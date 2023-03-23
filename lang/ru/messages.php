@@ -22,5 +22,6 @@ return [
     'about'=>'Обо мне',
     'portfolio'=>'Портфолио',
     'contact'=>'Контакт',
-    'service'=>'Услуги'
+    'service'=>'Услуги',
+    'get_new_price'=>'Синхронизировать данные'
 ];
