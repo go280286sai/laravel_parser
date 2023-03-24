@@ -1,76 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <title>{{$title??'Admin parse site'}}</title>
+    <!-- basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- mobile metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <!-- site metas -->
     @vite('resources/css/app.css')
+    <title>{{$title??env('APP_NAME')}}</title>
+    <meta name="keywords" content="parser">
+    <meta name="description" content="Наш сайт парсинга предназначен для извлечения и анализа данных из веб-страниц.
+    С помощью нашего инструмента вы можете получать доступ к структурированным данным из различных источников,
+    включая веб-сайты, социальные сети, новостные сайты, интернет-магазины и многое другое.">
+    <meta name="author" content="Aleksander Storchak">
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="{{env('APP_URL').'/assets/css/bootstrap.min.css'}}">
+    <!-- style css -->
+    <link rel="stylesheet" href="{{env('APP_URL').'/assets/css/style_.css'}}">
+    <!-- responsive-->
+    <link rel="stylesheet" href="{{env('APP_URL').'/assets/css/responsive.css'}}">
+    <!-- awesome fontfamily -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-
-<body>
-
-<!-- ***** Preloader Start ***** -->
-<div id="js-preloader" class="js-preloader">
-    <div class="preloader-inner">
-        <span class="dot"></span>
-        <div class="dots">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </div>
+<!-- body -->
+<body class="main-layout">
+<!-- loader  -->
+<div class="loader_bg">
+    <div class="loader"><img src="{{env('APP_URL').'/assets/img/loading.gif'}}" /></div>
 </div>
-<!-- ***** Preloader End ***** -->
-
-<!-- ***** Header Area Start ***** -->
-<header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <nav class="main-nav">
-                    <!-- ***** Logo Start ***** -->
-                    <a href="index.html" class="logo">
-                        <h4>Spac<span>Dyna</span></h4>
-                    </a>
-                    <!-- ***** Logo End ***** -->
-                    <!-- ***** Menu Start ***** -->
-                    <ul class="nav">
-                        <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
-                        <li class="scroll-to-section"><a href="#about">About Us</a></li>
-                        <li class="scroll-to-section"><a href="#services">Services</a></li>
-                        <li class="scroll-to-section"><a href="#portfolio">Portfolio</a></li>
-                        <li class="scroll-to-section"><a href="#blog">Blog</a></li>
-                        <li class="scroll-to-section"><a href="#contact">Message Us</a></li>
-                        <li class="scroll-to-section"><div class="main-red-button"><a href="#contact">Contact Now</a></div></li>
+<!-- end loader -->
+<div id="mySidepanel" class="sidepanel">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a href="index.html">{{__('messages.home')}}</a>
+    <a href="about.html">{{__('messages.about')}}</a>
+    <a href="services.html">{{__('messages.service')}}</a>
+    <a href="contact.html">{{__('messages.contact')}}</a>
+</div>
+<!-- header -->
+<header>
+    <!-- header inner -->
+    <div class="head-top">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="logo">
+                        <a href="/"><img src="{{env('APP_URL').'/assets/img/logo.png'}}"/></a>
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <ul class="email text_align_right">
+                        <li class="d_none"><i class="fa fa-phone" aria-hidden="true"></i><a
+                                href="phone:+380938005512<">+380938005512</a></li>
+                        <li class="d_none"><a href="mailto:admin@admin.ua"><i class="fa fa-envelope"
+                                                          aria-hidden="true"></i>admin@admin.ua</a></li>
+                        <li class="d_none"><a href="{{env('APP_URL').'/login'}}">Login <i class="fa fa-user" aria-hidden="true"></i></a></li>
+                        <li class="d_none"><a href="{{env('APP_URL').'/register'}}">Register <i class="fa fa-user" aria-hidden="true"></i></a></li>
+                        <li>
+                            <button class="openbtn" onclick="openNav()" type="button"><i class="fa fa-bars"></i></button>
+                        </li>
                     </ul>
-                    <a class='menu-trigger'>
-                        <span>Menu</span>
-                    </a>
-                    <!-- ***** Menu End ***** -->
-                </nav>
+                </div>
             </div>
         </div>
     </div>
 </header>
-<!-- ***** Header Area End ***** -->
-
-<div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
+<!-- end header -->
+<!-- start slider section -->
+<div class=" banner_main">
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="container">
+                    <div class="carousel-caption relative">
+                        <div class="bg_white">
+                            <h1>Welcome To our <span class="yello">Interior Design</span></h1>
+                            <p>It is a long established fact that a reader will be distracted by the readable content of
+                                a page when looking at its layout. The point of using Lorem Ipsum is that it has a
+                                more-or-less normal distribution of letters, as</p>
+                        </div>
+                        <a class="read_more ban_btn" href="Javascript:void(0)">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="container">
+                    <div class="carousel-caption relative">
+                        <div class="bg_white">
+                            <h1>Welcome To our <span class="yello">Interior Design</span></h1>
+                            <p>It is a long established fact that a reader will be distracted by the readable content of
+                                a page when looking at its layout. The point of using Lorem Ipsum is that it has a
+                                more-or-less normal distribution of letters, as</p>
+                        </div>
+                        <a class="read_more ban_btn" href="Javascript:void(0)">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="container">
+                    <div class="carousel-caption relative">
+                        <div class="bg_white">
+                            <h1>Welcome To our <span class="yello">Interior Design</span></h1>
+                            <p>It is a long established fact that a reader will be distracted by the readable content of
+                                a page when looking at its layout. The point of using Lorem Ipsum is that it has a
+                                more-or-less normal distribution of letters, as</p>
+                        </div>
+                        <a class="read_more ban_btn" href="Javascript:void(0)">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</div>
+<!-- end slider section -->
+<!-- six_box-->
+<div id="about" class="about top_layer">
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
-                <div class="row">
-                    <div class="col-lg-6 align-self-center">
-                        <div class="left-content header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
-
+            <div class="col-sm-12">
+                <div class="titlepage">
+                    <h2>About us</h2>
+                    <p>It is a long established fact that a reader will be distracted by the readable content </p>
+                </div>
+            </div>
+            <div class=" col-sm-12">
+                <div class="about_box">
+                    <div class="row d_flex">
+                        <div class="col-md-5">
+                            <div class="about_box_text">
+                                <h3>Best INTERIOR Design</h3>
+                                <p>There are many variations of passages of
+                                    Lorem Ipsum available, but the majority
+                                    have suffered alteration in some
+                                    form, by injected humour,There are many
+                                    variations of passages of
+                                </p>
+                                <a class="read_more" href="Javascript:void(0)">Read More</a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="right-image wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.5s">
-
+                        <div class=" col-md-7  pppp">
+                            <div class="about_box_img">
+                                <figure><img src="images/about_img.png" alt="#"/></figure>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -78,60 +163,196 @@
         </div>
     </div>
 </div>
-
-<div id="about" class="about-us section">
+<!-- end six_box-->
+<!-- building -->
+<div class="building">
     <div class="container">
         <div class="row">
-            <div class="col-lg-4">
-                <div class="left-image wow fadeIn" data-wow-duration="1s" data-wow-delay="0.2s">
-
+            <div class="col-md-12">
+                <div class="titlepage">
+                    <h2>IF A BUILDING <br><span class="yello">BECOMES ARCHITECTURE <br></span> THEN IT IS ART</h2>
+                    <p>It is a long established fact that a reader will be distracted by the readable content of a page
+                        when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal
+                        distribution of letters, asIt is a long established fact that a reader will be distracted by the
+                        readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it
+                        has a more-or-less normal distribution of letters, asIt is a long established fact that a reader
+                        will be distracted by the readable content of a page when looking at its layout. The point of
+                        using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as</p>
                 </div>
             </div>
-            <div class="col-lg-8 align-self-center">
-                <div class="services">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="item wow fadeIn" data-wow-duration="1s" data-wow-delay="0.5s">
-                                <div class="icon">
-
-                                </div>
-                                <div class="right-text">
-                                    <h4>Data Analysis</h4>
-                                    <p>Lorem ipsum dolor sit amet, ctetur aoi adipiscing eliter</p>
+        </div>
+    </div>
+</div>
+<!-- end building -->
+<!-- services -->
+<div class="services_main">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="titlepage">
+                    <h2>Services</h2>
+                    <span>It is a long established fact that a reader will be distracted by the readable content </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <ul class="nav nav-tabs md-tabs border_none" id="myTabMD" role="tablist">
+                    <li class="nav-item lisertab">
+                        <a class="nav-link servi_tab active" id="home-tab-md" data-toggle="tab" href="#home-md"
+                           role="tab" aria-controls="home-md"
+                           aria-selected="true">RESIDENTAL</a>
+                    </li>
+                    <li class="nav-item lisertab">
+                        <a class="nav-link servi_tab" id="profile-tab-md" data-toggle="tab" href="#profile-md"
+                           role="tab" aria-controls="profile-md"
+                           aria-selected="false">RETAIL DESIGN</a>
+                    </li>
+                    <li class="nav-item lisertab">
+                        <a class="nav-link servi_tab" id="contact-tab-md" data-toggle="tab" href="#contact-md"
+                           role="tab" aria-controls="contact-md"
+                           aria-selected="false">SPACE ADAPTATION</a>
+                    </li>
+                </ul>
+                <div class="tab-content card back_bg" id="myTabContentMD">
+                    <div class="tab-pane fade show active" id="home-md" role="tabpanel" aria-labelledby="home-tab-md">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-6 padding_0 margin_right20">
+                                <div class="services">
+                                    <div class="services_img">
+                                        <figure><img src="images/service_img1.png" alt="#"/></figure>
+                                        <div class="ho_dist">
+                                            <span>Reader will be distracted</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="item wow fadeIn" data-wow-duration="1s" data-wow-delay="0.7s">
-                                <div class="icon">
-
-                                </div>
-                                <div class="right-text">
-                                    <h4>Data Reporting</h4>
-                                    <p>Lorem ipsum dolor sit amet, ctetur aoi adipiscing eliter</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="item wow fadeIn" data-wow-duration="1s" data-wow-delay="0.9s">
-                                <div class="icon">
-
-                                </div>
-                                <div class="right-text">
-                                    <h4>Web Analytics</h4>
-                                    <p>Lorem ipsum dolor sit amet, ctetur aoi adipiscing eliter</p>
+                            <div class="col-md-4 col-sm-6 padding_0 margin_top70p margin_right20 margin_left20">
+                                <div class="services">
+                                    <div class="services_img">
+                                        <figure><img src="images/service_img2.png" alt="#"/></figure>
+                                        <div class="ho_dist">
+                                            <span>Reader will be distracted</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="col-md-4 col-sm-6 padding_0 margin_left20">
+                                <div class="services">
+                                    <div class="services_img">
+                                        <figure><img src="images/service_img3.png" alt="#"/></figure>
+                                        <div class="ho_dist">
+                                            <span>Reader will be distracted</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 offset-md-8 col-sm-6 padding_0 margin_top170">
+                                <div class="services margin_left60">
+                                    <div class="services_img">
+                                        <figure><img src="images/service_img4.png" alt="#"/></figure>
+                                        <div class="ho_dist">
+                                            <span>Reader will be distracted</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 margin_top40">
+                                <a class="read_more " href="Javascript:void(0)">Read More</a>
+                            </div>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="item wow fadeIn" data-wow-duration="1s" data-wow-delay="1.1s">
-                                <div class="icon">
-
+                    </div>
+                    <div class="tab-pane fade" id="profile-md" role="tabpanel" aria-labelledby="profile-tab-md">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-6 padding_0 margin_right20">
+                                <div class="services">
+                                    <div class="services_img">
+                                        <figure><img src="images/service_img3.png" alt="#"/></figure>
+                                        <div class="ho_dist">
+                                            <span>Reader will be distracted</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="right-text">
-                                    <h4>SEO Suggestions</h4>
-                                    <p>Lorem ipsum dolor sit amet, ctetur aoi adipiscing eliter</p>
+                            </div>
+                            <div class="col-md-4 col-sm-6 padding_0 margin_top70p margin_right20 margin_left20">
+                                <div class="services">
+                                    <div class="services_img">
+                                        <figure><img src="images/service_img2.png" alt="#"/></figure>
+                                        <div class="ho_dist">
+                                            <span>Reader will be distracted</span>
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6 padding_0 margin_left20">
+                                <div class="services">
+                                    <div class="services_img">
+                                        <figure><img src="images/service_img4.png" alt="#"/></figure>
+                                        <div class="ho_dist">
+                                            <span>Reader will be distracted</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 offset-md-8 col-sm-6 padding_0 margin_top170">
+                                <div class="services margin_left60">
+                                    <div class="services_img">
+                                        <figure><img src="images/service_img1.png" alt="#"/></figure>
+                                        <div class="ho_dist">
+                                            <span>Reader will be distracted</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 margin_top40">
+                                <a class="read_more " href="Javascript:void(0)">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="contact-md" role="tabpanel" aria-labelledby="contact-tab-md">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-6 padding_0 margin_right20">
+                                <div class="services">
+                                    <div class="services_img">
+                                        <figure><img src="images/service_img4.png" alt="#"/></figure>
+                                        <div class="ho_dist">
+                                            <span>Reader will be distracted</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6 padding_0 margin_top70p margin_right20 margin_left20">
+                                <div class="services">
+                                    <div class="services_img">
+                                        <figure><img src="images/service_img2.png" alt="#"/></figure>
+                                        <div class="ho_dist">
+                                            <span>Reader will be distracted</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-6 padding_0 margin_left20">
+                                <div class="services">
+                                    <div class="services_img">
+                                        <figure><img src="images/service_img1.png" alt="#"/></figure>
+                                        <div class="ho_dist">
+                                            <span>Reader will be distracted</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 offset-md-8 col-sm-6 padding_0 margin_top170">
+                                <div class="services margin_left60">
+                                    <div class="services_img">
+                                        <figure><img src="images/service_img3.png" alt="#"/></figure>
+                                        <div class="ho_dist">
+                                            <span>Reader will be distracted</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 margin_top40">
+                                <a class="read_more " href="Javascript:void(0)">Read More</a>
                             </div>
                         </div>
                     </div>
@@ -140,118 +361,99 @@
         </div>
     </div>
 </div>
-
-<div id="services" class="our-services section">
-    <div class="container">
+<!-- end services -->
+<!-- instant -->
+<div class="instant">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-6 align-self-center  wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.2s">
-                <div class="left-image">
-
+            <div class="col-md-6">
+                <div class="titlepage text_align_left">
+                    <h2>Get an instant estimate</h2>
+                    <p>It is a long established fact that a reader will be distracted by the readable content of a page
+                        when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal
+                        distribution of letters,</p>
+                    <a class="read_more" href="Javascript:void(0)">Get A quote</a>
                 </div>
             </div>
-            <div class="col-lg-6 wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.2s">
-                <div class="section-heading">
-                    <h2>Grow your website with our <em>SEO</em> service &amp; <span>Project</span> Ideas</h2>
-                    <p>Space Dynamic HTML5 template is free to use for your website projects. However, you are not permitted to redistribute the template ZIP file on any CSS template collection websites. Please contact us for more information. Thank you for your kind cooperation.</p>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="first-bar progress-skill-bar">
-                            <h4>Website Analysis</h4>
-                            <span>84%</span>
-                            <div class="filled-bar"></div>
-                            <div class="full-bar"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="second-bar progress-skill-bar">
-                            <h4>SEO Reports</h4>
-                            <span>88%</span>
-                            <div class="filled-bar"></div>
-                            <div class="full-bar"></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="third-bar progress-skill-bar">
-                            <h4>Page Optimizations</h4>
-                            <span>94%</span>
-                            <div class="filled-bar"></div>
-                            <div class="full-bar"></div>
-                        </div>
-                    </div>
+            <div class="col-md-6">
+                <div class="instant_img">
+                    <figure><img src="images/pc.png" alt="#"/></figure>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-<div id="contact" class="contact-us section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 align-self-center wow fadeInLeft" data-wow-duration="0.5s" data-wow-delay="0.25s">
-                <div class="section-heading">
-                    <h2>Feel Free To Send Us a Message About Your Website Needs</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doer ket eismod tempor incididunt ut labore et dolores</p>
-                    <div class="phone-info">
-                        <h4>For any enquiry, Call Us: <span><i class="fa fa-phone"></i> <a href="#">010-020-0340</a></span></h4>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 wow fadeInRight" data-wow-duration="0.5s" data-wow-delay="0.25s">
-                <form id="contact" action="" method="post">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <fieldset>
-                                <input type="name" name="name" id="name" placeholder="Name" autocomplete="on" required>
-                            </fieldset>
-                        </div>
-                        <div class="col-lg-6">
-                            <fieldset>
-                                <input type="surname" name="surname" id="surname" placeholder="Surname" autocomplete="on" required>
-                            </fieldset>
-                        </div>
-                        <div class="col-lg-12">
-                            <fieldset>
-                                <input type="text" name="email" id="email" pattern="[^ @]*@[^ @]*" placeholder="Your Email" required="">
-                            </fieldset>
-                        </div>
-                        <div class="col-lg-12">
-                            <fieldset>
-                                <textarea name="message" type="text" class="form-control" id="message" placeholder="Message" required=""></textarea>
-                            </fieldset>
-                        </div>
-                        <div class="col-lg-12">
-                            <fieldset>
-                                <button type="submit" id="form-submit" class="main-button ">Send Message</button>
-                            </fieldset>
-                        </div>
-                    </div>
-                    <div class="contact-dec">
-
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
+<!-- end instant -->
+<!-- footer -->
 <footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 wow fadeIn" data-wow-duration="1s" data-wow-delay="0.25s">
-                <p>© Copyright 2021 Space Dynamic Co. All Rights Reserved.
-
-                    <br>Design: <a rel="nofollow" href="https://templatemo.com">TemplateMo</a></p>
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 offset-md-1">
+                    <ul class="social_icon text_align_center">
+                        <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="reader">
+                        <a href="index.html"><img src="images/logo_footer.png" alt="#"/></a>
+                        <p class="padd_flet40">It is a long established fact that a reader will be distracted by the
+                            readable content of a page when looking at its layout. The point of using Lorem Ipsum is
+                            that it has a more-or-less normal distribution of letters,</p>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-6">
+                    <div class="reader">
+                        <h3>Explore</h3>
+                        <ul class="xple_menu">
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="about.html">About</a></li>
+                            <li><a href="services.html">Services</a></li>
+                            <li><a href="contact.html">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="reader">
+                        <h3>Recent Posts</h3>
+                        <ul class="re_post">
+                            <li><img src="images/re_img1.jpg" alt="#"/></li>
+                            <li><img src="images/re_img2.jpg" alt="#"/></li>
+                            <li><img src="images/re_img3.jpg" alt="#"/></li>
+                            <li><img src="images/re_img4.jpg" alt="#"/></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="reader">
+                        <h3>Contact Us</h3>
+                        <p>It is a lon <br> g established fact that a reader will be distracted by the readable content
+                            of a page when looking at its </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright text_align_center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-10 offset-md-1">
+                        <p>Copyright 2020 All Right Reserved By <a href="https://html.design/"> Free Html Template</a>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </footer>
-@vite('resources/js/app.js')
-<!-- Scripts -->
-{{--<script src="vendor/jquery/jquery.min.js"></script>--}}
-{{--<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>--}}
-
-
+<!-- end footer -->
+<!-- Javascript files-->
+{{--@vite('resources/js/app.js')--}}
+<script src="{{env('APP_URL').'/assets/js/jquery.min.js'}}"></script>
+<script src="{{env('APP_URL').'/assets/js/bootstrap.bundle.min.js'}}"></script>
+<script src="{{env('APP_URL').'/assets/js/custom.js'}}"></script>
+<script src="{{env('APP_URL').'/assets/js/jquery-3.0.0.min.js'}}"></script>
 </body>
 </html>

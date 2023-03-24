@@ -1,0 +1,26 @@
+.red{
+    color: red;
+}
+.green{
+    color: green;
+}
+.block_views{
+    background-color: #4b646f;
+    padding-left: 5px;
+    color: white;
+}
+.social{
+    padding: 20px;
+}
+.social_item{
+    margin-left: 10px;
+}
+.item:hover {
+    font-size:30px;
+}
+.btn_left{
+    margin-left: 5px;
+}
+.btn:hover {
+    background-color: #8aa4af;
+}

@@ -1,4 +1,4 @@
-@extends('admin.layout.layout')
+@extends('admin.layout.layouts')
 
 @section('text')
     <x-app-layout>
