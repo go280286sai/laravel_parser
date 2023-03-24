@@ -105,7 +105,7 @@
                                     </a>
                                 </td>
                                 <td class="{{$apartment->status==0?"bg-orange-200":''}}">{{$apartment->price}} </td>
-                                <td class="{{$apartment->status==0?"bg-orange-200":''}}">{{$apartment->real_price}} </td>
+                                <td class="{{$apartment->real_price>$apartment->price?"bg-red-200":"bg-green-200"}}">{{$apartment->real_price}} </td>
                                 <td class="{{$apartment->status==0?"bg-orange-200":''}}">{{$apartment->type}} </td>
                                 <td class="{{$apartment->status==0?"bg-orange-200":''}}"> {{$apartment->location}}</td>
                                 <td class="{{$apartment->status==0?"bg-orange-200":''}}">{{\Illuminate\Support\Carbon::createFromFormat('Y-m-d', $apartment->date)->format('d-m-Y')}} </td>
