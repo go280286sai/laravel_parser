@@ -1,4 +1,5 @@
 import {ApartmentView} from "./view";
+import axios from "axios";
 
 let GET_URL = $('#url_olx').val();
 function getStatus(text)
@@ -158,6 +159,14 @@ Vue.createApp({
         getNewPrice(text){
             console.log(text)
             axios.post('http://localhost:8000/olx_apartment',text).then((data) => {
+                axios.post('/user/setNewPrice', {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'price':data
+                }).then((data)=>{
+                    console.log(data.status)
+                }).catch(err=>{
+                    console.log(err.message)
+                })
                 console.log(data)
             }).catch((err) => {
                 console.log(err.message);

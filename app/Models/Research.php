@@ -14,10 +14,6 @@ class Research extends Model
      */
     protected $fillable = ['name', 'url'];
 
-    /**
-     * @param $fields
-     * @return void
-     */
     public static function add($fields): void
     {
         $data = new self();
@@ -25,11 +21,6 @@ class Research extends Model
         $data->save();
     }
 
-    /**
-     * @param int $id
-     * @param array $fields
-     * @return void
-     */
     public static function edit(int $id, array $fields): void
     {
         $data = self::find($id);

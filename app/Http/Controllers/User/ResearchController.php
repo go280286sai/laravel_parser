@@ -9,10 +9,6 @@ use Illuminate\Http\Request;
 
 class ResearchController extends Controller
 {
-    /**
-     * @param Request $request
-     * @return RedirectResponse
-     */
     public function update(Request $request): RedirectResponse
     {
         Research::edit($request->get('id'), $request->all());

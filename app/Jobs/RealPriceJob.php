@@ -9,25 +9,25 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class OlxApartmentJob implements ShouldQueue
+class RealPriceJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public array $data;
+    protected array $fields;
 
     /**
      * Create a new job instance.
      */
-    public function __construct(array $data)
+    public function __construct(array $fields)
     {
-        $this->data = $data;
+        $this->fields = $fields;
     }
 
     /**
      * Execute the job.
      */
-    public function handle()
+    public function handle(): void
     {
-        OlxApartment::add($this->data);
+        OlxApartment::setNewPrice($this->fields);
     }
 }

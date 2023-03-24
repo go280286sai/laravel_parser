@@ -2,11 +2,8 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Pusher\Pusher;
@@ -20,15 +17,15 @@ class OlxApartmentEvent
      */
     public function __construct(string $message)
     {
-       $this->sendMessage($message);
+        $this->sendMessage($message);
     }
 
     public function sendMessage(string $text)
     {
-        $options = array(
+        $options = [
             'cluster' => 'eu',
-            'useTLS' => true
-        );
+            'useTLS' => true,
+        ];
         $pusher = new Pusher(
             env('PUSHER_APP_KEY'),
             env('PUSHER_APP_SECRET'),
@@ -37,6 +34,7 @@ class OlxApartmentEvent
         );
         $pusher->trigger('olx_apartment', 'olx_apartment', $text);
     }
+
     /**
      * Get the channels the event should broadcast on.
      *
@@ -48,6 +46,7 @@ class OlxApartmentEvent
             new PrivateChannel('olx_apartment'),
         ];
     }
+
     public function broadcastAs()
     {
         return 'olx_apartment';

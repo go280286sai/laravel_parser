@@ -19,34 +19,23 @@ class OlxApartment extends Model
     protected $fillable = ['title', 'url', 'rooms', 'floor', 'etajnost', 'price', 'description',
         'status', 'comment', 'location', 'type', 'area', 'real_price'];
 
-    /**
-     * @param array $fields
-     * @return void
-     */
     public static function add(array $fields): void
     {
         $object = new self();
         $object->fill($fields);
         $object->date = $object->getDateNew($fields['date']);
-        $object->repair=$object->isRepair($fields['description']);
-        $object->service=$object->isService($fields['description']);
-        $object->shops=$object->isShop($fields['description']);
-        $object->metro=$object->isMetro($fields['description']);
+        $object->repair = $object->isRepair($fields['description']);
+        $object->service = $object->isService($fields['description']);
+        $object->shops = $object->isShop($fields['description']);
+        $object->metro = $object->isMetro($fields['description']);
         $object->save();
     }
 
-    /**
-     * @return void
-     */
     public static function cleanBase(): void
     {
         self::truncate();
     }
 
-    /**
-     * @param int $id
-     * @return void
-     */
     public static function removeId(int $id): void
     {
         $object = self::find($id);
@@ -54,10 +43,6 @@ class OlxApartment extends Model
         $object->save();
     }
 
-    /**
-     * @param array $fields
-     * @return void
-     */
     public static function removeSelect(array $fields): void
     {
         foreach ($fields as $item) {
@@ -65,11 +50,6 @@ class OlxApartment extends Model
         }
     }
 
-    /**
-     * @param int $id
-     * @param string $comment
-     * @return void
-     */
     public static function addComment(int $id, string $comment): void
     {
         $object = self::find($id);
@@ -78,7 +58,6 @@ class OlxApartment extends Model
     }
 
     /**
-     * @param $field
      * @return string|void
      */
     public function getDateNew($field): string
@@ -99,19 +78,18 @@ class OlxApartment extends Model
                 '9' => 'вересня',
                 '10' => 'жовтня',
                 '11' => 'листопада',
-                '12' => 'грудня'
+                '12' => 'грудня',
             ];
             foreach ($month as $item => $value) {
                 if ($param[1] == $value) {
-                    return Carbon::createFromFormat('d m Y', $param[0] . ' ' . $item . ' ' . $param[2])->format('Y-m-d');
+                    return Carbon::createFromFormat('d m Y', $param[0].' '.$item.' '.$param[2])->format('Y-m-d');
                 }
             }
         }
     }
 
     /**
-     * @param array $fields
-     * @return void
+     * @param  array  $fields
      */
     public static function setStatus($field): void
     {
@@ -120,7 +98,7 @@ class OlxApartment extends Model
         $object->save();
     }
 
-    public function isMetro(string $text)
+    public function isMetro(string $text): int
     {
         if (Str::contains(Str::lower($text), 'метро')) {
             return 1;
@@ -129,16 +107,16 @@ class OlxApartment extends Model
         }
     }
 
-    public function isRepair(string $text)
+    public function isRepair(string $text): int
     {
-        if (!Str::contains(Str::lower($text), 'без ремонт') && Str::contains(Str::lower($text), 'ремонт')) {
+        if (! Str::contains(Str::lower($text), 'без ремонт') && Str::contains(Str::lower($text), 'ремонт')) {
             return 1;
         } else {
             return 0;
         }
     }
 
-    public function isService(string $text)
+    public function isService(string $text): int
     {
         if (Str::contains(Str::lower($text), 'двер') || Str::contains(Str::lower($text), 'пластик') ||
             Str::contains(Str::lower($text), 'окна')) {
@@ -148,43 +126,50 @@ class OlxApartment extends Model
         }
     }
 
-    public function isShop(string $text)
+    public function isShop(string $text): int
     {
         $count = 0;
         if (Str::contains(Str::lower($text), 'магазин') || Str::contains(Str::lower($text), 'сильпо') ||
             Str::contains(Str::lower($text), 'рост') ||
             Str::contains(Str::lower($text), 'класс')) {
             $count = +1;
-        };
+        }
         if (Str::contains(Str::lower($text), 'рынок')) {
             $count = +1;
-        };
+        }
         if (Str::contains(Str::lower($text), 'школ')) {
             $count = +1;
-        };
+        }
         if (Str::contains(Str::lower($text), 'садик')) {
             $count = +1;
-        };
+        }
         if (Str::contains(Str::lower($text), 'больница') || Str::contains(Str::lower($text), 'поликлиника')) {
             $count = +1;
-        };
+        }
         if (Str::contains(Str::lower($text), 'остановка') || Str::contains(Str::lower($text), 'транспорт')) {
             $count = +1;
-        };
-        return $count;
+        }
 
+        return $count;
     }
 
-    public static function setIdexLocation()
+    public static function setIdexLocation(): void
     {
-        $loc= self::all()->pluck('location');
-        $list=array_unique($loc->toArray());
-        foreach ($list as $item=>$value){
-            $obj=self::all()->where('location','=', $value);
-            foreach ($obj as $arr){
-                $arr->location_index=$item;
+        $loc = self::all()->pluck('location');
+        $list = array_unique($loc->toArray());
+        foreach ($list as $item => $value) {
+            $obj = self::all()->where('location', '=', $value);
+            foreach ($obj as $arr) {
+                $arr->location_index = $item;
                 $arr->save();
             }
         }
+    }
+
+    public static function setNewPrice(array $fields): void
+    {
+        $obj = self::find($fields[0]);
+        $obj->real_price = $fields[1];
+        $obj->save();
     }
 }

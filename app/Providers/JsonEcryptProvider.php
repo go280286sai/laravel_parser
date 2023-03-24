@@ -20,7 +20,7 @@ class JsonEcryptProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->app->bind(JsonEncrypt::class, function (){
+        $this->app->bind(JsonEncrypt::class, function () {
             return new JsonEncrypt();
         });
     }
