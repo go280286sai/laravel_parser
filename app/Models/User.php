@@ -68,10 +68,6 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    /**
-     * @param string $field
-     * @return void
-     */
     public static function setToken(string $field): void
     {
         $obj = self::find(Auth::user()->id);

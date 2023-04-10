@@ -36,9 +36,8 @@ class AddCurrentRateJob implements ShouldQueue
         preg_match($pattern, $test, $matches);
         if (isset($matches[1])) {
             try {
-                Rate::add(['dollar'=>$matches[1], 'date'=>$date]);
-            }
-            catch (Exception $exception){
+                Rate::add(['dollar' => $matches[1], 'date' => $date]);
+            } catch (Exception $exception) {
                 Log::info($exception->getMessage());
             }
         }

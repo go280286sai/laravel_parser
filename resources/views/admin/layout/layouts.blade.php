@@ -127,16 +127,6 @@
                 <li class="header">MAIN NAVIGATION</li>
                 <li><a href="{{env('APP_URL'.'/user/dashboard')}}"><i class="fa fa-dashboard"></i> <span>Админ-панель</span></a></li>
                 <li><a href="{{env('APP_URL').'/user/apartment'}}"><i class="fa fa-sticky-note-o"></i> <span>Недвижимость</span></a></li>
-                <li><a href="#"><i class="fa fa-list-ul"></i> <span>Категории</span></a></li>
-                <li><a href="#"><i class="fa fa-tags"></i> <span>Теги</span></a></li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-commenting"></i> <span>Комментарии</span>
-                        <span class="pull-right-container">
-              <small class="label pull-right bg-green">5</small>
-            </span>
-                    </a>
-                </li>
                 <li><a href="#"><i class="fa fa-users"></i> <span>Пользователи</span></a></li>
                 <li><a href="{{env('APP_URL').'/user/profile'}}"><i class="fa fa-user-plus"></i> <span>Профиль</span></a></li>
             </ul>
@@ -149,7 +139,7 @@
         <div class="pull-right hidden-xs">
             <b>Version</b> 2.3.7
         </div>
-        <strong>Copyright &copy; 2014-2016 <a href="http://almsaeedstudio.com/">Almsaeed Studio</a>.</strong> All rights
+        <strong>Copyright &copy; {{\Carbon\Carbon::now()->format('d M Y')}} <a href="https://astorchak.blogspot.com/" target="_blank">Storchak Aleksander</a>.</strong> All rights
         reserved.
     </footer>
 

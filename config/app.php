@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Support\Facades\Facade;
 
 return [
@@ -181,7 +182,6 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        \App\Providers\JsonEcryptProvider::class,
 
         /*
          * Package Service Providers...

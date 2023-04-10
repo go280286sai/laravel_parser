@@ -52,7 +52,7 @@ class OlxApartmentController extends Controller
                 'olx' => $olx,
                 'data' => $data ?? 0,
                 'rate' => $rate[0] ?? 0,
-                'token' => $token
+                'token' => $token,
             ]);
     }
 
@@ -70,6 +70,7 @@ class OlxApartmentController extends Controller
             ->groupBy(['rooms', 'floor', 'etajnost', 'location'])
             ->orderBy('rooms')
             ->get();
+
         return view('admin.parser.apartment.olx.report', ['group' => $group, 'rate' => $rate]);
     }
 
@@ -92,7 +93,7 @@ class OlxApartmentController extends Controller
     {
         $data = OlxApartment::all('title', 'type', 'rooms', 'floor', 'etajnost', 'description', 'price', 'date', 'location');
         $now = Carbon::now()->format('d_m_Y');
-        $name = 'Olx_Apartment_' . $now;
+        $name = 'Olx_Apartment_'.$now;
 
         return Response::make($data)->header('Content-Type', 'application/json;charset=utf-8')
             ->header('Content-Disposition', "attachment;filename=$name.json");
@@ -146,6 +147,7 @@ class OlxApartmentController extends Controller
     public function create()
     {
         $location = OlxApartment::all('location')->groupBy('location')->toArray();
+
         return view('admin.parser.apartment.olx.create', ['loc' => array_keys($location)]);
     }
 
@@ -159,7 +161,7 @@ class OlxApartmentController extends Controller
             'area' => 'required|numeric',
             'location' => 'required|not_regex:(Выбрать+)',
             'price' => 'required|numeric',
-            'description' => 'required'
+            'description' => 'required',
         ]);
         $fields = $request->all();
         $fields = array_map(function ($item) {
@@ -168,8 +170,8 @@ class OlxApartmentController extends Controller
         $fields['url'] = env('APP_URL');
         $fields['type'] = env('APP_NAME');
         OlxApartmentJob::dispatch($fields)->onQueue('olx_apartment');
-        return back();
 
+        return back();
     }
 
     public function comment_view(Request $request): View
@@ -238,6 +240,5 @@ class OlxApartmentController extends Controller
         $name = array_keys($arr);
         $text = array_values($arr);
         Setting::addSetting(['name' => $name[0], 'text' => $text[0]]);
-
     }
 }

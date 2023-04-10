@@ -8,9 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use PHPUnit\Exception;
-use Symfony\Component\Translation\Dumper\JsonFileDumper;
-use Symfony\Component\Translation\Loader\JsonFileLoader;
 
 class OlxApartment extends Model
 {
@@ -27,10 +24,10 @@ class OlxApartment extends Model
     {
         $object = new self();
         $object->fill($fields);
-        if (isset($fields['date'])){
+        if (isset($fields['date'])) {
             $object->date = $object->getDateNew($fields['date']);
-        }else {
-            $object->date= \Illuminate\Support\Carbon::now()->format('Y-m-d');
+        } else {
+            $object->date = \Illuminate\Support\Carbon::now()->format('Y-m-d');
         }
         $object->repair = $object->isRepair($fields['description']);
         $object->service = $object->isService($fields['description']);
@@ -60,18 +57,16 @@ class OlxApartment extends Model
 
     public static function addFavorite(int $field): void
     {
-
-            $obj = self::find($field);
-            $obj->favorites = 1;
-            $obj->save();
-
+        $obj = self::find($field);
+        $obj->favorites = 1;
+        $obj->save();
     }
 
     public static function removeFavorite(int $field): void
     {
-            $obj = self::find($field);
-            $obj->favorites = 0;
-            $obj->save();
+        $obj = self::find($field);
+        $obj->favorites = 0;
+        $obj->save();
     }
 
     public static function addComment(int $id, string $comment): void
@@ -81,9 +76,6 @@ class OlxApartment extends Model
         $object->save();
     }
 
-    /**
-     * @return string|void
-     */
     public function getDateNew($field): string
     {
         $param = explode(' ', $field);
@@ -106,14 +98,16 @@ class OlxApartment extends Model
             ];
             foreach ($month as $item => $value) {
                 if ($param[1] == $value) {
-                    return Carbon::createFromFormat('d m Y', $param[0] . ' ' . $item . ' ' . $param[2])->format('Y-m-d');
+                    return Carbon::createFromFormat('d m Y', $param[0].' '.$item.' '.$param[2])->format('Y-m-d');
                 }
             }
+
+            return Carbon::createFromFormat('d m Y', $param[0].' '.$item.' '.$param[2])->format('Y-m-d');
         }
     }
 
     /**
-     * @param array $fields
+     * @param  array  $fields
      */
     public static function setStatus($field): void
     {
@@ -133,7 +127,7 @@ class OlxApartment extends Model
 
     public function isRepair(string $text): int
     {
-        if (!Str::contains(Str::lower($text), 'без ремонт') && Str::contains(Str::lower($text), 'ремонт')) {
+        if (! Str::contains(Str::lower($text), 'без ремонт') && Str::contains(Str::lower($text), 'ремонт')) {
             return 1;
         } else {
             return 0;
@@ -204,28 +198,18 @@ class OlxApartment extends Model
         }
     }
 
-    /**
-     * @param $name
-     * @param $image
-     * @return void
-     */
     public static function uploadImage($name, $image): void
     {
         if ($image == null) {
             return;
         }
         Storage::delete('uploads/img/'.$image);
-        $filename =$name.'.'.$image->extension();
+        $filename = $name.'.'.$image->extension();
         $image->storeAs('uploads/img/', $filename);
     }
 
-    /**
-     * @param string $name
-     * @return string
-     */
     public static function getImage(string $name): string
     {
         return Storage::url('/uploads/img/'.$name);
     }
-
 }
