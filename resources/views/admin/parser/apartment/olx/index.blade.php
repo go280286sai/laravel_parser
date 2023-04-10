@@ -30,10 +30,6 @@
                     <div class="form-group">
                         <table>
                             <tr>
-                                <td>
-                                    <button v-on:click="send_check"
-                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">{{__('messages.delete')}}</button>
-                                </td>
                                 <td class="tbl_btn">
                                     <button onclick="document.location.reload();"
                                             class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">{{__('messages.update_list')}}</button>
@@ -51,8 +47,8 @@
                                             class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">{{__('messages.delete_list')}}</button>
                                     </a></td>
                                 <td>
-                                        <button v-on:click="getNewPrice('{{$data}}')"
-                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">{{__('messages.get_new_price')}}</button>
+                                    <button v-on:click="getNewPrice('{{$token}}')"
+                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn" v-bind:disabled="update_status_sync">{{__('messages.get_new_price')}}</button>
 
                                 </td>
                                 <td>
@@ -62,9 +58,43 @@
                                             class="mr-3 mt-6 bg-orange-600 hover:bg-orange-300 text-white btn">{{__('messages.save_as')}}</button>
                                     </form>
                                 </td>
+                                <td><a href="{{env('APP_URL')}}/user/report">
+                                        <button
+                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">Просмотреть
+                                            отчет
+                                        </button>
+                                    </a></td>
+                            </tr>
+                        </table>
+                        <table>
+                            <tr>
+                                <td><a href="{{env('APP_URL')}}/user/create_apartment">
+                                        <button
+                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">Создать объявление
+                                        </button>
+                                    </a></td>
+                                <td>
+                                    <button v-on:click="send_check"
+                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">Удалить из
+                                        базы
+                                    </button>
+                                </td>
+                                <td>
+                                    <button v-on:click="add_favorite"
+                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">Добавить в
+                                        избранное
+                                    </button>
+                                </td>
+                                <td>
+                                    <button v-on:click="remove_favorite"
+                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">Удалить из
+                                        избранного
+                                    </button>
+                                </td>
                             </tr>
                         </table>
                     </div>
+                    <div>Среднее отклонение прогноза: <b>{{\App\Models\Setting::getMAE()}}грн.</b> или <b>{{round(\App\Models\Setting::getMAE()/$rate->dollar,2)}}$</b></div>
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                         <tr class="bg-orange-400">
@@ -94,7 +124,11 @@
                                                value="{{$apartment->id}}" id="flexCheckDefault">
                                     </div>
                                 </td>
-                                <td class="{{$apartment->status==0?"bg-orange-200":''}}"> {{$apartment->title}}</td>
+                                <td class="{{$apartment->status==0?"bg-orange-200":''}}"> {{$apartment->title}}
+                                    @if($apartment->favorites==1)
+                                        <span class="inline-block fa fa-star" title="В избранном"></span>
+                                    @endif
+                                </td>
                                 <td class="{{$apartment->status==0?"bg-orange-200":''}}"> {{$apartment->rooms}}</td>
                                 <td class="{{$apartment->status==0?"bg-orange-200":''}}">{{$apartment->floor}} </td>
                                 <td class="{{$apartment->status==0?"bg-orange-200":''}}">{{$apartment->etajnost}} </td>
@@ -104,8 +138,17 @@
                                        target="_blank">{{\Illuminate\Support\Str::substr($apartment->description, 0, 150)}}
                                     </a>
                                 </td>
-                                <td class="{{$apartment->status==0?"bg-orange-200":''}}">{{$apartment->price}} </td>
-                                <td class="{{$apartment->real_price>$apartment->price?"bg-red-200":"bg-green-200"}}">{{$apartment->real_price}} </td>
+                                <td class="{{$apartment->status==0?"bg-orange-200":''}}">
+                                    {{$apartment->price.'грн.'}}
+                                    {{round($apartment->price/$rate->dollar, 2).'$'}}
+                                </td>
+                                <td class="{{$apartment->real_price>$apartment->price?"bg-red-200":"bg-green-200"}}">
+                                    {{($apartment->real_price-$apartment->price).'грн.'}}
+                                    {{round(($apartment->real_price-$apartment->price)/$rate->dollar, 2).'$'}}
+                                    @if($apartment->location_index==1)
+                                        <span class="inline-block fa fa-money" title="Выгодное предложение"></span>
+                                    @endif
+                                </td>
                                 <td class="{{$apartment->status==0?"bg-orange-200":''}}">{{$apartment->type}} </td>
                                 <td class="{{$apartment->status==0?"bg-orange-200":''}}"> {{$apartment->location}}</td>
                                 <td class="{{$apartment->status==0?"bg-orange-200":''}}">{{\Illuminate\Support\Carbon::createFromFormat('Y-m-d', $apartment->date)->format('d-m-Y')}} </td>
@@ -114,8 +157,8 @@
                                     @if($apartment->status==0)
                                         <script>
                                             getStatus({{$apartment->id}})
-                                            function getStatus(text)
-                                            {
+
+                                            function getStatus(text) {
                                                 console.log(text)
                                                 setTimeout(() => {
                                                     axios.post('/user/set_status', {

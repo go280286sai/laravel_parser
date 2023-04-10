@@ -60,14 +60,14 @@
                 <ul class="nav navbar-nav">
                     <li class="dropdown user user-menu ">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="{{env('APP_URL').'/storage/'.\Illuminate\Support\Facades\Auth::user()->profile_photo_path}}" class="user-image" alt="{{\Illuminate\Support\Facades\Auth::user()->name}}">
+                            <img src="{{env('APP_URL').'/'.\Illuminate\Support\Facades\Auth::user()->profile_photo_path}}" class="user-image" alt="{{\Illuminate\Support\Facades\Auth::user()->name}}">
                             <span class="hidden-xs">{{\Illuminate\Support\Facades\Auth::user()->name}}</span>
                         </a>
                         <ul class="dropdown-menu ">
                             <!-- User image -->
                             <li class="user-header">
                                 <img
-                                        src="{{env('APP_URL').'/storage/'.\Illuminate\Support\Facades\Auth::user()->profile_photo_path}}"
+                                        src="{{env('APP_URL').'/'.\Illuminate\Support\Facades\Auth::user()->profile_photo_path}}"
                                         class="img-circle inline" alt="{{\Illuminate\Support\Facades\Auth::user()->name}}">
                                 <p>
                                   {{\Illuminate\Support\Facades\Auth::user()->name}}
@@ -104,7 +104,7 @@
             <!-- Sidebar user panel -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="{{env('APP_URL').'/storage/'.\Illuminate\Support\Facades\Auth::user()->profile_photo_path}}" class="img-circle" alt="User Image">
+                    <img src="{{env('APP_URL').'/'.\Illuminate\Support\Facades\Auth::user()->profile_photo_path}}" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
                     <p>{{\Illuminate\Support\Facades\Auth::user()->name}}</p>
@@ -126,7 +126,7 @@
             <ul class="sidebar-menu">
                 <li class="header">MAIN NAVIGATION</li>
                 <li><a href="{{env('APP_URL'.'/user/dashboard')}}"><i class="fa fa-dashboard"></i> <span>Админ-панель</span></a></li>
-                <li><a href="{{env('APP_URL').'/user/apartment'}}"><i class="fa fa-sticky-note-o"></i> <span>Недвижимость OLX</span></a></li>
+                <li><a href="{{env('APP_URL').'/user/apartment'}}"><i class="fa fa-sticky-note-o"></i> <span>Недвижимость</span></a></li>
                 <li><a href="#"><i class="fa fa-list-ul"></i> <span>Категории</span></a></li>
                 <li><a href="#"><i class="fa fa-tags"></i> <span>Теги</span></a></li>
                 <li>

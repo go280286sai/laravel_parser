@@ -2,8 +2,8 @@ import {ApartmentView} from "./view";
 import axios from "axios";
 
 let GET_URL = $('#url_olx').val();
-function getStatus(text)
-{
+
+function getStatus(text) {
     console.log(text)
     setTimeout(() => {
         axios.post('/user/set_status', {
@@ -17,14 +17,6 @@ function getStatus(text)
     }, 300000)
 }
 
-function getNewPrice(text){
-    console.log(text)
-    // axios.post('http://localhost:8000/olx_apartment',text).then((data) => {
-    //     console.log(data)
-    // }).catch((err) => {
-    //     console.log(err.message);
-    // })
-}
 Vue.createApp({
     data() {
         return {
@@ -43,18 +35,39 @@ Vue.createApp({
             obj_location: [],
             obj_price: [],
             obj_type: [],
-            obj_area:[],
+            obj_area: [],
             status: false,
             get_url_olx: GET_URL,
             get_url_status: true,
             check_items: [],
             update_status: false,
-            json_data:[]
+            update_status_sync: false,
+            json_data: []
         }
     },
     methods: {
         send_check() {
             axios.post('/user/checks_remove', {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'checks': this.check_items
+            }).then(() => {
+                location.reload()
+            }).catch((err) => {
+                console.log(err.message)
+            })
+        },
+        add_favorite() {
+            axios.post('/user/add_favorite', {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'checks': this.check_items
+            }).then(() => {
+                location.reload()
+            }).catch((err) => {
+                console.log(err.message)
+            })
+        },
+        remove_favorite() {
+            axios.post('/user/remove_favorite', {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                 'checks': this.check_items
             }).then(() => {
@@ -87,7 +100,7 @@ Vue.createApp({
                 this.obj_time = obj.time
                 this.obj_url = obj.url
                 this.obj_type = obj.type
-                this.obj_area=obj.area
+                this.obj_area = obj.area
                 setTimeout(() => {
                     for (let i = 0; i < this.obj_title.length; i++) {
                         axios.post('/user/addOlxApartment', {
@@ -102,7 +115,7 @@ Vue.createApp({
                             'description': this.obj_description[i],
                             'location': this.obj_location[i],
                             'date': this.obj_time[i],
-                            'area':this.obj_area[i],
+                            'area': this.obj_area[i],
                         }).catch(err => {
                             console.log(err.message)
                         })
@@ -156,20 +169,22 @@ Vue.createApp({
                 console.log(err.message)
             })
         },
-        getNewPrice(text){
-            axios.post('http://localhost:8000/olx_apartment',text).then((data) => {
-                axios.post('/user/setNewPrice', {
+        getNewPrice(text) {
+            this.update_status_sync = true;
+            axios.post('http://192.168.0.107:8000/apartment', text).then(data => {
+                return data.data
+            }).then((data) => {
+                axios.post('/user/setting', {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    'price':data
-                }).then((data)=>{
+                    data
+                }).then(() => {
                     setTimeout(() => {
-                        this.sendPushMessage('Данные обновлены');
-                    }, 3000)
-                    console.log(data.status)
-                }).catch(err=>{
+                        this.sendPushMessage('Синхронизация выполнена');
+                        this.update_status_sync = false;
+                    }), 1000
+                }).catch((err) => {
                     console.log(err.message)
                 })
-                console.log(data)
             }).catch((err) => {
                 console.log(err.message);
             })

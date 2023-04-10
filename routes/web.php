@@ -67,5 +67,11 @@ Route::group(['prefix' => 'user', 'middleware' => IsAuthUser::class], function (
         Route::post('/set_status', 'setStatus');
         Route::post('/sendPushMessage', 'sendPushMessage');
         Route::post('/setNewPrice', 'setNewPrice');
+        Route::get('/report', 'report');
+        Route::post('add_favorite', 'addFavorite');
+        Route::post('remove_favorite', 'removeFavorite');
+        Route::get('/create_apartment', 'create');
+        Route::post('/addCreate', 'addCreate');
+        Route::post('/setting', 'setting');
     });
 });

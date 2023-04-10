@@ -6,7 +6,11 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use PHPUnit\Exception;
+use Symfony\Component\Translation\Dumper\JsonFileDumper;
+use Symfony\Component\Translation\Loader\JsonFileLoader;
 
 class OlxApartment extends Model
 {
@@ -23,7 +27,11 @@ class OlxApartment extends Model
     {
         $object = new self();
         $object->fill($fields);
-        $object->date = $object->getDateNew($fields['date']);
+        if (isset($fields['date'])){
+            $object->date = $object->getDateNew($fields['date']);
+        }else {
+            $object->date= \Illuminate\Support\Carbon::now()->format('Y-m-d');
+        }
         $object->repair = $object->isRepair($fields['description']);
         $object->service = $object->isService($fields['description']);
         $object->shops = $object->isShop($fields['description']);
@@ -48,6 +56,22 @@ class OlxApartment extends Model
         foreach ($fields as $item) {
             self::removeId($item);
         }
+    }
+
+    public static function addFavorite(int $field): void
+    {
+
+            $obj = self::find($field);
+            $obj->favorites = 1;
+            $obj->save();
+
+    }
+
+    public static function removeFavorite(int $field): void
+    {
+            $obj = self::find($field);
+            $obj->favorites = 0;
+            $obj->save();
     }
 
     public static function addComment(int $id, string $comment): void
@@ -82,14 +106,14 @@ class OlxApartment extends Model
             ];
             foreach ($month as $item => $value) {
                 if ($param[1] == $value) {
-                    return Carbon::createFromFormat('d m Y', $param[0].' '.$item.' '.$param[2])->format('Y-m-d');
+                    return Carbon::createFromFormat('d m Y', $param[0] . ' ' . $item . ' ' . $param[2])->format('Y-m-d');
                 }
             }
         }
     }
 
     /**
-     * @param  array  $fields
+     * @param array $fields
      */
     public static function setStatus($field): void
     {
@@ -109,7 +133,7 @@ class OlxApartment extends Model
 
     public function isRepair(string $text): int
     {
-        if (! Str::contains(Str::lower($text), 'без ремонт') && Str::contains(Str::lower($text), 'ремонт')) {
+        if (!Str::contains(Str::lower($text), 'без ремонт') && Str::contains(Str::lower($text), 'ремонт')) {
             return 1;
         } else {
             return 0;
@@ -172,4 +196,36 @@ class OlxApartment extends Model
         $obj->real_price = $fields[1];
         $obj->save();
     }
+
+    public function removeImage(): void
+    {
+        if ($this->image != null) {
+            Storage::delete('uploads/img/'.$this->image);
+        }
+    }
+
+    /**
+     * @param $name
+     * @param $image
+     * @return void
+     */
+    public static function uploadImage($name, $image): void
+    {
+        if ($image == null) {
+            return;
+        }
+        Storage::delete('uploads/img/'.$image);
+        $filename =$name.'.'.$image->extension();
+        $image->storeAs('uploads/img/', $filename);
+    }
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    public static function getImage(string $name): string
+    {
+        return Storage::url('/uploads/img/'.$name);
+    }
+
 }

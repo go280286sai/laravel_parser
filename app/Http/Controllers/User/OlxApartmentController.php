@@ -7,30 +7,70 @@ use App\Http\Controllers\Controller;
 use App\Jobs\OlxApartmentJob;
 use App\Jobs\RealPriceJob;
 use App\Models\OlxApartment;
+use App\Models\Rate;
 use App\Models\Research;
+use App\Models\Setting;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as Back;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 
 class OlxApartmentController extends Controller
 {
     public function index(): View
     {
-        OlxApartment::setIdexLocation();
-        $olx = Research::find(1);
+        if (Cache::has('research')) {
+            $olx = Cache::get('research');
+        } else {
+            $olx = Research::find(1);
+            Cache::put('research', $olx);
+        }
         $OlxApartment = OlxApartment::all()->sortByDesc('date');
-        $data = OlxApartment::all('id', 'rooms', 'floor', 'etajnost', 'area', 'metro', 'shops', 'repair', 'service', 'location_index', 'price', 'date');
+        if (Cache::has('dollar')) {
+            $rate = Cache::get('dollar');
+        } else {
+            $rate = Rate::latest()->get('dollar');
+            Cache::put('dollar', $rate);
+        }
+        if (Auth::user()->token == null) {
+            $token = Auth::user()->createToken('API TOKEN')->plainTextToken;
+            User::setToken($token);
+        } else {
+            $token = Auth::user()->token;
+        }
 
         return view('admin.parser.apartment.olx.index',
             [
                 'title' => 'Parser OLX',
                 'apartments' => $OlxApartment,
                 'olx' => $olx,
-                'data' => $data,
+                'data' => $data ?? 0,
+                'rate' => $rate[0] ?? 0,
+                'token' => $token
             ]);
+    }
+
+    public function report(): View
+    {
+        if (Cache::has('dollar')) {
+            $rate = Cache::get('dollar');
+        } else {
+            $rate = Rate::latest()->get('dollar');
+            Cache::put('dollar', $rate);
+        }
+        $group = DB::table('olx_apartments')
+            ->select('rooms', 'floor', 'etajnost', 'location', DB::raw('ROUND(AVG(price),2) as price'),
+                DB::raw('COUNT(rooms) as count'), DB::raw('ROUND(AVG(real_price),2) as real_price'))
+            ->groupBy(['rooms', 'floor', 'etajnost', 'location'])
+            ->orderBy('rooms')
+            ->get();
+        return view('admin.parser.apartment.olx.report', ['group' => $group, 'rate' => $rate]);
     }
 
     public function addOlxApartment(Request $request): void
@@ -38,7 +78,6 @@ class OlxApartmentController extends Controller
         $request->validate([
             'title' => 'unique:olx_apartments',
         ]);
-//        OlxApartment::add($request->all());
         OlxApartmentJob::dispatch($request->all())->onQueue('olx_apartment');
     }
 
@@ -53,7 +92,7 @@ class OlxApartmentController extends Controller
     {
         $data = OlxApartment::all('title', 'type', 'rooms', 'floor', 'etajnost', 'description', 'price', 'date', 'location');
         $now = Carbon::now()->format('d_m_Y');
-        $name = 'Olx_Apartment_'.$now;
+        $name = 'Olx_Apartment_' . $now;
 
         return Response::make($data)->header('Content-Type', 'application/json;charset=utf-8')
             ->header('Content-Disposition', "attachment;filename=$name.json");
@@ -104,6 +143,35 @@ class OlxApartmentController extends Controller
         return redirect()->route('olx_apartment');
     }
 
+    public function create()
+    {
+        $location = OlxApartment::all('location')->groupBy('location')->toArray();
+        return view('admin.parser.apartment.olx.create', ['loc' => array_keys($location)]);
+    }
+
+    public function addCreate(Request $request)
+    {
+        $request->validate([
+            'title' => 'unique:olx_apartments|string',
+            'rooms' => 'required|numeric',
+            'floor' => 'required|numeric',
+            'etajnost' => 'required|numeric',
+            'area' => 'required|numeric',
+            'location' => 'required|not_regex:(Выбрать+)',
+            'price' => 'required|numeric',
+            'description' => 'required'
+        ]);
+        $fields = $request->all();
+        $fields = array_map(function ($item) {
+            return strip_tags($item);
+        }, $fields);
+        $fields['url'] = env('APP_URL');
+        $fields['type'] = env('APP_NAME');
+        OlxApartmentJob::dispatch($fields)->onQueue('olx_apartment');
+        return back();
+
+    }
+
     public function comment_view(Request $request): View
     {
         $id = $request->get('id');
@@ -146,5 +214,30 @@ class OlxApartmentController extends Controller
         foreach ($fields['data'] as $item) {
             RealPriceJob::dispatch($item)->onQueue('setPrice');
         }
+    }
+
+    public function addFavorite(Request $request)
+    {
+        $data = $request->get('checks');
+        foreach ($data as $item) {
+            OlxApartment::addFavorite($item);
+        }
+    }
+
+    public function removeFavorite(Request $request)
+    {
+        $data = $request->get('checks');
+        foreach ($data as $item) {
+            OlxApartment::removeFavorite($item);
+        }
+    }
+
+    public function setting(Request $request)
+    {
+        $arr = $request->get('data');
+        $name = array_keys($arr);
+        $text = array_values($arr);
+        Setting::addSetting(['name' => $name[0], 'text' => $text[0]]);
+
     }
 }
