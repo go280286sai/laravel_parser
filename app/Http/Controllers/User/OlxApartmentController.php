@@ -91,7 +91,7 @@ class OlxApartmentController extends Controller
 
     public function saveJson(): Back
     {
-        $data = OlxApartment::all('title', 'type', 'rooms', 'floor', 'etajnost', 'description', 'price', 'date', 'location');
+        $data = OlxApartment::all();
         $now = Carbon::now()->format('d_m_Y');
         $name = 'Olx_Apartment_'.$now;
 

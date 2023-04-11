@@ -30,14 +30,6 @@
 <div class="loader_bg">
     <div class="loader"><img src="{{env('APP_URL').'/assets/img/loading.gif'}}" /></div>
 </div>
-<!-- end loader -->
-<div id="mySidepanel" class="sidepanel">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
-    <a href="index.html">{{__('messages.home')}}</a>
-    <a href="about.html">{{__('messages.about')}}</a>
-    <a href="services.html">{{__('messages.service')}}</a>
-    <a href="contact.html">{{__('messages.contact')}}</a>
-</div>
 <!-- header -->
 <header>
     <!-- header inner -->
@@ -57,9 +49,6 @@
                                                           aria-hidden="true"></i>admin@admin.ua</a></li>
                         <li class="d_none"><a href="{{env('APP_URL').'/login'}}">Login <i class="fa fa-user" aria-hidden="true"></i></a></li>
                         <li class="d_none"><a href="{{env('APP_URL').'/register'}}">Register <i class="fa fa-user" aria-hidden="true"></i></a></li>
-                        <li>
-                            <button class="openbtn" onclick="openNav()" type="button"><i class="fa fa-bars"></i></button>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -78,14 +67,10 @@
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <div class="container">
-                    <div class="carousel-caption relative">
-                        <div class="bg_white">
-                            <h1>Welcome To our <span class="yello">Interior Design</span></h1>
-                            <p>It is a long established fact that a reader will be distracted by the readable content of
-                                a page when looking at its layout. The point of using Lorem Ipsum is that it has a
-                                more-or-less normal distribution of letters, as</p>
-                        </div>
-                        <a class="read_more ban_btn" href="Javascript:void(0)">Read More</a>
+                    <div class="bg_white">
+                        <h1>Возможность индивидуальной разработки<span class="yello"> Парсинга под Ваши требования</span></h1>
+                        <p>Я могу разработать код для считывания данных с любого сайта учитывая все требования заказчика.</p>
+                        <p>Считывание данные проходит ассинхронно, за минимальное время ожидания. Код для считывания данных написан на js</p>
                     </div>
                 </div>
             </div>
@@ -93,12 +78,10 @@
                 <div class="container">
                     <div class="carousel-caption relative">
                         <div class="bg_white">
-                            <h1>Welcome To our <span class="yello">Interior Design</span></h1>
-                            <p>It is a long established fact that a reader will be distracted by the readable content of
-                                a page when looking at its layout. The point of using Lorem Ipsum is that it has a
-                                more-or-less normal distribution of letters, as</p>
+                            <h1>Обработка данных с помощью<span class="yello"> Искусственного интеллекта</span></h1>
+                            <p>Создается отдельно сервер, который может обрабатывать большой поток данных, анализировать, искать закономерности,
+                            делать прогнозы с максимальной точностью, создавать графическое отображение данных.</p>
                         </div>
-                        <a class="read_more ban_btn" href="Javascript:void(0)">Read More</a>
                     </div>
                 </div>
             </div>
@@ -106,12 +89,10 @@
                 <div class="container">
                     <div class="carousel-caption relative">
                         <div class="bg_white">
-                            <h1>Welcome To our <span class="yello">Interior Design</span></h1>
-                            <p>It is a long established fact that a reader will be distracted by the readable content of
-                                a page when looking at its layout. The point of using Lorem Ipsum is that it has a
-                                more-or-less normal distribution of letters, as</p>
+                            <h1>Сохранение результатов <span class="yello">MySql, JSON</span></h1>
+                            <p>Все результаты сохраняются в базе данных MySql, с возможностью выгрузке в JSON. В данном формате можно не только хранить результаты,
+                            но также использовать в любой системе анализа</p>
                         </div>
-                        <a class="read_more ban_btn" href="Javascript:void(0)">Read More</a>
                     </div>
                 </div>
             </div>
@@ -133,28 +114,23 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="titlepage">
-                    <h2>About us</h2>
-                    <p>It is a long established fact that a reader will be distracted by the readable content </p>
+                    <h2>Обо мне</h2>
+
                 </div>
             </div>
             <div class=" col-sm-12">
                 <div class="about_box">
                     <div class="row d_flex">
-                        <div class="col-md-5">
-                            <div class="about_box_text">
-                                <h3>Best INTERIOR Design</h3>
-                                <p>There are many variations of passages of
-                                    Lorem Ipsum available, but the majority
-                                    have suffered alteration in some
-                                    form, by injected humour,There are many
-                                    variations of passages of
-                                </p>
-                                <a class="read_more" href="Javascript:void(0)">Read More</a>
+                        <div>
+                            <div class="about_box_text mr-3">
+                                <h3>Сторчак Александр</h3>
+                                <p>Занимаюсь программированием на PHP, JavaScript, Python. Работаю на Laravel, Django, увлекаюсь анализом данных и
+                                    искусственным интеллектом.</p>
                             </div>
                         </div>
-                        <div class=" col-md-7  pppp">
-                            <div class="about_box_img">
-                                <figure><img src="images/about_img.png" alt="#"/></figure>
+                        <div>
+                            <div class="ml-lg-5 about_box_img">
+                                <img src="uploads/img/logo.jpg" width="70%" alt="#"/>
                             </div>
                         </div>
                     </div>
@@ -165,224 +141,7 @@
 </div>
 <!-- end six_box-->
 <!-- building -->
-<div class="building">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="titlepage">
-                    <h2>IF A BUILDING <br><span class="yello">BECOMES ARCHITECTURE <br></span> THEN IT IS ART</h2>
-                    <p>It is a long established fact that a reader will be distracted by the readable content of a page
-                        when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal
-                        distribution of letters, asIt is a long established fact that a reader will be distracted by the
-                        readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it
-                        has a more-or-less normal distribution of letters, asIt is a long established fact that a reader
-                        will be distracted by the readable content of a page when looking at its layout. The point of
-                        using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- end building -->
-<!-- services -->
-<div class="services_main">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="titlepage">
-                    <h2>Services</h2>
-                    <span>It is a long established fact that a reader will be distracted by the readable content </span>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <ul class="nav nav-tabs md-tabs border_none" id="myTabMD" role="tablist">
-                    <li class="nav-item lisertab">
-                        <a class="nav-link servi_tab active" id="home-tab-md" data-toggle="tab" href="#home-md"
-                           role="tab" aria-controls="home-md"
-                           aria-selected="true">RESIDENTAL</a>
-                    </li>
-                    <li class="nav-item lisertab">
-                        <a class="nav-link servi_tab" id="profile-tab-md" data-toggle="tab" href="#profile-md"
-                           role="tab" aria-controls="profile-md"
-                           aria-selected="false">RETAIL DESIGN</a>
-                    </li>
-                    <li class="nav-item lisertab">
-                        <a class="nav-link servi_tab" id="contact-tab-md" data-toggle="tab" href="#contact-md"
-                           role="tab" aria-controls="contact-md"
-                           aria-selected="false">SPACE ADAPTATION</a>
-                    </li>
-                </ul>
-                <div class="tab-content card back_bg" id="myTabContentMD">
-                    <div class="tab-pane fade show active" id="home-md" role="tabpanel" aria-labelledby="home-tab-md">
-                        <div class="row">
-                            <div class="col-md-4 col-sm-6 padding_0 margin_right20">
-                                <div class="services">
-                                    <div class="services_img">
-                                        <figure><img src="images/service_img1.png" alt="#"/></figure>
-                                        <div class="ho_dist">
-                                            <span>Reader will be distracted</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-sm-6 padding_0 margin_top70p margin_right20 margin_left20">
-                                <div class="services">
-                                    <div class="services_img">
-                                        <figure><img src="images/service_img2.png" alt="#"/></figure>
-                                        <div class="ho_dist">
-                                            <span>Reader will be distracted</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-sm-6 padding_0 margin_left20">
-                                <div class="services">
-                                    <div class="services_img">
-                                        <figure><img src="images/service_img3.png" alt="#"/></figure>
-                                        <div class="ho_dist">
-                                            <span>Reader will be distracted</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 offset-md-8 col-sm-6 padding_0 margin_top170">
-                                <div class="services margin_left60">
-                                    <div class="services_img">
-                                        <figure><img src="images/service_img4.png" alt="#"/></figure>
-                                        <div class="ho_dist">
-                                            <span>Reader will be distracted</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 margin_top40">
-                                <a class="read_more " href="Javascript:void(0)">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="profile-md" role="tabpanel" aria-labelledby="profile-tab-md">
-                        <div class="row">
-                            <div class="col-md-4 col-sm-6 padding_0 margin_right20">
-                                <div class="services">
-                                    <div class="services_img">
-                                        <figure><img src="images/service_img3.png" alt="#"/></figure>
-                                        <div class="ho_dist">
-                                            <span>Reader will be distracted</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-sm-6 padding_0 margin_top70p margin_right20 margin_left20">
-                                <div class="services">
-                                    <div class="services_img">
-                                        <figure><img src="images/service_img2.png" alt="#"/></figure>
-                                        <div class="ho_dist">
-                                            <span>Reader will be distracted</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-sm-6 padding_0 margin_left20">
-                                <div class="services">
-                                    <div class="services_img">
-                                        <figure><img src="images/service_img4.png" alt="#"/></figure>
-                                        <div class="ho_dist">
-                                            <span>Reader will be distracted</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 offset-md-8 col-sm-6 padding_0 margin_top170">
-                                <div class="services margin_left60">
-                                    <div class="services_img">
-                                        <figure><img src="images/service_img1.png" alt="#"/></figure>
-                                        <div class="ho_dist">
-                                            <span>Reader will be distracted</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 margin_top40">
-                                <a class="read_more " href="Javascript:void(0)">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="contact-md" role="tabpanel" aria-labelledby="contact-tab-md">
-                        <div class="row">
-                            <div class="col-md-4 col-sm-6 padding_0 margin_right20">
-                                <div class="services">
-                                    <div class="services_img">
-                                        <figure><img src="images/service_img4.png" alt="#"/></figure>
-                                        <div class="ho_dist">
-                                            <span>Reader will be distracted</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-sm-6 padding_0 margin_top70p margin_right20 margin_left20">
-                                <div class="services">
-                                    <div class="services_img">
-                                        <figure><img src="images/service_img2.png" alt="#"/></figure>
-                                        <div class="ho_dist">
-                                            <span>Reader will be distracted</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-sm-6 padding_0 margin_left20">
-                                <div class="services">
-                                    <div class="services_img">
-                                        <figure><img src="images/service_img1.png" alt="#"/></figure>
-                                        <div class="ho_dist">
-                                            <span>Reader will be distracted</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 offset-md-8 col-sm-6 padding_0 margin_top170">
-                                <div class="services margin_left60">
-                                    <div class="services_img">
-                                        <figure><img src="images/service_img3.png" alt="#"/></figure>
-                                        <div class="ho_dist">
-                                            <span>Reader will be distracted</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 margin_top40">
-                                <a class="read_more " href="Javascript:void(0)">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- end services -->
-<!-- instant -->
-<div class="instant">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="titlepage text_align_left">
-                    <h2>Get an instant estimate</h2>
-                    <p>It is a long established fact that a reader will be distracted by the readable content of a page
-                        when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal
-                        distribution of letters,</p>
-                    <a class="read_more" href="Javascript:void(0)">Get A quote</a>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="instant_img">
-                    <figure><img src="images/pc.png" alt="#"/></figure>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 <!-- end instant -->
 <!-- footer -->
 <footer>
@@ -391,47 +150,36 @@
             <div class="row">
                 <div class="col-md-10 offset-md-1">
                     <ul class="social_icon text_align_center">
-                        <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                        <li><a href="https://www.facebook.com/go280286sai" target="_blank"><i class="fa fa-facebook-f"></i></a></li>
+                        <li><a href="mailto:admin@admin.ua" target="_blank"><i class="fa fa-mail-reply"></i></a></li>
+                        <li><a href="https://www.linkedin.com/in/go280286sai" target="_blank"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a></li>
+                        <li><a href="https://astorchak.blogspot.com/" target="_blank"><i class="fa fa-sticky-note" aria-hidden="true" title="Мой блог"></i></a></li>
                     </ul>
                 </div>
                 <div class="col-md-4 col-sm-6">
                     <div class="reader">
-                        <a href="index.html"><img src="images/logo_footer.png" alt="#"/></a>
-                        <p class="padd_flet40">It is a long established fact that a reader will be distracted by the
-                            readable content of a page when looking at its layout. The point of using Lorem Ipsum is
-                            that it has a more-or-less normal distribution of letters,</p>
+                        <a href="/"><img src="{{env('APP_URL').'/assets/img/logo.png'}}"/></a>
                     </div>
                 </div>
                 <div class="col-md-2 col-sm-6">
                     <div class="reader">
-                        <h3>Explore</h3>
-                        <ul class="xple_menu">
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="about.html">About</a></li>
-                            <li><a href="services.html">Services</a></li>
-                            <li><a href="contact.html">Contact Us</a></li>
-                        </ul>
+                        <h3>Услуги</h3>
+                            <p>Одностроничники <br>
+                            Обычные сайты <br>
+                            Автомазация <br>
+                            Внедрение искусственного интелекта</p>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <div class="reader">
-                        <h3>Recent Posts</h3>
-                        <ul class="re_post">
-                            <li><img src="images/re_img1.jpg" alt="#"/></li>
-                            <li><img src="images/re_img2.jpg" alt="#"/></li>
-                            <li><img src="images/re_img3.jpg" alt="#"/></li>
-                            <li><img src="images/re_img4.jpg" alt="#"/></li>
-                        </ul>
+                        <h3>Мои работы</h3>
+                        <p><a href="https://github.com/go280286sai" target="_blank"><i class="text-white">https://github.com/go280286sai</i></a></p>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <div class="reader">
-                        <h3>Contact Us</h3>
-                        <p>It is a lon <br> g established fact that a reader will be distracted by the readable content
-                            of a page when looking at its </p>
+                        <h3>Контакты</h3>
+                        <p><a href="mailto:go280286sai@mail.com"><i class="text-white">go280286sai@mail.com</i></a></p>
                     </div>
                 </div>
             </div>
@@ -440,17 +188,12 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-10 offset-md-1">
-                        <p>Copyright 2020 All Right Reserved By <a href="https://html.design/"> Free Html Template</a>
-                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </footer>
-<!-- end footer -->
-<!-- Javascript files-->
-{{--@vite('resources/js/app.js')--}}
 <script src="{{env('APP_URL').'/assets/js/jquery.min.js'}}"></script>
 <script src="{{env('APP_URL').'/assets/js/bootstrap.bundle.min.js'}}"></script>
 <script src="{{env('APP_URL').'/assets/js/custom.js'}}"></script>

@@ -336,7 +336,7 @@ ul.email li img {
 /** banner_main **/
 
 .banner_main {
-     background: url(../images/banner1.jpg);
+     background: url(../img/data-analysis.jpg);
      background-size: 100% 100%;
      background-position: center;
      background-repeat: no-repeat;
@@ -757,7 +757,7 @@ ul.email li img {
 
 .footer {
      background: #540705;
-     padding-top: 362px
+     padding-top: 100px
 }
 
 ul.social_icon {
