@@ -2,7 +2,7 @@ import {ApartmentView} from "./view";
 import axios from "axios";
 
 let GET_URL = $('#url_olx').val();
-
+const AI_LOCAL = import.meta.env.VITE_URL_PYTHON;
 function getStatus(text) {
     console.log(text)
     setTimeout(() => {
@@ -171,7 +171,7 @@ Vue.createApp({
         },
         getNewPrice(text) {
             this.update_status_sync = true;
-            axios.post('http://192.168.0.107:8000/apartment', text).then(data => {
+            axios.post(`${AI_LOCAL}/apartment`, text).then(data => {
                 return data.data
             }).then((data) => {
                 axios.post('/user/setting', {

@@ -36,6 +36,13 @@ class OlxApartment extends Model
         $object->save();
     }
 
+    public static function edit(array $fields): void
+    {
+        $object = self::all()->find($fields['id']);
+        $object->fill($fields);
+        $object->save();
+    }
+
     public static function cleanBase(): void
     {
         self::truncate();
@@ -98,16 +105,16 @@ class OlxApartment extends Model
             ];
             foreach ($month as $item => $value) {
                 if ($param[1] == $value) {
-                    return Carbon::createFromFormat('d m Y', $param[0].' '.$item.' '.$param[2])->format('Y-m-d');
+                    return Carbon::createFromFormat('d m Y', $param[0] . ' ' . $item . ' ' . $param[2])->format('Y-m-d');
                 }
             }
 
-            return Carbon::createFromFormat('d m Y', $param[0].' '.$item.' '.$param[2])->format('Y-m-d');
+            return Carbon::createFromFormat('d m Y', $param[0] . ' ' . $item . ' ' . $param[2])->format('Y-m-d');
         }
     }
 
     /**
-     * @param  array  $fields
+     * @param array $fields
      */
     public static function setStatus($field): void
     {
@@ -127,7 +134,7 @@ class OlxApartment extends Model
 
     public function isRepair(string $text): int
     {
-        if (! Str::contains(Str::lower($text), 'без ремонт') && Str::contains(Str::lower($text), 'ремонт')) {
+        if (!Str::contains(Str::lower($text), 'без ремонт') && Str::contains(Str::lower($text), 'ремонт')) {
             return 1;
         } else {
             return 0;
@@ -194,7 +201,7 @@ class OlxApartment extends Model
     public function removeImage(): void
     {
         if ($this->image != null) {
-            Storage::delete('uploads/img/'.$this->image);
+            Storage::delete('uploads/img/' . $this->image);
         }
     }
 
@@ -203,13 +210,13 @@ class OlxApartment extends Model
         if ($image == null) {
             return;
         }
-        Storage::delete('uploads/img/'.$image);
-        $filename = $name.'.'.$image->extension();
+        Storage::delete('uploads/img/' . $image);
+        $filename = $name . '.' . $image->extension();
         $image->storeAs('uploads/img/', $filename);
     }
 
     public static function getImage(string $name): string
     {
-        return Storage::url('/uploads/img/'.$name);
+        return Storage::url('/uploads/img/' . $name);
     }
 }

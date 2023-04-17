@@ -25,12 +25,7 @@ class OlxApartmentController extends Controller
 {
     public function index(): View
     {
-        if (Cache::has('research')) {
-            $olx = Cache::get('research');
-        } else {
-            $olx = Research::find(1);
-            Cache::put('research', $olx);
-        }
+        $olx = Research::find(1);
         $OlxApartment = OlxApartment::all()->sortByDesc('date');
         if (Cache::has('dollar')) {
             $rate = Cache::get('dollar');
@@ -82,6 +77,24 @@ class OlxApartmentController extends Controller
         OlxApartmentJob::dispatch($request->all())->onQueue('olx_apartment');
     }
 
+    /**
+     * @return View
+     */
+    public function view(Request $request): View
+    {
+        $location = OlxApartment::all('location')->groupBy('location')->toArray();
+        $id = $request->get('id');
+        $apartment = OlxApartment::find($id);
+
+        return view('admin.parser.apartment.olx.edit', ['loc' => array_keys($location), 'apartment' => $apartment]);
+    }
+
+    public function edit(Request $request): string
+    {
+        OlxApartment::edit($request->all());
+        return to_route('olx_apartment');
+    }
+
     public function cleanDb(): RedirectResponse
     {
         OlxApartment::cleanBase();
@@ -93,7 +106,7 @@ class OlxApartmentController extends Controller
     {
         $data = OlxApartment::all();
         $now = Carbon::now()->format('d_m_Y');
-        $name = 'Olx_Apartment_'.$now;
+        $name = 'Olx_Apartment_' . $now;
 
         return Response::make($data)->header('Content-Type', 'application/json;charset=utf-8')
             ->header('Content-Disposition', "attachment;filename=$name.json");
@@ -147,8 +160,13 @@ class OlxApartmentController extends Controller
     public function create()
     {
         $location = OlxApartment::all('location')->groupBy('location')->toArray();
-
-        return view('admin.parser.apartment.olx.create', ['loc' => array_keys($location)]);
+        if (Cache::has('dollar')) {
+            $rate = Cache::get('dollar');
+        } else {
+            $rate = Rate::latest()->get('dollar');
+            Cache::put('dollar', $rate);
+        }
+        return view('admin.parser.apartment.olx.create', ['loc' => array_keys($location), 'rate' => $rate[0]]);
     }
 
     public function addCreate(Request $request)

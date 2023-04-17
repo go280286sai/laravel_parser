@@ -173,6 +173,12 @@
                                             }
                                         </script>
                                     @endif
+                                        <form action="{{env('APP_URL')}}/user/view" method="post">
+                                            @csrf
+                                            <input type="hidden" name="id" value="{{$apartment->id}}">
+                                            <button class="btn"
+                                                    title="Редактировать"><i class="fa fa-edit"></i></button>
+                                        </form>
                                     <form action="{{env('APP_URL')}}/user/olx_apartment_comment"
                                           method="get">
                                         @csrf
@@ -187,6 +193,7 @@
                                         <button onclick="return confirm('{{__('messages.are_you_sure')}}')" class="btn"
                                                 title="{{__('messages.delete')}}"><i class="fa fa-trash"></i></button>
                                     </form>
+
                                 </td>
                             </tr>
                         @endforeach

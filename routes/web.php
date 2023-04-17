@@ -73,5 +73,7 @@ Route::group(['prefix' => 'user', 'middleware' => IsAuthUser::class], function (
         Route::get('/create_apartment', 'create');
         Route::post('/addCreate', 'addCreate');
         Route::post('/setting', 'setting');
+        Route::post('/view', 'view');
+        Route::post('/edit', 'edit');
     });
 });

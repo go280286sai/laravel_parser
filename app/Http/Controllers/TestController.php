@@ -1,24 +1,9 @@
 <?php
-
-namespace App\Http\Controllers;
-
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Response;
-
-class TestController extends Controller
-{
-    public function index()
-    {
-        $test = Http::get('https://privatbank.ua/')->body();
-        $pattern = '/<td\s+id="USD_sell">\s*([\d.]+)\s*<\/td>/';
-        preg_match($pattern, $test, $matches);
-
-        if (isset($matches[1])) {
-            echo $matches[1];
-        }
-
-        return true;
-
-        return Response::view('test');
-    }
+function sum_of_numbers_more($a, $b){
+    return str_split((string)$a);
+    $str1=array_sum(explode("",(string)$a));
+    $str2=array_sum(explode("",(string)$b));
+    return $str1>$str2?$a:$b;
 }
+
+print_r(sum_of_numbers_more(555,76)) ;

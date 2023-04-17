@@ -7,12 +7,12 @@
     <div class="content-wrapper">
         <section class="content-header">
             <h1>
-                Добавить объявление
+                Редактировать объявление
             </h1>
         </section>
         <section class="content">
             <div class="box" id="create_apartment">
-                <form action="{{env('APP_URL').'/user/addCreate'}}" method="post">
+                <form action="{{env('APP_URL').'/user/edit'}}" method="post">
                     <div class="box-header with-border">
                         @include('admin.errors')
                     </div>
@@ -21,33 +21,31 @@
                             <div class="form-group">
                                 @csrf
                                 <label for="title">Название</label>
-                                <input type="text" id="title" name="title" class="form-control" value="{{old('title')}}">
+                                <input type="text" id="title" name="title" class="form-control" value="{{$apartment->title}}">
                                 <label for="rooms">Количество комнат</label>
-                                <input type="number" id="rooms" name="rooms" class="form-control" value="{{old('rooms')}}">
+                                <input type="number" id="rooms" name="rooms" class="form-control" value="{{$apartment->rooms}}">
                                 <label for="floor">Этаж</label>
-                                <input type="number" id="floor" name="floor" class="form-control" value="{{old('floor')}}">
+                                <input type="number" id="floor" name="floor" class="form-control" value="{{$apartment->floor}}">
                                 <label for="etajnost">Этажность</label>
-                                <input type="number" id="etajnost" name="etajnost" class="form-control" value="{{old('etajnost')}}">
+                                <input type="number" id="etajnost" name="etajnost" class="form-control" value="{{$apartment->etajnost}}">
                                 <label for="area">Площадь</label>
-                                <input type="number" id="area" name="area" class="form-control" value="{{old('area')}}">
+                                <input type="number" id="area" name="area" class="form-control" value="{{$apartment->area}}">
                                 <label for="location">Расположение</label>
                                 <br>
-                                <select id="location" name="location" value="{{old('location')}}" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                    <option selected>{{old('location')??'Выбрать расположение'}}</option>
+                                <select id="location" name="location" value="{{$apartment->location}}" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                    <option selected>{{$apartment->location}}</option>
                                     @foreach($loc as $item)
                                        {{$item}}
                                         <option value="{{$item}}">{{$item}}</option>
                                     @endforeach
                                 </select>
                                 <br>
-                                <p id="predict_result">Для предварительной оценки, заполните поля выше и нажмите кнопку </p>
-                                <input type="button" v-on:click="getPredict({{$rate["dollar"]}})" id="predict" name="predict" class="form-control btn-danger" value="Предварительная оценка">
-                                <br>
                                 <label for="price">Цена, грн.</label>
-                                <input type="number" id="price" name="price" class="form-control" value="{{old('price')}}">
+                                <input type="number" id="price" name="price" class="form-control" value="{{$apartment->price}}">
+                                <input type="hidden" name="id" value="{{$apartment->id}}">
                                 <br>
                                 <label for="title">Описание</label>
-                                <textarea id="description" cols="30" name="description" rows="10" class="form-control">{{old('description')}}</textarea>
+                                <textarea id="description" cols="30" name="description" rows="10" class="form-control">{{$apartment->description}}</textarea>
                             </div>
                         </div>
                     </div>
