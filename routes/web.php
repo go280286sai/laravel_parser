@@ -4,6 +4,7 @@ use App\Http\Controllers\User\MainController;
 use App\Http\Controllers\User\OlxApartmentController;
 use App\Http\Controllers\User\ParserController;
 use App\Http\Controllers\User\ResearchController;
+use App\Http\Controllers\User\UserController;
 use App\Http\Middleware\IsAuthUser;
 use Illuminate\Support\Facades\Route;
 
@@ -75,5 +76,12 @@ Route::group(['prefix' => 'user', 'middleware' => IsAuthUser::class], function (
         Route::post('/setting', 'setting');
         Route::post('/view', 'view');
         Route::post('/edit', 'edit');
+    });
+    Route::resource('/users', UserController::class);
+    Route::controller(UserController::class)->group(function (){
+       Route::post('/comment', 'comment');
+       Route::post('/add_comment_user', 'add_comment_user');
+       Route::post('createMessage', 'createMessage');
+       Route::post('/sendMessage', 'sendMessage');
     });
 });

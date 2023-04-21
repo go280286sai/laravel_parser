@@ -30,47 +30,51 @@
                     <div class="form-group">
                         <table>
                             <tr>
-                                <td class="tbl_btn">
-                                    <button onclick="document.location.reload();"
-                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">{{__('messages.update_list')}}</button>
-                                </td>
                                 <td>
                                     <button v-on:click="getApartment" v-bind:disabled="update_status"
                                             class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">{{__('messages.start_update')}}</button>
                                 </td>
                                 <td>
-                                    <button v-on:click="cleanDb"
-                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">{{__('messages.clean_db')}}</button>
+                                    <button v-on:click="getNewPrice('{{$token}}')"
+                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn"
+                                            v-bind:disabled="update_status_sync">{{__('messages.get_new_price')}}</button>
+
                                 </td>
                                 <td><a href="{{env('APP_URL')}}/user/olx_apartment_delete_index">
                                         <button
                                             class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">{{__('messages.delete_list')}}</button>
                                     </a></td>
-                                <td>
-                                    <button v-on:click="getNewPrice('{{$token}}')"
-                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn" v-bind:disabled="update_status_sync">{{__('messages.get_new_price')}}</button>
+                                @if(\Illuminate\Support\Facades\Auth::user()->is_admin==1)
+                                    <td>
+                                        <form action="{{env('APP_URL')}}/user/saveJson" method="post">
+                                            @csrf
+                                            <button
+                                                class="mr-3 mt-6 bg-orange-600 hover:bg-orange-300 text-white btn" v-on:click="saveList">{{__('messages.save_as')}}</button>
+                                        </form>
+                                    </td>
 
-                                </td>
-                                <td>
-                                    <form action="{{env('APP_URL')}}/user/saveJson" method="post">
-                                        @csrf
-                                        <button
-                                            class="mr-3 mt-6 bg-orange-600 hover:bg-orange-300 text-white btn">{{__('messages.save_as')}}</button>
-                                    </form>
-                                </td>
+@endif
+
                                 <td><a href="{{env('APP_URL')}}/user/report">
                                         <button
                                             class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">Просмотреть
                                             отчет
                                         </button>
                                     </a></td>
+                                @if(\Illuminate\Support\Facades\Auth::user()->is_admin==1)
+                                <td>
+                                    <button v-on:click="cleanDb"
+                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">{{__('messages.clean_db')}}</button>
+                                </td>
+                                @endif
                             </tr>
                         </table>
                         <table>
                             <tr>
                                 <td><a href="{{env('APP_URL')}}/user/create_apartment">
                                         <button
-                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">Создать объявление
+                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">Создать
+                                            объявление
                                         </button>
                                     </a></td>
                                 <td>
@@ -94,7 +98,8 @@
                             </tr>
                         </table>
                     </div>
-                    <div>Среднее отклонение прогноза: <b>{{\App\Models\Setting::getMAE()}}грн.</b> или <b>{{round(\App\Models\Setting::getMAE()/$rate->dollar,2)}}$</b></div>
+                    <div>Среднее отклонение прогноза: <b>{{\App\Models\Setting::getMAE()}}грн.</b> или
+                        <b>{{round(\App\Models\Setting::getMAE()/$rate->dollar,2)}}$</b></div>
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                         <tr class="bg-orange-400">
@@ -173,12 +178,12 @@
                                             }
                                         </script>
                                     @endif
-                                        <form action="{{env('APP_URL')}}/user/view" method="post">
-                                            @csrf
-                                            <input type="hidden" name="id" value="{{$apartment->id}}">
-                                            <button class="btn"
-                                                    title="Редактировать"><i class="fa fa-edit"></i></button>
-                                        </form>
+                                    <form action="{{env('APP_URL')}}/user/view" method="post">
+                                        @csrf
+                                        <input type="hidden" name="id" value="{{$apartment->id}}">
+                                        <button class="btn"
+                                                title="Редактировать"><i class="fa fa-edit"></i></button>
+                                    </form>
                                     <form action="{{env('APP_URL')}}/user/olx_apartment_comment"
                                           method="get">
                                         @csrf

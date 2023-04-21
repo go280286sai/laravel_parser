@@ -11,6 +11,7 @@ use App\Models\Rate;
 use App\Models\Research;
 use App\Models\Setting;
 use App\Models\User;
+use Error;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -102,14 +103,15 @@ class OlxApartmentController extends Controller
         return back();
     }
 
-    public function saveJson(): Back
+    public function saveJson(Request $request): Back
     {
-        $data = OlxApartment::all();
-        $now = Carbon::now()->format('d_m_Y');
-        $name = 'Olx_Apartment_' . $now;
+            $data = OlxApartment::all();
+            $now = Carbon::now()->format('d_m_Y');
+            $name = 'Olx_Apartment_' . $now;
 
-        return Response::make($data)->header('Content-Type', 'application/json;charset=utf-8')
-            ->header('Content-Disposition', "attachment;filename=$name.json");
+            return Response::make($data)->header('Content-Type', 'application/json;charset=utf-8')
+                ->header('Content-Disposition', "attachment;filename=$name.json");
+
     }
 
     public function remove(Request $request): RedirectResponse

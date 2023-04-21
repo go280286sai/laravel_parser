@@ -3,6 +3,7 @@ import axios from "axios";
 
 let GET_URL = $('#url_olx').val();
 const AI_LOCAL = import.meta.env.VITE_URL_PYTHON;
+
 function getStatus(text) {
     console.log(text)
     setTimeout(() => {
@@ -124,6 +125,7 @@ Vue.createApp({
                 setTimeout(() => {
                     this.sendPushMessage('Данные обновлены');
                     this.update_status = false;
+                    location.reload();
                 }, 20000)
             }, 35000);
         },
@@ -140,16 +142,7 @@ Vue.createApp({
                 })
             }, 300000)
         },
-        saveList() {
-            axios.post('/user/saveJson', {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }).then(data => {
-                console.log(data.statusText)
-            }).catch(err => {
-                console.log(err.message)
-            })
-        },
-        updateInfo(title) {
+               updateInfo(title) {
             let form = $(`form#${title}`);
             axios.post(form.attr('action'), form.serialize()).then(() => {
                 this.status = true;
@@ -181,6 +174,7 @@ Vue.createApp({
                     setTimeout(() => {
                         this.sendPushMessage('Синхронизация выполнена');
                         this.update_status_sync = false;
+                        location.reload();
                     }), 1000
                 }).catch((err) => {
                     console.log(err.message)

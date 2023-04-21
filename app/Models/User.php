@@ -27,10 +27,10 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
         'phone',
         'birthday',
-        'gender',
+        'gender_id',
+        'description'
     ];
 
     public function gender(): BelongsTo
@@ -73,5 +73,45 @@ class User extends Authenticatable
         $obj = self::find(Auth::user()->id);
         $obj->token = $field;
         $obj->save();
+    }
+
+    public function getAvatar(): string
+    {
+        if ($this->profile_photo_path == null) {
+            return '/profile-photos/no-user-image.png';
+        }
+
+        return '/' . $this->profile_photo_path;
+    }
+
+    public static function add_comment_user(array $fields): void
+    {
+        $object = self::find($fields['id']);
+        $object->comment = $fields['comment'];
+        $object->save();
+    }
+
+    public static function add(array $fields): void
+    {
+        $object = new self();
+        $object->fill($fields);
+        $object->password = bcrypt($fields['password']);
+        $object->save();
+    }
+
+    public static function edit(array $fields, string $id): void
+    {
+        $object = self::find($id);
+        $object->fill($fields);
+        if (!is_null($fields['password'])){
+        $object->password = bcrypt($fields['password']);
+    }
+        $object->save();
+    }
+
+    public static function remove(string $id): void
+    {
+        $object = self::find($id);
+        $object->delete();
     }
 }
