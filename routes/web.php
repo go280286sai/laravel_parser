@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\User\MainController;
 use App\Http\Controllers\User\OlxApartmentController;
 use App\Http\Controllers\User\ParserController;
@@ -78,10 +81,23 @@ Route::group(['prefix' => 'user', 'middleware' => IsAuthUser::class], function (
         Route::post('/edit', 'edit');
     });
     Route::resource('/users', UserController::class);
-    Route::controller(UserController::class)->group(function (){
-       Route::post('/comment', 'comment');
-       Route::post('/add_comment_user', 'add_comment_user');
-       Route::post('createMessage', 'createMessage');
-       Route::post('/sendMessage', 'sendMessage');
+    Route::resource('/service', ServiceController::class);
+    Route::resource('/client', ClientController::class);
+    Route::resource('/documents', DocumentController::class);
+    Route::controller(UserController::class)->group(function () {
+        Route::post('/comment', 'comment');
+        Route::post('/add_comment_user', 'add_comment_user');
+        Route::post('/createMessage', 'createMessage');
+        Route::post('/sendMessage', 'sendMessage');
+    });
+    Route::controller(ClientController::class)->group(function () {
+        Route::post('/client_comment', 'comment');
+        Route::post('/client_comment_add', 'comment_add');
+        Route::post('/createMessageClient', 'createMessageClient');
+        Route::post('/sendMessageClient', 'sendMessageClient');
+    });
+    Route::controller(DocumentController::class)->group(function (){
+        Route::post('/document_comment', 'comment');
+        Route::post('/document_comment_add', 'addComment');
     });
 });

@@ -127,8 +127,12 @@
                 <li class="header">MAIN NAVIGATION</li>
                 <li><a href="{{env('APP_URL'.'/user/dashboard')}}"><i class="fa fa-dashboard"></i> <span>Админ-панель</span></a></li>
                 <li><a href="{{env('APP_URL').'/user/apartment'}}"><i class="fa fa-sticky-note-o"></i> <span>Недвижимость</span></a></li>
+                <li><a href="{{env('APP_URL').'/user/client'}}"><i class="fa fa-user-circle"></i> <span>Клиенты</span></a></li>
+                <li><a href="{{env('APP_URL').'/user/service'}}"><i class="fa fa-user-o"></i> <span>Услуги</span></a></li>
+                <li><a href="{{env('APP_URL').'/user/documents'}}"><i class="fa fa-sticky-note-o"></i> <span>Заявки</span></a></li>
                 <li><a href="{{env('APP_URL').'/user/users'}}"><i class="fa fa-users"></i> <span>Пользователи</span></a></li>
                 <li><a href="{{env('APP_URL').'/user/profile'}}"><i class="fa fa-user-plus"></i> <span>Профиль</span></a></li>
+                <li><a href="{{env('APP_URL').'/telescope'}}" target="_blank"><i class="fa fa-server"></i> <span>Telescope</span></a></li>
             </ul>
         </section>
         <!-- /.sidebar -->

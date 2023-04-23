@@ -12,7 +12,7 @@
         </section>
         <section class="content">
             <div class="box" id="create_apartment">
-                <form action="{{env('APP_URL').'/user/addCreate'}}" method="post">
+                <form action="{{env('APP_URL').'/user/documents'}}" method="post">
                     <div class="box-header with-border">
                         @include('admin.errors')
                     </div>
@@ -20,8 +20,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 @csrf
-                                <label for="title">Название</label>
-                                <input type="text" id="title" name="title" class="form-control" value="{{old('title')}}">
+
                                 <label for="rooms">Количество комнат</label>
                                 <input type="number" id="rooms" name="rooms" class="form-control" value="{{old('rooms')}}">
                                 <label for="floor">Этаж</label>
@@ -37,6 +36,16 @@
                                     @foreach($loc as $item)
                                        {{$item}}
                                         <option value="{{$item}}">{{$item}}</option>
+                                    @endforeach
+                                </select>
+                                <br>
+                                <label for="location">Contact</label>
+                                <br>
+                                <select id="url" name="url" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                    <option value="{{env('APP_URL')}}" selected>{{old('url')??'Контакт'}}</option>
+                                    @foreach($contacts as $item)
+                                       {{$item->last_name.' '.$item->first_name}}
+                                        <option value="{{env('APP_URL').'/user/client/'.$item->id}}">{{$item->last_name.' '.$item->first_name}}</option>
                                     @endforeach
                                 </select>
                                 <br>

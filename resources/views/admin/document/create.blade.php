@@ -7,12 +7,12 @@
     <div class="content-wrapper">
         <section class="content-header">
             <h1>
-                Редактировать объявление
+                Создать заявку
             </h1>
         </section>
         <section class="content">
             <div class="box" id="create_apartment">
-                <form action="{{env('APP_URL').'/user/edit'}}" method="post">
+                <form action="{{env('APP_URL').'/user/documents'}}" method="post">
                     <div class="box-header with-border">
                         @include('admin.errors')
                     </div>
@@ -20,42 +20,46 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 @csrf
-                                <label for="title">Название</label>
-                                <input type="text" id="title" name="title" class="form-control" value="{{$apartment->title}}">
-                                <label for="rooms">Количество комнат</label>
-                                <input type="number" id="rooms" name="rooms" class="form-control" value="{{$apartment->rooms}}">
-                                <label for="floor">Этаж</label>
-                                <input type="number" id="floor" name="floor" class="form-control" value="{{$apartment->floor}}">
+                                <br>
+                                <label class="form-label" for="client_id">Выбрать клиента</label>
+                                <br>
+                                <select id="client_id" name="client_id" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                    <option value="{{env('APP_URL')}}" selected>{{old('url')??'Контакт'}}</option>
+                                    @foreach($contacts as $item)
+                                        {{$item->last_name.' '.$item->first_name.' '.$item->surname}}
+                                        <option value="{{$item->id}}">{{$item->last_name.' '.$item->first_name.' '.$item->surname}}</option>
+                                    @endforeach
+                                </select>
+                                <br>
+                                <label class="form-label" for="service_id">Выбрать услугу</label>
+                                <br>
+                                <select id="service_id" name="service_id" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                    <option value="{{old('service_id')}}" selected>{{old('service_id')??'Выбор услуги'}}</option>
+                                    @foreach($service as $item)
+                                        {{$item->service}}
+                                        <option value="{{$item->id}}">{{$item->service}}</option>
+                                    @endforeach
+                                </select>
+                                <br>
+                                <label class="form-label" for="rooms">Количество комнат</label>
+                                <input type="number" id="rooms" name="rooms" class="form-control" value="{{old('rooms')}}">
                                 <label for="etajnost">Этажность</label>
-                                <input type="number" id="etajnost" name="etajnost" class="form-control" value="{{$apartment->etajnost}}">
-                                <label for="area">Площадь</label>
-                                <input type="number" id="area" name="area" class="form-control" value="{{$apartment->area}}">
+                                <input type="number" id="etajnost" name="etajnost" class="form-control" value="{{old('etajnost')}}">
                                 <label for="location">Расположение</label>
                                 <br>
-                                <select id="location" name="location" value="{{$apartment->location}}" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                    <option selected>{{$apartment->location}}</option>
+                                <select id="location" name="location" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                    <option selected>{{old('location')??'Выбрать расположение'}}</option>
                                     @foreach($loc as $item)
                                        {{$item}}
                                         <option value="{{$item}}">{{$item}}</option>
                                     @endforeach
                                 </select>
                                 <br>
-                                <label for="location">Contact</label>
-                                <br>
-                                <select id="url" name="url" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                    <option value="{{$apartment->url}}" selected> {{$apartment->url}}</option>
-                                    @foreach($contacts as $item)
-                                        {{$item->last_name.' '.$item->first_name}}
-                                        <option value="{{env('APP_URL').'/user/client/'.$item->id}}">{{$item->last_name.' '.$item->first_name}}</option>
-                                    @endforeach
-                                </select>
-                                <br>
                                 <label for="price">Цена, грн.</label>
-                                <input type="number" id="price" name="price" class="form-control" value="{{$apartment->price}}">
-                                <input type="hidden" name="id" value="{{$apartment->id}}">
+                                <input type="number" id="price" name="price" class="form-control" value="{{old('price')}}">
                                 <br>
-                                <label for="title">Описание</label>
-                                <textarea id="description" cols="30" name="description" rows="10" class="form-control">{{$apartment->description}}</textarea>
+                                <label for="title">Комментарий</label>
+                                <textarea id="comment" cols="30" name="comment" rows="10" class="form-control">{{old('comment')}}</textarea>
                             </div>
                         </div>
                     </div>

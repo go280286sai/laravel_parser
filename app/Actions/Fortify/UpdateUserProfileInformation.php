@@ -49,9 +49,9 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'birthday' => $input['birthday'],
             ])->save();
         }
-        if (isset($input['gender'])) {
+        if (isset($input['gender_id'])) {
             $user->forceFill([
-                'gender' => $input['gender'],
+                'gender_id' => $input['gender_id'],
             ])->save();
         }
     }

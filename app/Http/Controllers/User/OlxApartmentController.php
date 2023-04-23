@@ -6,12 +6,12 @@ use App\Events\OlxApartmentEvent;
 use App\Http\Controllers\Controller;
 use App\Jobs\OlxApartmentJob;
 use App\Jobs\RealPriceJob;
+use App\Models\Client;
 use App\Models\OlxApartment;
 use App\Models\Rate;
 use App\Models\Research;
 use App\Models\Setting;
 use App\Models\User;
-use Error;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -86,13 +86,18 @@ class OlxApartmentController extends Controller
         $location = OlxApartment::all('location')->groupBy('location')->toArray();
         $id = $request->get('id');
         $apartment = OlxApartment::find($id);
+        $contacts = Client::all();
 
-        return view('admin.parser.apartment.olx.edit', ['loc' => array_keys($location), 'apartment' => $apartment]);
+        return view('admin.parser.apartment.olx.edit', ['loc' => array_keys($location), 'apartment' => $apartment,
+            'contacts'=>$contacts]);
     }
 
     public function edit(Request $request): string
     {
-        OlxApartment::edit($request->all());
+        $fields = array_map(function ($item) {
+            return strip_tags($item);
+        }, $request->all());
+        OlxApartment::edit($fields);
         return to_route('olx_apartment');
     }
 
@@ -162,13 +167,15 @@ class OlxApartmentController extends Controller
     public function create()
     {
         $location = OlxApartment::all('location')->groupBy('location')->toArray();
+        $contacts = Client::all();
         if (Cache::has('dollar')) {
             $rate = Cache::get('dollar');
         } else {
             $rate = Rate::latest()->get('dollar');
             Cache::put('dollar', $rate);
         }
-        return view('admin.parser.apartment.olx.create', ['loc' => array_keys($location), 'rate' => $rate[0]]);
+        return view('admin.parser.apartment.olx.create', ['loc' => array_keys($location), 'rate' => $rate[0],
+            'contacts'=>$contacts]);
     }
 
     public function addCreate(Request $request)
@@ -187,7 +194,6 @@ class OlxApartmentController extends Controller
         $fields = array_map(function ($item) {
             return strip_tags($item);
         }, $fields);
-        $fields['url'] = env('APP_URL');
         $fields['type'] = env('APP_NAME');
         OlxApartmentJob::dispatch($fields)->onQueue('olx_apartment');
 

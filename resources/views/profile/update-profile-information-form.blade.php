@@ -59,32 +59,32 @@
             <x-input id="name" type="text" class="mt-1 block w-full" wire:model.defer="state.name" autocomplete="name"/>
             <x-input-error for="name" class="mt-2"/>
         </div>
-        <!-- gender -->
+        <!-- gender_id -->
 
         <div class="col-span-6 sm:col-span-4">
-            <x-label for="gender" value="{{ __('Gender') }}"/>
+            <x-label for="gender_id" value="{{ __('Gender') }}"/>
             <label>
-                <x-label for="gender" value="{{ __('not known') }}"/>
-                <x-input id="gender" name="gender" value="0" type="radio" class="mt-1 block "
-                         wire:model.defer="state.gender" autocomplete="gender"/>
+                <x-label for="gender_id" value="{{ __('not known') }}"/>
+                <x-input id="gender_id" name="gender_id" value="0" type="radio" class="mt-1 block "
+                         wire:model.defer="state.gender_id" autocomplete="gender_id"/>
             </label>
             <br>
             <label>
-                <x-label for="gender" value="{{ __('male') }}"/>
-                <x-input id="gender" name="gender" value="1" type="radio" class="mt-1 block "
-                         wire:model.defer="state.gender" autocomplete="gender"/>
+                <x-label for="gender_id" value="{{ __('male') }}"/>
+                <x-input id="gender_id" name="gender_id" value="1" type="radio" class="mt-1 block "
+                         wire:model.defer="state.gender_id" autocomplete="gender_id"/>
             </label>
             <br>
             <label>
-                <x-label for="gender" value="{{ __('female') }}"/>
-                <x-input id="gender" name="gender" value="2" type="radio" class="mt-1 block "
-                         wire:model.defer="state.gender" autocomplete="gender"/>
+                <x-label for="gender_id" value="{{ __('female') }}"/>
+                <x-input id="gender_id" name="gender_id" value="2" type="radio" class="mt-1 block "
+                         wire:model.defer="state.gender_id" autocomplete="gender_id"/>
             </label>
             <br>
             <label>
-                <x-label for="gender" value="{{ __('not applicable') }}"/>
-                <x-input id="gender" name="gender" value="9" type="radio" class="mt-1 block "
-                         wire:model.defer="state.gender" autocomplete="gender"/>
+                <x-label for="gender_id" value="{{ __('not applicable') }}"/>
+                <x-input id="gender_id" name="gender_id" value="9" type="radio" class="mt-1 block "
+                         wire:model.defer="state.gender_id" autocomplete="gender_id"/>
             </label>
         </div>
         <!-- birthday -->
