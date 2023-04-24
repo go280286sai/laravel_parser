@@ -60,17 +60,17 @@
                 <ul class="nav navbar-nav">
                     <li class="dropdown user user-menu ">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="{{env('APP_URL').'/'.\Illuminate\Support\Facades\Auth::user()->profile_photo_path}}" class="user-image" alt="{{\Illuminate\Support\Facades\Auth::user()->name}}">
-                            <span class="hidden-xs">{{\Illuminate\Support\Facades\Auth::user()->name}}</span>
+                            <img src="{{env('APP_URL').'/'.$getUser->profile_photo_path}}" class="user-image" alt="{{$getUser->name}}">
+                            <span class="hidden-xs">{{$getUser->name}}</span>
                         </a>
                         <ul class="dropdown-menu ">
                             <!-- User image -->
                             <li class="user-header">
                                 <img
-                                        src="{{env('APP_URL').'/'.\Illuminate\Support\Facades\Auth::user()->profile_photo_path}}"
-                                        class="img-circle inline" alt="{{\Illuminate\Support\Facades\Auth::user()->name}}">
+                                        src="{{env('APP_URL').'/'.$getUser->profile_photo_path}}"
+                                        class="img-circle inline" alt="{{$getUser->name}}">
                                 <p>
-                                  {{\Illuminate\Support\Facades\Auth::user()->name}}
+                                  {{$getUser->name}}
                                 </p>
                             </li>
                             <!-- Menu Footer-->
@@ -80,7 +80,6 @@
                                 </div>
                                 <div class="pull-right">
                                     <form action="{{env('APP_URL').'/user/exit'}}" method="post">
-{{--                                        <input type="hidden" name="name" value="{{\Illuminate\Support\Facades\Auth::user()}}">--}}
                                         @csrf
                                         <input type="submit" class="btn btn-default btn-flat" name="submit" value="{{__('messages.logout')}}">
                                     </form>

@@ -16,6 +16,7 @@ class ServiceController extends Controller
     public function index(): View
     {
         $services = Service::all();
+
         return view('admin.service.index', ['services' => $services, 'i' => 1]);
     }
 
@@ -33,13 +34,14 @@ class ServiceController extends Controller
     public function store(Request $request): RedirectResponse
     {
         Service::add($request->all());
+
         return  redirect('/user/service');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id): Response
+    public function show(string $id): void
     {
         //
     }
@@ -50,6 +52,7 @@ class ServiceController extends Controller
     public function edit(string $id): View
     {
         $service = Service::find($id);
+
         return view('admin.service.edit', ['service' => $service]);
     }
 
@@ -59,6 +62,7 @@ class ServiceController extends Controller
     public function update(Request $request, string $id): RedirectResponse
     {
         Service::edit($request->all(), $id);
+
         return  redirect('/user/service');
     }
 
@@ -68,6 +72,7 @@ class ServiceController extends Controller
     public function destroy(string $id): RedirectResponse
     {
         Service::remove($id);
+
         return  redirect('/user/service');
     }
 }

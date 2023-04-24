@@ -7,6 +7,7 @@
 import './parser/apartment/olx/olx';
 import './parser/apartment/olx/create_apartment';
 import axios from 'axios';
+import './app';
 window.axios = axios;
 // axios.defaults.withCredentials = true;
 // window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';

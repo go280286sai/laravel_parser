@@ -20,6 +20,7 @@ class UserController extends Controller
     public function index(): View
     {
         $users = User::all();
+
         return view('admin.user.index', ['users' => $users]);
     }
 
@@ -37,6 +38,7 @@ class UserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         User::add($request->all());
+
         return redirect('/user/users');
     }
 
@@ -54,6 +56,7 @@ class UserController extends Controller
     public function edit(string $id): View
     {
         $user = User::find($id);
+
         return view('admin.user.edit', ['user' => $user]);
     }
 
@@ -63,6 +66,7 @@ class UserController extends Controller
     public function update(Request $request, string $id): RedirectResponse
     {
         User::edit($request->all(), $id);
+
         return redirect('/user/users');
     }
 
@@ -72,6 +76,7 @@ class UserController extends Controller
     public function destroy(string $id): RedirectResponse
     {
         User::remove($id);
+
         return redirect('/user/users');
     }
 
@@ -79,29 +84,31 @@ class UserController extends Controller
     {
         $id = $request->get('id');
         $comment = $request->get('comment');
+
         return view('admin.user.comment', ['id' => $id, 'comment' => $comment]);
     }
 
     public function add_comment_user(Request $request): RedirectResponse
     {
         User::add_comment_user($request->all());
+
         return redirect('/user/users');
     }
 
     public function createMessage(Request $request): View
     {
         $user = User::find($request->all());
+
         return view('admin.user.mail', ['user' => $user[0]]);
     }
 
     /**
-     * @param Request $request
      * @return Redirector|Application|RedirectResponse
      */
     public function sendMessage(Request $request): RedirectResponse
     {
         Mail::to($request->email)->cc(Auth::user()->email)->send(new User_email($request->all()));
-        Log::info('Answer the message: ' . $request->email . ' ' . $request->title . ' --' . Auth::user()->name);
+        Log::info('Answer the message: '.$request->email.' '.$request->title.' --'.Auth::user()->name);
 
         return redirect('/user/users');
     }

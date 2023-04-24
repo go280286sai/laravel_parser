@@ -78,9 +78,6 @@ class OlxApartmentController extends Controller
         OlxApartmentJob::dispatch($request->all())->onQueue('olx_apartment');
     }
 
-    /**
-     * @return View
-     */
     public function view(Request $request): View
     {
         $location = OlxApartment::all('location')->groupBy('location')->toArray();
@@ -89,7 +86,7 @@ class OlxApartmentController extends Controller
         $contacts = Client::all();
 
         return view('admin.parser.apartment.olx.edit', ['loc' => array_keys($location), 'apartment' => $apartment,
-            'contacts'=>$contacts]);
+            'contacts' => $contacts]);
     }
 
     public function edit(Request $request): string
@@ -98,6 +95,7 @@ class OlxApartmentController extends Controller
             return strip_tags($item);
         }, $request->all());
         OlxApartment::edit($fields);
+
         return to_route('olx_apartment');
     }
 
@@ -110,13 +108,12 @@ class OlxApartmentController extends Controller
 
     public function saveJson(Request $request): Back
     {
-            $data = OlxApartment::all();
-            $now = Carbon::now()->format('d_m_Y');
-            $name = 'Olx_Apartment_' . $now;
+        $data = OlxApartment::all();
+        $now = Carbon::now()->format('d_m_Y');
+        $name = 'Olx_Apartment_'.$now;
 
-            return Response::make($data)->header('Content-Type', 'application/json;charset=utf-8')
-                ->header('Content-Disposition', "attachment;filename=$name.json");
-
+        return Response::make($data)->header('Content-Type', 'application/json;charset=utf-8')
+            ->header('Content-Disposition', "attachment;filename=$name.json");
     }
 
     public function remove(Request $request): RedirectResponse
@@ -174,8 +171,9 @@ class OlxApartmentController extends Controller
             $rate = Rate::latest()->get('dollar');
             Cache::put('dollar', $rate);
         }
+
         return view('admin.parser.apartment.olx.create', ['loc' => array_keys($location), 'rate' => $rate[0],
-            'contacts'=>$contacts]);
+            'contacts' => $contacts]);
     }
 
     public function addCreate(Request $request)

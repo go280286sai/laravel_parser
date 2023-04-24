@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -13,6 +12,6 @@ class create_is_admin extends Seeder
      */
     public function run(): void
     {
-        DB::table('users')->where('id','=',1)->update(['is_admin'=>1]);
+        DB::table('users')->where('id', '=', 1)->update(['is_admin' => 1]);
     }
 }

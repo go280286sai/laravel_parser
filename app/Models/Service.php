@@ -10,15 +10,26 @@ class Service extends Model
 {
     use HasFactory;
 
-    public function document()
+    /**
+     * @return HasMany
+     */
+    public function document(): HasMany
     {
         return $this->hasMany(Document::class);
     }
+
+    /**
+     * @return HasMany
+     */
     public function client(): HasMany
     {
         return $this->hasMany(Client::class);
     }
 
+    /**
+     * @param array $fields
+     * @return void
+     */
     public static function add(array $fields): void
     {
         $service = new self();
@@ -26,6 +37,11 @@ class Service extends Model
         $service->save();
     }
 
+    /**
+     * @param array $fields
+     * @param string $id
+     * @return void
+     */
     public static function edit(array $fields, string $id): void
     {
         $service = self::find($id);
@@ -33,6 +49,10 @@ class Service extends Model
         $service->save();
     }
 
+    /**
+     * @param string $id
+     * @return void
+     */
     public static function remove(string $id): void
     {
         $service = self::find($id);

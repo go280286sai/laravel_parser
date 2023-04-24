@@ -96,7 +96,7 @@ Route::group(['prefix' => 'user', 'middleware' => IsAuthUser::class], function (
         Route::post('/createMessageClient', 'createMessageClient');
         Route::post('/sendMessageClient', 'sendMessageClient');
     });
-    Route::controller(DocumentController::class)->group(function (){
+    Route::controller(DocumentController::class)->group(function () {
         Route::post('/document_comment', 'comment');
         Route::post('/document_comment_add', 'addComment');
     });

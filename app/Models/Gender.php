@@ -14,6 +14,7 @@ class Gender extends Model
     {
         return $this->hasOne(User::class);
     }
+
     public function client(): HasOne
     {
         return $this->hasOne(User::class);

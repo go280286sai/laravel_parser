@@ -6,7 +6,6 @@ use App\Mail\User_email;
 use App\Models\Client;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -19,8 +18,9 @@ class ClientController extends Controller
      */
     public function index(): View
     {
-        $clients=Client::all();
-        return view('admin.client.index',['clients'=>$clients, 'i'=>1]);
+        $clients = Client::all();
+
+        return view('admin.client.index', ['clients' => $clients, 'i' => 1]);
     }
 
     /**
@@ -37,6 +37,7 @@ class ClientController extends Controller
     public function store(Request $request): RedirectResponse
     {
         Client::add($request->all());
+
         return redirect('/user/client');
     }
 
@@ -45,8 +46,9 @@ class ClientController extends Controller
      */
     public function show(string $id): View
     {
-        $client=Client::find($id);
-        return view('admin.client.show', ['client'=>$client]);
+        $client = Client::find($id);
+
+        return view('admin.client.show', ['client' => $client]);
     }
 
     /**
@@ -55,6 +57,7 @@ class ClientController extends Controller
     public function edit(string $id): View
     {
         $client = Client::find($id);
+
         return view('admin.client.edit', ['client' => $client]);
     }
 
@@ -64,6 +67,7 @@ class ClientController extends Controller
     public function update(Request $request, string $id): RedirectResponse
     {
         Client::edit($request->all(), $id);
+
         return redirect('/user/client');
     }
 
@@ -73,6 +77,7 @@ class ClientController extends Controller
     public function destroy(string $id): RedirectResponse
     {
         Client::remove($id);
+
         return redirect('/user/client');
     }
 
@@ -80,25 +85,30 @@ class ClientController extends Controller
     {
         $id = $request->get('id');
         $comment = $request->get('comment');
-        return view('admin.client.comment', ['id'=>$id, 'comment'=>$comment]);
+
+        return view('admin.client.comment', ['id' => $id, 'comment' => $comment]);
     }
+
     public function comment_add(Request $request): RedirectResponse
     {
         $id = $request->get('id');
         $comment = $request->get('comment');
-        Client::client_comment_add(['id'=>$id, 'comment'=>$comment]);
-        return redirect('/user/client');    }
+        Client::client_comment_add(['id' => $id, 'comment' => $comment]);
+
+        return redirect('/user/client');
+    }
 
     public function createMessageClient(Request $request)
     {
         $user = Client::find($request->all());
+
         return view('admin.client.mail', ['user' => $user[0]]);
     }
 
     public function sendMessageClient(Request $request)
     {
         Mail::to($request->email)->cc(Auth::user()->email)->send(new User_email($request->all()));
-        Log::info('Answer the message: ' . $request->email . ' ' . $request->title . ' --' . Auth::user()->name);
+        Log::info('Answer the message: '.$request->email.' '.$request->title.' --'.Auth::user()->name);
 
         return redirect('/user/client');
     }

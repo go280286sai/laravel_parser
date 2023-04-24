@@ -8,7 +8,6 @@ use App\Models\OlxApartment;
 use App\Models\Service;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class DocumentController extends Controller
@@ -19,6 +18,7 @@ class DocumentController extends Controller
     public function index(): View
     {
         $docs = Document::all();
+
         return view('admin.document.index', ['docs' => $docs, 'i' => 1]);
     }
 
@@ -30,6 +30,7 @@ class DocumentController extends Controller
         $contacts = Client::all();
         $location = OlxApartment::all('location')->groupBy('location')->toArray();
         $service = Service::all();
+
         return view('admin.document.create', ['service' => $service, 'contacts' => $contacts, 'loc' => array_keys($location)]);
     }
 
@@ -40,6 +41,7 @@ class DocumentController extends Controller
     {
         $fields = self::stripTags($request->all());
         Document::add($fields);
+
         return redirect('/user/documents');
     }
 
@@ -52,6 +54,7 @@ class DocumentController extends Controller
         $contacts = Client::all();
         $location = OlxApartment::all('location')->groupBy('location')->toArray();
         $service = Service::all();
+
         return view('admin.document.show', ['doc' => $doc, 'service' => $service, 'contacts' => $contacts, 'loc' => array_keys($location)]);
     }
 
@@ -64,6 +67,7 @@ class DocumentController extends Controller
         $contacts = Client::all();
         $location = OlxApartment::all('location')->groupBy('location')->toArray();
         $service = Service::all();
+
         return view('admin.document.edit', ['doc' => $doc, 'service' => $service, 'contacts' => $contacts, 'loc' => array_keys($location)]);
     }
 
@@ -74,6 +78,7 @@ class DocumentController extends Controller
     {
         $fields = self::stripTags($request->all());
         Document::edit($fields, $id);
+
         return redirect('/user/documents');
     }
 
@@ -83,6 +88,7 @@ class DocumentController extends Controller
     public function destroy(string $id): RedirectResponse
     {
         Document::remove($id);
+
         return redirect('/user/documents');
     }
 
@@ -97,6 +103,7 @@ class DocumentController extends Controller
     {
         $id = $request->get('id');
         $comment = $request->get('comment');
+
         return view('admin.document.comment', ['id' => $id, 'comment' => $comment]);
     }
 
@@ -104,6 +111,7 @@ class DocumentController extends Controller
     {
         $fields = self::stripTags($request->all());
         Document::addComment($fields);
+
         return redirect('/user/documents');
     }
 }

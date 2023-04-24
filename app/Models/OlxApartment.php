@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class OlxApartment extends Model
 {
@@ -20,6 +19,10 @@ class OlxApartment extends Model
     protected $fillable = ['title', 'url', 'rooms', 'floor', 'etajnost', 'price', 'description',
         'status', 'comment', 'location', 'type', 'area', 'real_price'];
 
+    /**
+     * @param array $fields
+     * @return void
+     */
     public static function add(array $fields): void
     {
         $object = new self();
@@ -29,13 +32,13 @@ class OlxApartment extends Model
         } else {
             $object->date = \Illuminate\Support\Carbon::now()->format('Y-m-d');
         }
-        $object->repair = $object->isRepair($fields['description']);
-        $object->service = $object->isService($fields['description']);
-        $object->shops = $object->isShop($fields['description']);
-        $object->metro = $object->isMetro($fields['description']);
         $object->save();
     }
 
+    /**
+     * @param array $fields
+     * @return void
+     */
     public static function edit(array $fields): void
     {
         $object = self::all()->find($fields['id']);
@@ -43,11 +46,18 @@ class OlxApartment extends Model
         $object->save();
     }
 
+    /**
+     * @return void
+     */
     public static function cleanBase(): void
     {
         self::truncate();
     }
 
+    /**
+     * @param int $id
+     * @return void
+     */
     public static function removeId(int $id): void
     {
         $object = self::find($id);
@@ -55,6 +65,10 @@ class OlxApartment extends Model
         $object->save();
     }
 
+    /**
+     * @param array $fields
+     * @return void
+     */
     public static function removeSelect(array $fields): void
     {
         foreach ($fields as $item) {
@@ -62,6 +76,10 @@ class OlxApartment extends Model
         }
     }
 
+    /**
+     * @param int $field
+     * @return void
+     */
     public static function addFavorite(int $field): void
     {
         $obj = self::find($field);
@@ -69,6 +87,10 @@ class OlxApartment extends Model
         $obj->save();
     }
 
+    /**
+     * @param int $field
+     * @return void
+     */
     public static function removeFavorite(int $field): void
     {
         $obj = self::find($field);
@@ -76,6 +98,11 @@ class OlxApartment extends Model
         $obj->save();
     }
 
+    /**
+     * @param int $id
+     * @param string $comment
+     * @return void
+     */
     public static function addComment(int $id, string $comment): void
     {
         $object = self::find($id);
@@ -83,6 +110,10 @@ class OlxApartment extends Model
         $object->save();
     }
 
+    /**
+     * @param $field
+     * @return string
+     */
     public function getDateNew($field): string
     {
         $param = explode(' ', $field);
@@ -114,7 +145,7 @@ class OlxApartment extends Model
     }
 
     /**
-     * @param array $fields
+     * @param $field
      */
     public static function setStatus($field): void
     {
@@ -123,74 +154,10 @@ class OlxApartment extends Model
         $object->save();
     }
 
-    public function isMetro(string $text): int
-    {
-        if (Str::contains(Str::lower($text), 'метро')) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    public function isRepair(string $text): int
-    {
-        if (!Str::contains(Str::lower($text), 'без ремонт') && Str::contains(Str::lower($text), 'ремонт')) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    public function isService(string $text): int
-    {
-        if (Str::contains(Str::lower($text), 'двер') || Str::contains(Str::lower($text), 'пластик') ||
-            Str::contains(Str::lower($text), 'окна')) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    public function isShop(string $text): int
-    {
-        $count = 0;
-        if (Str::contains(Str::lower($text), 'магазин') || Str::contains(Str::lower($text), 'сильпо') ||
-            Str::contains(Str::lower($text), 'рост') ||
-            Str::contains(Str::lower($text), 'класс')) {
-            $count = +1;
-        }
-        if (Str::contains(Str::lower($text), 'рынок')) {
-            $count = +1;
-        }
-        if (Str::contains(Str::lower($text), 'школ')) {
-            $count = +1;
-        }
-        if (Str::contains(Str::lower($text), 'садик')) {
-            $count = +1;
-        }
-        if (Str::contains(Str::lower($text), 'больница') || Str::contains(Str::lower($text), 'поликлиника')) {
-            $count = +1;
-        }
-        if (Str::contains(Str::lower($text), 'остановка') || Str::contains(Str::lower($text), 'транспорт')) {
-            $count = +1;
-        }
-
-        return $count;
-    }
-
-    public static function setIdexLocation(): void
-    {
-        $loc = self::all()->pluck('location');
-        $list = array_unique($loc->toArray());
-        foreach ($list as $item => $value) {
-            $obj = self::all()->where('location', '=', $value);
-            foreach ($obj as $arr) {
-                $arr->location_index = $item;
-                $arr->save();
-            }
-        }
-    }
-
+    /**
+     * @param array $fields
+     * @return void
+     */
     public static function setNewPrice(array $fields): void
     {
         $obj = self::find($fields[0]);
@@ -198,13 +165,11 @@ class OlxApartment extends Model
         $obj->save();
     }
 
-    public function removeImage(): void
-    {
-        if ($this->image != null) {
-            Storage::delete('uploads/img/' . $this->image);
-        }
-    }
-
+    /**
+     * @param $name
+     * @param $image
+     * @return void
+     */
     public static function uploadImage($name, $image): void
     {
         if ($image == null) {
@@ -215,6 +180,10 @@ class OlxApartment extends Model
         $image->storeAs('uploads/img/', $filename);
     }
 
+    /**
+     * @param string $name
+     * @return string
+     */
     public static function getImage(string $name): string
     {
         return Storage::url('/uploads/img/' . $name);

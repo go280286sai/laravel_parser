@@ -38,8 +38,6 @@ class User_email extends Mailable
 
     /**
      * Get the message content definition.
-     *
-     * @return Content
      */
     public function content(): Content
     {
