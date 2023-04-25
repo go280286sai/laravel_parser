@@ -11,19 +11,17 @@ use Illuminate\Support\Facades\Log;
 
 class ApiController extends Controller
 {
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     */
     public function getFiles(Request $request): JsonResponse
     {
         try {
             $name = $request->get('name');
             OlxApartment::uploadImage($name, $request->file('file'));
             Log::info('UploadImage:'.Auth::id());
+
             return response()->json(['status' => 'ok']);
         } catch (\Exception $e) {
             Log::info('Error UploadImage:'.Auth::id());
+
             return response()->json(['status' => 'error'])->setStatusCode(400);
         }
     }

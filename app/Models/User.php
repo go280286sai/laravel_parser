@@ -33,9 +33,6 @@ class User extends Authenticatable
         'description',
     ];
 
-    /**
-     * @return BelongsTo
-     */
     public function gender(): BelongsTo
     {
         return $this->belongsTo(Gender::class);
@@ -71,10 +68,6 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    /**
-     * @param string $field
-     * @return void
-     */
     public static function setToken(string $field): void
     {
         $obj = self::find(Auth::user()->id);
@@ -82,10 +75,6 @@ class User extends Authenticatable
         $obj->save();
     }
 
-    /**
-     * @param array $fields
-     * @return void
-     */
     public static function add_comment_user(array $fields): void
     {
         $object = self::find($fields['id']);
@@ -93,10 +82,6 @@ class User extends Authenticatable
         $object->save();
     }
 
-    /**
-     * @param array $fields
-     * @return void
-     */
     public static function add(array $fields): void
     {
         $object = new self();
@@ -105,11 +90,6 @@ class User extends Authenticatable
         $object->save();
     }
 
-    /**
-     * @param array $fields
-     * @param string $id
-     * @return void
-     */
     public static function edit(array $fields, string $id): void
     {
         $object = self::find($id);
@@ -120,10 +100,6 @@ class User extends Authenticatable
         $object->save();
     }
 
-    /**
-     * @param string $id
-     * @return void
-     */
     public static function remove(string $id): void
     {
         $object = self::find($id);

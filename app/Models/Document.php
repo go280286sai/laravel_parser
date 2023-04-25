@@ -15,10 +15,6 @@ class Document extends Model
      */
     protected $fillable = ['client_id', 'service_id', 'rooms', 'etajnost', 'location', 'price', 'comment'];
 
-    /**
-     * @param array $fields
-     * @return void
-     */
     public static function add(array $fields): void
     {
         $object = new self();
@@ -26,11 +22,6 @@ class Document extends Model
         $object->save();
     }
 
-    /**
-     * @param array $fields
-     * @param string $id
-     * @return void
-     */
     public static function edit(array $fields, string $id): void
     {
         $object = self::find($id);
@@ -38,26 +29,16 @@ class Document extends Model
         $object->save();
     }
 
-    /**
-     * @return BelongsTo
-     */
     public function service(): BelongsTo
     {
         return $this->belongsTo(Service::class);
     }
 
-    /**
-     * @return BelongsTo
-     */
     public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
     }
 
-    /**
-     * @param array $fields
-     * @return void
-     */
     public static function addComment(array $fields): void
     {
         $object = self::find($fields['id']);
@@ -65,10 +46,6 @@ class Document extends Model
         $object->save();
     }
 
-    /**
-     * @param $id
-     * @return void
-     */
     public static function remove($id): void
     {
         $object = self::find($id);

@@ -19,10 +19,6 @@ class OlxApartment extends Model
     protected $fillable = ['title', 'url', 'rooms', 'floor', 'etajnost', 'price', 'description',
         'status', 'comment', 'location', 'type', 'area', 'real_price'];
 
-    /**
-     * @param array $fields
-     * @return void
-     */
     public static function add(array $fields): void
     {
         $object = new self();
@@ -35,10 +31,6 @@ class OlxApartment extends Model
         $object->save();
     }
 
-    /**
-     * @param array $fields
-     * @return void
-     */
     public static function edit(array $fields): void
     {
         $object = self::all()->find($fields['id']);
@@ -46,18 +38,11 @@ class OlxApartment extends Model
         $object->save();
     }
 
-    /**
-     * @return void
-     */
     public static function cleanBase(): void
     {
         self::truncate();
     }
 
-    /**
-     * @param int $id
-     * @return void
-     */
     public static function removeId(int $id): void
     {
         $object = self::find($id);
@@ -65,10 +50,6 @@ class OlxApartment extends Model
         $object->save();
     }
 
-    /**
-     * @param array $fields
-     * @return void
-     */
     public static function removeSelect(array $fields): void
     {
         foreach ($fields as $item) {
@@ -76,10 +57,6 @@ class OlxApartment extends Model
         }
     }
 
-    /**
-     * @param int $field
-     * @return void
-     */
     public static function addFavorite(int $field): void
     {
         $obj = self::find($field);
@@ -87,10 +64,6 @@ class OlxApartment extends Model
         $obj->save();
     }
 
-    /**
-     * @param int $field
-     * @return void
-     */
     public static function removeFavorite(int $field): void
     {
         $obj = self::find($field);
@@ -98,11 +71,6 @@ class OlxApartment extends Model
         $obj->save();
     }
 
-    /**
-     * @param int $id
-     * @param string $comment
-     * @return void
-     */
     public static function addComment(int $id, string $comment): void
     {
         $object = self::find($id);
@@ -110,10 +78,6 @@ class OlxApartment extends Model
         $object->save();
     }
 
-    /**
-     * @param $field
-     * @return string
-     */
     public function getDateNew($field): string
     {
         $param = explode(' ', $field);
@@ -136,17 +100,14 @@ class OlxApartment extends Model
             ];
             foreach ($month as $item => $value) {
                 if ($param[1] == $value) {
-                    return Carbon::createFromFormat('d m Y', $param[0] . ' ' . $item . ' ' . $param[2])->format('Y-m-d');
+                    return Carbon::createFromFormat('d m Y', $param[0].' '.$item.' '.$param[2])->format('Y-m-d');
                 }
             }
 
-            return Carbon::createFromFormat('d m Y', $param[0] . ' ' . $item . ' ' . $param[2])->format('Y-m-d');
+            return Carbon::createFromFormat('d m Y', $param[0].' '.$item.' '.$param[2])->format('Y-m-d');
         }
     }
 
-    /**
-     * @param $field
-     */
     public static function setStatus($field): void
     {
         $object = self::find($field);
@@ -154,10 +115,6 @@ class OlxApartment extends Model
         $object->save();
     }
 
-    /**
-     * @param array $fields
-     * @return void
-     */
     public static function setNewPrice(array $fields): void
     {
         $obj = self::find($fields[0]);
@@ -165,27 +122,18 @@ class OlxApartment extends Model
         $obj->save();
     }
 
-    /**
-     * @param $name
-     * @param $image
-     * @return void
-     */
     public static function uploadImage($name, $image): void
     {
         if ($image == null) {
             return;
         }
-        Storage::delete('uploads/img/' . $image);
-        $filename = $name . '.' . $image->extension();
+        Storage::delete('uploads/img/'.$image);
+        $filename = $name.'.'.$image->extension();
         $image->storeAs('uploads/img/', $filename);
     }
 
-    /**
-     * @param string $name
-     * @return string
-     */
     public static function getImage(string $name): string
     {
-        return Storage::url('/uploads/img/' . $name);
+        return Storage::url('/uploads/img/'.$name);
     }
 }

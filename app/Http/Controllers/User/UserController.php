@@ -102,9 +102,6 @@ class UserController extends Controller
         return view('admin.user.mail', ['user' => $user[0]]);
     }
 
-    /**
-     * @return Redirector|Application|RedirectResponse
-     */
     public function sendMessage(Request $request): RedirectResponse
     {
         Mail::to($request->email)->cc(Auth::user()->email)->send(new User_email($request->all()));

@@ -9,10 +9,6 @@ class Setting extends Model
 {
     use HasFactory;
 
-    /**
-     * @param array $fields
-     * @return void
-     */
     public static function addSetting(array $fields): void
     {
         $name = (string) $fields['name'];
@@ -25,9 +21,6 @@ class Setting extends Model
         $obj->save();
     }
 
-    /**
-     * @return mixed
-     */
     public static function getMAE(): mixed
     {
         $obj = self::find(1);

@@ -14,10 +14,6 @@ class Rate extends Model
      */
     protected $fillable = ['dollar', 'date'];
 
-    /**
-     * @param $fields
-     * @return void
-     */
     public static function add($fields): void
     {
         $obj = new self();

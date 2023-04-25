@@ -11,7 +11,6 @@ use App\Models\OlxApartment;
 use App\Models\Rate;
 use App\Models\Research;
 use App\Models\Setting;
-use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -26,7 +25,12 @@ class OlxApartmentController extends Controller
 {
     public function index(): View
     {
-        $olx = Research::find(1);
+        if (Cache::has('olx')) {
+            $olx = Cache::get('olx');
+        } else {
+            $olx = Research::find(1);
+            Cache::put('olx', $olx);
+        }
         $OlxApartment = OlxApartment::all()->sortByDesc('date');
         if (Cache::has('dollar')) {
             $rate = Cache::get('dollar');
@@ -34,12 +38,13 @@ class OlxApartmentController extends Controller
             $rate = Rate::latest()->get('dollar');
             Cache::put('dollar', $rate);
         }
-        $token=DB::table('personal_access_tokens')->where('tokenable_id', '=', Auth::id())->select('token')->get();
-        if (count($token)>0) {
+        $token = DB::table('personal_access_tokens')->where('tokenable_id', '=', Auth::id())->select('token')->get();
+        if (count($token) > 0) {
             $token = $token[0]->token;
         } else {
-            $token =Auth::user()->createToken('API TOKEN')->plainTextToken;
+            $token = Auth::user()->createToken('API TOKEN')->plainTextToken;
         }
+
         return view('admin.parser.apartment.olx.index',
             [
                 'title' => 'Parser OLX',
@@ -117,8 +122,7 @@ class OlxApartmentController extends Controller
 
     public function remove(Request $request): RedirectResponse
     {
-        $id = $request->get('id');
-        OlxApartment::removeId($id);
+        OlxApartment::removeId($request->get('id'));
 
         return back();
     }
@@ -160,7 +164,7 @@ class OlxApartmentController extends Controller
         return redirect()->route('olx_apartment');
     }
 
-    public function create()
+    public function create(): View
     {
         $location = OlxApartment::all('location')->groupBy('location')->toArray();
         $contacts = Client::all();
@@ -175,7 +179,7 @@ class OlxApartmentController extends Controller
             'contacts' => $contacts]);
     }
 
-    public function addCreate(Request $request)
+    public function addCreate(Request $request): RedirectResponse
     {
         $request->validate([
             'title' => 'unique:olx_apartments|string',
@@ -233,7 +237,7 @@ class OlxApartmentController extends Controller
         event(new OlxApartmentEvent($text));
     }
 
-    public function setNewPrice(Request $request)
+    public function setNewPrice(Request $request): void
     {
         $fields = $request->get('price');
         foreach ($fields['data'] as $item) {
@@ -241,7 +245,7 @@ class OlxApartmentController extends Controller
         }
     }
 
-    public function addFavorite(Request $request)
+    public function addFavorite(Request $request): void
     {
         $data = $request->get('checks');
         foreach ($data as $item) {
@@ -249,6 +253,9 @@ class OlxApartmentController extends Controller
         }
     }
 
+    /**
+     * @return void
+     */
     public function removeFavorite(Request $request)
     {
         $data = $request->get('checks');
@@ -257,6 +264,9 @@ class OlxApartmentController extends Controller
         }
     }
 
+    /**
+     * @return void
+     */
     public function setting(Request $request)
     {
         $arr = $request->get('data');

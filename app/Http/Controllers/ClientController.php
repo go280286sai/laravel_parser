@@ -98,14 +98,14 @@ class ClientController extends Controller
         return redirect('/user/client');
     }
 
-    public function createMessageClient(Request $request)
+    public function createMessageClient(Request $request): View
     {
         $user = Client::find($request->all());
 
         return view('admin.client.mail', ['user' => $user[0]]);
     }
 
-    public function sendMessageClient(Request $request)
+    public function sendMessageClient(Request $request): RedirectResponse
     {
         Mail::to($request->email)->cc(Auth::user()->email)->send(new User_email($request->all()));
         Log::info('Answer the message: '.$request->email.' '.$request->title.' --'.Auth::user()->name);
