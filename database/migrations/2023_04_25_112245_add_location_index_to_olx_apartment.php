@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->text('token')->nullable();
+        Schema::table('olx_apartments', function (Blueprint $table) {
+            $table->integer('location_index')->default(0);
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('token');
+        Schema::table('olx_apartments', function (Blueprint $table) {
+            $table->dropColumn('location_index');
         });
     }
 };
