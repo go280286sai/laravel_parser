@@ -34,13 +34,12 @@ class OlxApartmentController extends Controller
             $rate = Rate::latest()->get('dollar');
             Cache::put('dollar', $rate);
         }
-        if (Auth::user()->token == null) {
-            $token = Auth::user()->createToken('API TOKEN')->plainTextToken;
-            User::setToken($token);
+        $token=DB::table('personal_access_tokens')->where('tokenable_id', '=', Auth::id())->select('token')->get();
+        if (count($token)>0) {
+            $token = $token[0]->token;
         } else {
-            $token = Auth::user()->token;
+            $token =Auth::user()->createToken('API TOKEN')->plainTextToken;
         }
-
         return view('admin.parser.apartment.olx.index',
             [
                 'title' => 'Parser OLX',
