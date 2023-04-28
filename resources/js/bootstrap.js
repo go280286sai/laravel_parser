@@ -19,8 +19,8 @@ window.axios = axios;
 
 // import Echo from 'laravel-echo';
 //
-import Pusher from 'pusher-js';
-window.Pusher = Pusher;
+// import Pusher from 'pusher-js';
+// window.Pusher = Pusher;
 //
 // window.Echo = new Echo({
 //     broadcaster: 'pusher',
@@ -35,13 +35,13 @@ window.Pusher = Pusher;
 //     alert('kkk');
 // });
 
-Pusher.logToConsole = true;
-
-const pusher = new Pusher('57db0e1503aef7489228', {
-    cluster: 'eu'
-});
-
-const channel = pusher.subscribe('olx_apartment');
-channel.bind('olx_apartment', function(data) {
-    alert(data);
-});
+// Pusher.logToConsole = true;
+//
+// const pusher = new Pusher('57db0e1503aef7489228', {
+//     cluster: 'eu'
+// });
+//
+// const channel = pusher.subscribe('olx_apartment');
+// channel.bind('olx_apartment', function(data) {
+//     alert(data);
+// });

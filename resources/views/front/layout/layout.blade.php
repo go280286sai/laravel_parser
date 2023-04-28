@@ -48,7 +48,6 @@
                         <li class="d_none"><a href="mailto:admin@admin.ua"><i class="fa fa-envelope"
                                                           aria-hidden="true"></i>admin@admin.ua</a></li>
                         <li class="d_none"><a href="{{env('APP_URL').'/login'}}">Login <i class="fa fa-user" aria-hidden="true"></i></a></li>
-                        <li class="d_none"><a href="{{env('APP_URL').'/register'}}">Register <i class="fa fa-user" aria-hidden="true"></i></a></li>
                     </ul>
                 </div>
             </div>

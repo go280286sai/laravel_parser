@@ -39,6 +39,13 @@ class DocumentController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $request->validate([
+            'rooms' => 'required|numeric',
+            'etajnost' => 'required|numeric',
+            'location' => 'required|not_regex:(Выбрать+)',
+            'price' => 'required|numeric',
+            'client_id'=>'required|numeric'
+        ]);
         $fields = self::stripTags($request->all());
         Document::add($fields);
 

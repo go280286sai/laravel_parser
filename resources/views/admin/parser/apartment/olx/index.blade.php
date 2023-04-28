@@ -160,23 +160,7 @@
                                 <td class="{{$apartment->status==0?"bg-orange-200":''}}">{{$apartment->comment}} </td>
                                 <td class="{{$apartment->status==0?"bg-orange-200":''}}">
                                     @if($apartment->status==0)
-                                        <script>
-                                            getStatus({{$apartment->id}})
-
-                                            function getStatus(text) {
-                                                console.log(text)
-                                                setTimeout(() => {
-                                                    axios.post('/user/set_status', {
-                                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                                                        'id': text
-                                                    }).then(() => {
-                                                        console.log('status ok')
-                                                    }).catch((err) => {
-                                                        console.log(err.message);
-                                                    })
-                                                }, 300000)
-                                            }
-                                        </script>
+                                        <input type="hidden" name="" id="apartmentStatus" value="{{$apartment->id}}">
                                     @endif
                                     <form action="{{env('APP_URL')}}/user/view" method="post">
                                         @csrf
@@ -224,4 +208,22 @@
             $("#example1").DataTable();
         });
     </script>
+    <script>
+        const getStatusText = document.querySelectorAll('#apartmentStatus');
+        for (let i in getStatusText){
+            getStatus(getStatusText[i].value)
+        }
+        function getStatus(text) {
+            setTimeout(() => {
+                axios.post('/user/set_status', {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'id': text
+                }).then(() => {
+                    console.log('status ok')
+                }).catch((err) => {
+                    console.log(err.message);
+                })
+            }, 300000)}
+    </script>
+
 @endsection

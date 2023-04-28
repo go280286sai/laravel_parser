@@ -6,6 +6,7 @@ use App\Events\OlxApartmentEvent;
 use App\Http\Controllers\Controller;
 use App\Jobs\OlxApartmentJob;
 use App\Jobs\RealPriceJob;
+use App\Jobs\Send_mail_clientJob;
 use App\Models\Client;
 use App\Models\OlxApartment;
 use App\Models\Rate;
@@ -87,10 +88,12 @@ class OlxApartmentController extends Controller
         $location = OlxApartment::all('location')->groupBy('location')->toArray();
         $id = $request->get('id');
         $apartment = OlxApartment::find($id);
+        $client_id = explode('/', $apartment['url']);
+        $apartment['url'] = $client_id[5];
         $contacts = Client::all();
-
+        $contact = Client::find($apartment['url']);
         return view('admin.parser.apartment.olx.edit', ['loc' => array_keys($location), 'apartment' => $apartment,
-            'contacts' => $contacts]);
+            'contacts' => $contacts, 'contact' => $contact]);
     }
 
     public function edit(Request $request): string
@@ -98,6 +101,7 @@ class OlxApartmentController extends Controller
         $fields = array_map(function ($item) {
             return strip_tags($item);
         }, $request->all());
+        $fields['url'] = env('APP_URL') . '/user/client/' . $fields['url'];
         OlxApartment::edit($fields);
 
         return to_route('olx_apartment');
@@ -114,7 +118,7 @@ class OlxApartmentController extends Controller
     {
         $data = OlxApartment::all();
         $now = Carbon::now()->format('d_m_Y');
-        $name = 'Olx_Apartment_'.$now;
+        $name = 'Olx_Apartment_' . $now;
 
         return Response::make($data)->header('Content-Type', 'application/json;charset=utf-8')
             ->header('Content-Disposition', "attachment;filename=$name.json");
@@ -196,6 +200,7 @@ class OlxApartmentController extends Controller
             return strip_tags($item);
         }, $fields);
         $fields['type'] = env('APP_NAME');
+        $fields['url'] = env('APP_URL') . '/user/client/' . $fields['client_id'];
         OlxApartmentJob::dispatch($fields)->onQueue('olx_apartment');
 
         return back();
@@ -267,11 +272,33 @@ class OlxApartmentController extends Controller
     /**
      * @return void
      */
-    public function setting(Request $request)
+    public function setting(Request $request): void
     {
         $arr = $request->get('data');
         $name = array_keys($arr);
         $text = array_values($arr);
         Setting::addSetting(['name' => $name[0], 'text' => $text[0]]);
+    }
+
+    public function getApartments(Request $request): RedirectResponse|array
+    {
+        if ($request->get('data') !== null) {
+            $mail = $request->get('email');
+            $data = $request->get('data');
+            $object = $this->getArray($data);
+            Send_mail_clientJob::dispatch($object[0], $mail)->onQueue('send_client');
+            return redirect('/user/documents');
+        } else {
+            $text = $request->get('text');
+            $object = $this->getArray($text);
+            return [$object[0], $object[1]];
+        }
+    }
+
+    public function getArray(string $text): array
+    {
+        $array = explode(',', substr($text, 0, strlen($text) - 1));
+        $object = DB::table('olx_apartments')->whereIn('id', $array)->get();
+        return [$object, $array];
     }
 }

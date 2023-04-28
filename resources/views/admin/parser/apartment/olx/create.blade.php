@@ -12,7 +12,7 @@
         </section>
         <section class="content">
             <div class="box" id="create_apartment">
-                <form action="{{env('APP_URL').'/user/documents'}}" method="post">
+                <form action="{{env('APP_URL').'/user/addCreate'}}" method="post">
                     <div class="box-header with-border">
                         @include('admin.errors')
                     </div>
@@ -20,7 +20,8 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 @csrf
-
+                                <label for="title">Название</label>
+                                <input type="text" id="title" name="title" class="form-control" value="{{old('title')}}">
                                 <label for="rooms">Количество комнат</label>
                                 <input type="number" id="rooms" name="rooms" class="form-control" value="{{old('rooms')}}">
                                 <label for="floor">Этаж</label>
@@ -31,7 +32,7 @@
                                 <input type="number" id="area" name="area" class="form-control" value="{{old('area')}}">
                                 <label for="location">Расположение</label>
                                 <br>
-                                <select id="location" name="location" value="{{old('location')}}" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                <select id="location" name="location" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
                                     <option selected>{{old('location')??'Выбрать расположение'}}</option>
                                     @foreach($loc as $item)
                                        {{$item}}
@@ -41,11 +42,11 @@
                                 <br>
                                 <label for="location">Contact</label>
                                 <br>
-                                <select id="url" name="url" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                    <option value="{{env('APP_URL')}}" selected>{{old('url')??'Контакт'}}</option>
+                                <select id="client_id" name="client_id" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                    <option selected>{{old('client_id')??'Контакт'}}</option>
                                     @foreach($contacts as $item)
                                        {{$item->last_name.' '.$item->first_name}}
-                                        <option value="{{env('APP_URL').'/user/client/'.$item->id}}">{{$item->last_name.' '.$item->first_name}}</option>
+                                        <option value="{{$item->id}}">{{$item->last_name.' '.$item->first_name.' '.$item->surname}}</option>
                                     @endforeach
                                 </select>
                                 <br>

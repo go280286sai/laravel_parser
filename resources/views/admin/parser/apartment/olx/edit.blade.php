@@ -43,10 +43,10 @@
                                 <label for="location">Contact</label>
                                 <br>
                                 <select id="url" name="url" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                    <option value="{{$apartment->url}}" selected> {{$apartment->url}}</option>
+                                    <option value="{{$contact->id}}" selected> {{$contact->last_name.' '.$contact->first_name.' '.$contact->surname}}</option>
                                     @foreach($contacts as $item)
                                         {{$item->last_name.' '.$item->first_name}}
-                                        <option value="{{env('APP_URL').'/user/client/'.$item->id}}">{{$item->last_name.' '.$item->first_name}}</option>
+                                        <option value="{{$item->id}}">{{$item->last_name.' '.$item->first_name.' '.$item->surname}}</option>
                                     @endforeach
                                 </select>
                                 <br>

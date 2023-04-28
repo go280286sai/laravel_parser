@@ -102,8 +102,6 @@
                                         </tr>
 
                                     </table>
-
-
                             </tr>
                         @endforeach
                         </tbody>

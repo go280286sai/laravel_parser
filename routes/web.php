@@ -79,6 +79,8 @@ Route::group(['prefix' => 'user', 'middleware' => IsAuthUser::class], function (
         Route::post('/setting', 'setting');
         Route::post('/view', 'view');
         Route::post('/edit', 'edit');
+        Route::post('/getApartment', 'getApartments');
+        Route::post('/sendClientMail', 'sendClientMail');
     });
     Route::resource('/users', UserController::class);
     Route::resource('/service', ServiceController::class);
