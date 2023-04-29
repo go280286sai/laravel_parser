@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Func\MyFunc;
 use App\Models\Client;
 use App\Models\Document;
 use App\Models\OlxApartment;
@@ -18,7 +19,6 @@ class DocumentController extends Controller
     public function index(): View
     {
         $docs = Document::all();
-
         return view('admin.document.index', ['docs' => $docs, 'i' => 1]);
     }
 
@@ -39,6 +39,7 @@ class DocumentController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+
         $request->validate([
             'rooms' => 'required|numeric',
             'etajnost' => 'required|numeric',
@@ -46,7 +47,7 @@ class DocumentController extends Controller
             'price' => 'required|numeric',
             'client_id'=>'required|numeric'
         ]);
-        $fields = self::stripTags($request->all());
+        $fields = MyFunc::stripTags($request->all());
         Document::add($fields);
 
         return redirect('/user/documents');
@@ -97,13 +98,6 @@ class DocumentController extends Controller
         Document::remove($id);
 
         return redirect('/user/documents');
-    }
-
-    public static function stripTags(array $fields): array
-    {
-        return array_map(function ($item) {
-            return strip_tags($item);
-        }, $fields);
     }
 
     public function comment(Request $request): View

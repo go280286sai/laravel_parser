@@ -7,13 +7,12 @@
     <div class="content-wrapper">
         <section class="content-header">
             <h1>
-                Просмотреть заявку
+                Создать заявку
             </h1>
         </section>
         <section class="content">
             <div class="box" id="create_apartment">
-                <form action="{{env('APP_URL').'/user/documents/'.$doc->id}}" method="post">
-                    @method('PUT')
+                <form action="{{env('APP_URL').'/user/documents'}}" method="post">
                     <div class="box-header with-border">
                         @include('admin.errors')
                     </div>
@@ -24,39 +23,26 @@
                                 <br>
                                 <label class="form-label" for="client_id">Выбрать клиента</label>
                                 <br>
-                                <select disabled="disabled" id="client_id" name="client_id"
-                                        class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                    <option value="{{$doc->client_id}}"
-                                            selected>{{$doc->client->last_name.' '.$doc->client->first_name.' '.$doc->client->surname}}</option>
-                                    @foreach($contacts as $item)
-                                        {{$item->last_name.' '.$item->first_name.' '.$item->surname}}
-                                        <option
-                                            value="{{$item->id}}">{{$item->last_name.' '.$item->first_name.' '.$item->surname}}</option>
-                                    @endforeach
-                                </select>
+                                <input type="text" disabled="disabled"
+                                       value="{{$client->first_name.' '.$client->last_name.' '.$client->surname}}">
+                                <input type="hidden" id="client_id" name="client_id" value="{{$client->id}}">
                                 <br>
                                 <label class="form-label" for="service_id">Выбрать услугу</label>
                                 <br>
-                                <select disabled="disabled" id="service_id" name="service_id"
-                                        class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                    <option value="{{$doc->service_id}}" selected>{{$doc->service->service}}</option>
-                                    @foreach($service as $item)
-                                        {{$item->service}}
-                                        <option value="{{$item->id}}">{{$item->service}}</option>
-                                    @endforeach
-                                </select>
+                                <input type="text" disabled="disabled" value="{{$service->service}}">
+                                <input type="hidden" id="service_id" name="service_id" value="{{$service->id}}">
                                 <br>
                                 <label class="form-label" for="rooms">Количество комнат</label>
                                 <input type="number" id="rooms" name="rooms" class="form-control"
-                                       value="{{$doc->rooms}}">
+                                       value="{{old('rooms')}}">
                                 <label for="etajnost">Этажность</label>
                                 <input type="number" id="etajnost" name="etajnost" class="form-control"
-                                       value="{{$doc->etajnost}}">
+                                       value="{{old('etajnost')}}">
                                 <label for="location">Расположение</label>
                                 <br>
                                 <select id="location" name="location" class="form-select form-select-lg mb-3"
                                         aria-label=".form-select-lg example">
-                                    <option value="{{$doc->location}}" selected>{{$doc->location}}</option>
+                                    <option selected>{{old('location')??'Выбрать расположение'}}</option>
                                     @foreach($loc as $item)
                                         {{$item}}
                                         <option value="{{$item}}">{{$item}}</option>
@@ -65,26 +51,31 @@
                                 <br>
                                 <label for="price">Цена, грн.</label>
                                 <input type="number" id="price" name="price" class="form-control"
-                                       value="{{$doc->price}}">
+                                       value="{{old('price')}}">
                                 <br>
                                 <label for="title">Комментарий</label>
-                                <textarea disabled="disabled" id="comment" cols="30" name="comment" rows="10"
-                                          class="form-control">{{$doc->comment}}</textarea>
+                                <textarea id="comment" cols="30" name="comment" rows="10"
+                                          class="form-control">{{old('comment')}}</textarea>
                             </div>
                         </div>
                     </div>
+
+                    <div class="box-footer">
+                        <input type="submit" class="btn btn-success pull-right"
+                               value="Добавить заявку">
+                        <button class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn"
+                                onclick="window.history.back()">Назад
+                        </button>
+                    </div>
                 </form>
+
+
                 <div class="box-footer">
-                    <input type="button" onclick="getPredict('{{$doc->client->email}}')"
+                    <input type="button" onclick="getPredict()"
                            class="btn btn-success pull-left"
                            value="Подобрать варианты">
                 </div>
                 <div id="body"></div>
-                <div class="box-footer">
-                    <button class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn"
-                            onclick="window.history.back()">Back
-                    </button>
-                </div>
 
             </div>
         </section>
@@ -123,9 +114,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                     'text': df.data
                 }).then(data => {
-                    let text = `<form action="/user/getApartment" method="post">
-@csrf`;
-                    text += `<table id="example1" class="table table-bordered table-striped">
+                    let text = `<table id="example1" class="table table-bordered table-striped">
                         <thead>
                         <tr class="bg-orange-400">
                             <th scope="col">Название</th>
@@ -156,10 +145,7 @@
 
 
                     text += `</tbody>
-                    </table>`;
-                    text += `<input type="hidden" name="data" value="${list}">
-<input type="hidden" name="email" value="${email}">
-<br> <input class="btn btn-danger" type="submit" value="Отправить на почту">
+                    </table>
 </form>`;
                     $('#body').html(text);
                 })
@@ -168,4 +154,5 @@
             })
         }
     </script>
+
 @endsection

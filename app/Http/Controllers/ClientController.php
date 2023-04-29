@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Func\MyFunc;
+use App\Jobs\OlxApartmentJob;
 use App\Mail\User_email;
 use App\Models\Client;
+use App\Models\Document;
+use App\Models\OlxApartment;
+use App\Models\Service;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
@@ -76,19 +82,43 @@ class ClientController extends Controller
      */
     public function destroy(string $id): RedirectResponse
     {
-        Client::remove($id);
+        DB::transaction(function () use ($id) {
+            $posts = OlxApartment::all()->where('client_id', '=', $id);
+            $docs = Document::all()->where('client_id', '=', $id);
+            foreach ($docs as $doc) {
+                Document::remove($doc->id);
+            }
+            foreach ($posts as $post) {
+                OlxApartment::removeId($post->id);
+
+            }
+            $postRemoveForever = OlxApartment::onlyTrashed()->where('client_id', '=', $id)->get();
+            foreach ($postRemoveForever as $item) {
+                $item->forceDelete();
+            }
+            Client::remove($id);
+        });
+
 
         return redirect('/user/client');
     }
 
-    public function comment(Request $request): View
+    /**
+     * Add comment to client
+     * @param string $id
+     * @return View
+     */
+    public function comment(string $id): View
     {
-        $id = $request->get('id');
-        $comment = $request->get('comment');
+        $comment = Client::find($id);
 
-        return view('admin.client.comment', ['id' => $id, 'comment' => $comment]);
+        return view('admin.client.comment', ['comment' => $comment]);
     }
 
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
     public function comment_add(Request $request): RedirectResponse
     {
         $id = $request->get('id');
@@ -98,18 +128,100 @@ class ClientController extends Controller
         return redirect('/user/client');
     }
 
-    public function createMessageClient(Request $request): View
+    /**
+     * Create message to client
+     * @param string $id
+     * @return View
+     */
+    public function createMessageClient(string $id): View
     {
-        $user = Client::find($request->all());
+        $user = Client::find($id);
 
-        return view('admin.client.mail', ['user' => $user[0]]);
+        return view('admin.client.mail', ['user' => $user]);
     }
 
+    /**
+     * Send message to client
+     * @param Request $request
+     * @return RedirectResponse
+     */
     public function sendMessageClient(Request $request): RedirectResponse
     {
-        Mail::to($request->email)->cc(Auth::user()->email)->send(new User_email($request->all()));
-        Log::info('Answer the message: '.$request->email.' '.$request->title.' --'.Auth::user()->name);
+        $request->validate([
+            'content' => 'required|string',
+            'title' => 'required|string',
+            'email' => 'required'
+        ]);
+        $email = $request->get('email');
+        $title = $request->get('title');
+        $text = $request->get('text');
+        Mail::to($email)->cc(Auth::user()->email)->send(new User_email($text));
+        Log::info('Answer the message: ' . $email . ' ' . $title . ' --' . Auth::user()->name);
 
         return redirect('/user/client');
+    }
+
+    /**
+     * @param string $client_id
+     * @param string $service_id
+     * @return View
+     */
+    public function addBuy(string $client_id, string $service_id): View
+    {
+        $contacts = Client::find($client_id);
+        $location = MyFunc::getLocation();
+        $service = Service::find($service_id);
+        return view('admin.client.create_buy', [
+            'service' => $service,
+            'client' => $contacts,
+            'loc' => $location
+        ]);
+    }
+
+    /**
+     * @param string $client_id
+     * @param string $service_id
+     * @return View
+     */
+    public function addSell(string $client_id, string $service_id): View
+    {
+        $contacts = Client::find($client_id);
+        $service = Service::find($service_id);
+        $location = MyFunc::getLocation();
+        $rate = MyFunc::getDollar();
+
+        return view('admin.client.create_sell', [
+            'loc' => $location,
+            'rate' => $rate,
+            'client' => $contacts,
+            'service' => $service
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function createSell(Request $request): RedirectResponse
+    {
+
+        $request->validate([
+            'title' => 'unique:olx_apartments|string',
+            'rooms' => 'required|numeric',
+            'floor' => 'required|numeric',
+            'etajnost' => 'required|numeric',
+            'area' => 'required|numeric',
+            'location' => 'required|not_regex:(Выбрать+)',
+            'price' => 'required|numeric',
+            'description' => 'required',
+        ]);
+        $fields = $request->all();
+        $fields = MyFunc::stripTags($fields);
+        $fields['type'] = env('APP_NAME');
+        $fields['url'] = env('APP_URL') . '/user/client/' . $fields['client_id'];
+        Document::add($fields);
+        OlxApartmentJob::dispatch($fields)->onQueue('olx_apartment');
+
+        return redirect('/user/documents');
     }
 }

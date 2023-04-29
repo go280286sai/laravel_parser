@@ -104,8 +104,16 @@ class UserController extends Controller
 
     public function sendMessage(Request $request): RedirectResponse
     {
-        Mail::to($request->email)->cc(Auth::user()->email)->send(new User_email($request->all()));
-        Log::info('Answer the message: '.$request->email.' '.$request->title.' --'.Auth::user()->name);
+        $request->validate([
+            'content'=>'required|string',
+            'title'=>'required|string',
+            'email'=>'required'
+        ]);
+        $email = $request->get('email');
+        $title = $request->get('title');
+
+        Mail::to($email)->cc(Auth::user()->email)->send(new User_email($request->all()));
+        Log::info('Answer the message: '.$email.' '.$title.' --'.Auth::user()->name);
 
         return redirect('/user/users');
     }

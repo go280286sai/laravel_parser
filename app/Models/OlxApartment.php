@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 
@@ -17,7 +18,7 @@ class OlxApartment extends Model
      * @var string[]
      */
     protected $fillable = ['title', 'url', 'rooms', 'floor', 'etajnost', 'price', 'description',
-        'status', 'comment', 'location', 'type', 'area', 'real_price'];
+        'status', 'comment', 'location', 'type', 'area', 'real_price', 'client_id'];
 
     public static function add(array $fields): void
     {
@@ -38,6 +39,13 @@ class OlxApartment extends Model
         $object->save();
     }
 
+    /**
+     * @return BelongsTo
+     */
+    public function client(): BelongsTo
+    {
+        return $this->belongsTo(Client::class);
+    }
     public static function cleanBase(): void
     {
         self::truncate();

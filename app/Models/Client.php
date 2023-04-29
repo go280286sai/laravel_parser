@@ -30,6 +30,10 @@ class Client extends Model
         return  $this->belongsTo(Service::class);
     }
 
+    public function olx_apartment(): HasMany
+    {
+        return $this->hasMany(OlxApartment::class);
+    }
     public function document(): HasMany
     {
         return $this->hasMany(Document::class);
@@ -40,6 +44,11 @@ class Client extends Model
         return $this->belongsTo(Gender::class);
     }
 
+    /**
+     * Add comment to client
+     * @param array $fields
+     * @return void
+     */
     public static function client_comment_add(array $fields): void
     {
         $object = self::find($fields['id']);

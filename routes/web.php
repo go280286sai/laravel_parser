@@ -9,6 +9,7 @@ use App\Http\Controllers\User\ParserController;
 use App\Http\Controllers\User\ResearchController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Middleware\IsAuthUser;
+use App\Models\Document;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -93,13 +94,17 @@ Route::group(['prefix' => 'user', 'middleware' => IsAuthUser::class], function (
         Route::post('/sendMessage', 'sendMessage');
     });
     Route::controller(ClientController::class)->group(function () {
-        Route::post('/client_comment', 'comment');
+        Route::get('/client_comment/{id}', 'comment');
         Route::post('/client_comment_add', 'comment_add');
-        Route::post('/createMessageClient', 'createMessageClient');
+        Route::get('/createMessageClient/{id}', 'createMessageClient');
         Route::post('/sendMessageClient', 'sendMessageClient');
+        Route::get('/add_buy/{client_id}/{service_id}', 'addBuy');
+        Route::get('/add_sell/{client_id}/{service_id}', 'addSell');
+        Route::post('/createSell', 'createSell');
     });
     Route::controller(DocumentController::class)->group(function () {
         Route::post('/document_comment', 'comment');
         Route::post('/document_comment_add', 'addComment');
+
     });
 });

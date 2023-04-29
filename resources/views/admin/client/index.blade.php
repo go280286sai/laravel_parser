@@ -2,7 +2,6 @@
 
 @section('style')
     <link rel="stylesheet" href="{{env('APP_URL').'/assets/plugins/datatables/dataTables.bootstrap.css'}}">
-
 @endsection
 
 @section('text')
@@ -11,7 +10,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-               Список клиентов
+                Список клиентов
             </h1>
         </section>
         <!-- Main content -->
@@ -26,12 +25,12 @@
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>{{__('admin.name')}}</th>
-                            <th>{{__('admin.contact_info')}}</th>
-                            <th>{{__('admin.action')}}</th>
-                            <th>{{__('admin.options')}}</th>
-                            <th>{{__('admin.comments')}}</th>
+                            <th>№</th>
+                            <th>Имя</th>
+                            <th>Клиент</th>
+                            <th>Действие</th>
+                            <th>Опции</th>
+                            <th>Комментарий</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -48,33 +47,45 @@
                                         :</strong> {{date_format($client->created_at, 'd-m-Y')}}
                                 </td>
                                 <td>
-                                    <form action="{{env('APP_URL').'/user/client/'.$client->id.'/edit'}}"
-                                          method="get">
-                                        @csrf
-                                        <button class="btn" title="{{__('admin.edit')}}"><i class="fa fa-bars"></i>
-                                        </button>
-                                    </form>
-                                    <form action="{{env('APP_URL').'/user/client/'.$client->id}}" method="post">
-                                        @csrf
-                                        @method('DELETE')
-                                        <input type="hidden" name="id" value="{{$client->id}}">
-                                        <button onclick="return confirm('Удалить клиента?')" class="btn"
-                                                title="{{__('admin.delete')}}"><i class="fa fa-trash"></i></button>
-                                    </form>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <form action="{{env('APP_URL').'/user/add_buy/'.$client->id.'/1'}}" method="get">
+                                                    <button class="btn" title="Купить"><i class="fa fa-dollar"></i>
+                                                    </button>
+                                                </form>
+                                                <form action="{{env('APP_URL').'/user/add_sell/'.$client->id.'/2'}}" method="get">
+                                                    <button class="btn" title="Продать"><i class="fa fa-money"></i></button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <form action="{{env('APP_URL').'/user/client/'.$client->id.'/edit'}}"
+                                                      method="get">
+                                                    @csrf
+                                                    <button class="btn" title="Редактировать"><i class="fa fa-bars"></i>
+                                                    </button>
+                                                </form>
+                                                <form action="{{env('APP_URL').'/user/client/'.$client->id}}"
+                                                      method="post">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <input type="hidden" name="id" value="{{$client->id}}">
+                                                    <button onclick="return confirm('Удалить клиента?')" class="btn"
+                                                            title="Удалить"><i class="fa fa-trash"></i></button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </td>
                                 <td>
-                                    <form action="{{env('APP_URL').'/user/createMessageClient'}}"
-                                          method="post">
-                                        <input type="hidden" name="email" value="{{$client->id}}">
+                                    <form action="{{env('APP_URL').'/user/createMessageClient/'.$client->id}}"
+                                          method="get">
                                         @csrf
-                                        <button class="btn" title="{{__('admin.send_message')}}"><i
+                                        <button class="btn" title="Отправить сообщение"><i
                                                 class="fa fa-mail-forward"></i></button>
                                     </form>
-                                    <form action="{{env('APP_URL').'/user/client_comment'}}" method="post">
-                                        <input type="hidden" name="id" value="{{$client->id}}">
-                                        <input type="hidden" name="comment" value="{!! $client->comment??'' !!}">
-                                        @csrf
-                                        <button class="btn" title="{{__('admin.add_comment')}}"><i
+                                    <form action="{{env('APP_URL').'/user/client_comment/'.$client->id}}" method="get">
+                                        <button class="btn" title="Добавить комментарий"><i
                                                 class="fa fa-comment"></i></button>
                                     </form>
                                 </td>
