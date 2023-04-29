@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::table('olx_apartments', function (Blueprint $table) {
             $table->integer('client_id')->nullable();
-
         });
     }
 

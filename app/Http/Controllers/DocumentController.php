@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Func\MyFunc;
 use App\Models\Client;
 use App\Models\Document;
-use App\Models\OlxApartment;
 use App\Models\Service;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -19,6 +18,7 @@ class DocumentController extends Controller
     public function index(): View
     {
         $docs = Document::all();
+
         return view('admin.document.index', ['docs' => $docs, 'i' => 1]);
     }
 
@@ -28,10 +28,10 @@ class DocumentController extends Controller
     public function create(): View
     {
         $contacts = Client::all();
-        $location = OlxApartment::all('location')->groupBy('location')->toArray();
-        $service = Service::all();
+        $location = MyFunc::getLocation();
+        $service = Service::find(1);
 
-        return view('admin.document.create', ['service' => $service, 'contacts' => $contacts, 'loc' => array_keys($location)]);
+        return view('admin.document.create', ['service' => $service, 'contacts' => $contacts, 'loc' => $location]);
     }
 
     /**
@@ -39,13 +39,12 @@ class DocumentController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-
         $request->validate([
             'rooms' => 'required|numeric',
             'etajnost' => 'required|numeric',
             'location' => 'required|not_regex:(Выбрать+)',
             'price' => 'required|numeric',
-            'client_id'=>'required|numeric'
+            'client_id' => 'required|numeric',
         ]);
         $fields = MyFunc::stripTags($request->all());
         Document::add($fields);
@@ -60,10 +59,10 @@ class DocumentController extends Controller
     {
         $doc = Document::find($id);
         $contacts = Client::all();
-        $location = OlxApartment::all('location')->groupBy('location')->toArray();
+        $location = MyFunc::getLocation();
         $service = Service::all();
 
-        return view('admin.document.show', ['doc' => $doc, 'service' => $service, 'contacts' => $contacts, 'loc' => array_keys($location)]);
+        return view('admin.document.show', ['doc' => $doc, 'service' => $service, 'contacts' => $contacts, 'loc' => $location]);
     }
 
     /**
@@ -73,10 +72,10 @@ class DocumentController extends Controller
     {
         $doc = Document::find($id);
         $contacts = Client::all();
-        $location = OlxApartment::all('location')->groupBy('location')->toArray();
+        $location = MyFunc::getLocation();
         $service = Service::all();
 
-        return view('admin.document.edit', ['doc' => $doc, 'service' => $service, 'contacts' => $contacts, 'loc' => array_keys($location)]);
+        return view('admin.document.edit', ['doc' => $doc, 'service' => $service, 'contacts' => $contacts, 'loc' => $location]);
     }
 
     /**
@@ -84,7 +83,14 @@ class DocumentController extends Controller
      */
     public function update(Request $request, string $id): RedirectResponse
     {
-        $fields = self::stripTags($request->all());
+        $request->validate([
+            'rooms' => 'required|numeric',
+            'etajnost' => 'required|numeric',
+            'location' => 'required|not_regex:(Выбрать+)',
+            'price' => 'required|numeric',
+            'client_id' => 'required|numeric',
+        ]);
+        $fields = MyFunc::stripTags($request->all());
         Document::edit($fields, $id);
 
         return redirect('/user/documents');
@@ -100,17 +106,16 @@ class DocumentController extends Controller
         return redirect('/user/documents');
     }
 
-    public function comment(Request $request): View
+    public function comment(string $id): View
     {
-        $id = $request->get('id');
-        $comment = $request->get('comment');
+        $object = Document::find($id);
 
-        return view('admin.document.comment', ['id' => $id, 'comment' => $comment]);
+        return view('admin.document.comment', ['object' => $object]);
     }
 
     public function addComment(Request $request): RedirectResponse
     {
-        $fields = self::stripTags($request->all());
+        $fields = MyFunc::stripTags($request->all());
         Document::addComment($fields);
 
         return redirect('/user/documents');

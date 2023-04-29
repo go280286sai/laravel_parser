@@ -34,6 +34,7 @@ class Client extends Model
     {
         return $this->hasMany(OlxApartment::class);
     }
+
     public function document(): HasMany
     {
         return $this->hasMany(Document::class);
@@ -46,8 +47,6 @@ class Client extends Model
 
     /**
      * Add comment to client
-     * @param array $fields
-     * @return void
      */
     public static function client_comment_add(array $fields): void
     {

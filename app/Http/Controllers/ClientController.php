@@ -90,7 +90,6 @@ class ClientController extends Controller
             }
             foreach ($posts as $post) {
                 OlxApartment::removeId($post->id);
-
             }
             $postRemoveForever = OlxApartment::onlyTrashed()->where('client_id', '=', $id)->get();
             foreach ($postRemoveForever as $item) {
@@ -99,14 +98,11 @@ class ClientController extends Controller
             Client::remove($id);
         });
 
-
         return redirect('/user/client');
     }
 
     /**
      * Add comment to client
-     * @param string $id
-     * @return View
      */
     public function comment(string $id): View
     {
@@ -115,10 +111,6 @@ class ClientController extends Controller
         return view('admin.client.comment', ['comment' => $comment]);
     }
 
-    /**
-     * @param Request $request
-     * @return RedirectResponse
-     */
     public function comment_add(Request $request): RedirectResponse
     {
         $id = $request->get('id');
@@ -130,8 +122,6 @@ class ClientController extends Controller
 
     /**
      * Create message to client
-     * @param string $id
-     * @return View
      */
     public function createMessageClient(string $id): View
     {
@@ -142,47 +132,36 @@ class ClientController extends Controller
 
     /**
      * Send message to client
-     * @param Request $request
-     * @return RedirectResponse
      */
     public function sendMessageClient(Request $request): RedirectResponse
     {
         $request->validate([
             'content' => 'required|string',
             'title' => 'required|string',
-            'email' => 'required'
+            'email' => 'required',
         ]);
         $email = $request->get('email');
         $title = $request->get('title');
         $text = $request->get('text');
         Mail::to($email)->cc(Auth::user()->email)->send(new User_email($text));
-        Log::info('Answer the message: ' . $email . ' ' . $title . ' --' . Auth::user()->name);
+        Log::info('Answer the message: '.$email.' '.$title.' --'.Auth::user()->name);
 
         return redirect('/user/client');
     }
 
-    /**
-     * @param string $client_id
-     * @param string $service_id
-     * @return View
-     */
     public function addBuy(string $client_id, string $service_id): View
     {
         $contacts = Client::find($client_id);
         $location = MyFunc::getLocation();
         $service = Service::find($service_id);
+
         return view('admin.client.create_buy', [
             'service' => $service,
             'client' => $contacts,
-            'loc' => $location
+            'loc' => $location,
         ]);
     }
 
-    /**
-     * @param string $client_id
-     * @param string $service_id
-     * @return View
-     */
     public function addSell(string $client_id, string $service_id): View
     {
         $contacts = Client::find($client_id);
@@ -194,17 +173,12 @@ class ClientController extends Controller
             'loc' => $location,
             'rate' => $rate,
             'client' => $contacts,
-            'service' => $service
+            'service' => $service,
         ]);
     }
 
-    /**
-     * @param Request $request
-     * @return RedirectResponse
-     */
     public function createSell(Request $request): RedirectResponse
     {
-
         $request->validate([
             'title' => 'unique:olx_apartments|string',
             'rooms' => 'required|numeric',
@@ -218,8 +192,7 @@ class ClientController extends Controller
         $fields = $request->all();
         $fields = MyFunc::stripTags($fields);
         $fields['type'] = env('APP_NAME');
-        $fields['url'] = env('APP_URL') . '/user/client/' . $fields['client_id'];
-        Document::add($fields);
+        $fields['url'] = env('APP_URL').'/user/client/'.$fields['client_id'];
         OlxApartmentJob::dispatch($fields)->onQueue('olx_apartment');
 
         return redirect('/user/documents');

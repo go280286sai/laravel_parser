@@ -42,13 +42,18 @@
                                 <br>
                                 <label for="location">Contact</label>
                                 <br>
-                                <select id="url" name="url" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                    <option value="{{$contact->id}}" selected> {{$contact->last_name.' '.$contact->first_name.' '.$contact->surname}}</option>
-                                    @foreach($contacts as $item)
-                                        {{$item->last_name.' '.$item->first_name}}
-                                        <option value="{{$item->id}}">{{$item->last_name.' '.$item->first_name.' '.$item->surname}}</option>
-                                    @endforeach
-                                </select>
+                                @if($contact!=null)
+                                    <select id="url" name="url" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                                        <option value="{{$contact->id}}" selected> {{$contact->last_name.' '.$contact->first_name.' '.$contact->surname}}</option>
+                                        @foreach($contacts as $item)
+                                            {{$item->last_name.' '.$item->first_name}}
+                                            <option value="{{$item->id}}">{{$item->last_name.' '.$item->first_name.' '.$item->surname}}</option>
+                                        @endforeach
+                                    </select>
+                                @else
+                                    <input type="text" name="url" class="form-control" value="{{$apartment->url}}">
+                                @endif
+
                                 <br>
                                 <label for="price">Цена, грн.</label>
                                 <input type="number" id="price" name="price" class="form-control" value="{{$apartment->price}}">

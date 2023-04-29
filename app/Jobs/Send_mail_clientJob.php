@@ -16,6 +16,7 @@ class Send_mail_clientJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private object $object;
+
     private string $email;
 
     /**

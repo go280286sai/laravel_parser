@@ -162,16 +162,12 @@
                                     @if($apartment->status==0)
                                         <input type="hidden" name="" id="apartmentStatus" value="{{$apartment->id}}">
                                     @endif
-                                    <form action="{{env('APP_URL')}}/user/view" method="post">
-                                        @csrf
-                                        <input type="hidden" name="id" value="{{$apartment->id}}">
+                                    <form action="{{env('APP_URL').'/user/view/'.$apartment->id}}" method="get">
                                         <button class="btn"
                                                 title="Редактировать"><i class="fa fa-edit"></i></button>
                                     </form>
-                                    <form action="{{env('APP_URL')}}/user/olx_apartment_comment"
+                                    <form action="{{env('APP_URL').'/user/olx_apartment_comment/'.$apartment->id}}"
                                           method="get">
-                                        @csrf
-                                        <input type="hidden" name="id" value="{{$apartment->id}}">
                                         <button class="btn" title="{{__('messages.comment_add')}}"><i
                                                 class="fa fa-bars"></i>
                                         </button>

@@ -105,9 +105,9 @@ class UserController extends Controller
     public function sendMessage(Request $request): RedirectResponse
     {
         $request->validate([
-            'content'=>'required|string',
-            'title'=>'required|string',
-            'email'=>'required'
+            'content' => 'required|string',
+            'title' => 'required|string',
+            'email' => 'required',
         ]);
         $email = $request->get('email');
         $title = $request->get('title');

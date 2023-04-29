@@ -66,12 +66,9 @@
                                                 </form>
                                             </td>
                                             <td>
-                                                <form action="{{env('APP_URL')}}/user/document_comment"
-                                                      method="post">
-                                                    @csrf
-                                                    <input type="hidden" name="id" value="{{$doc->id}}">
-                                                    <input type="hidden" name="comment" value="{{$doc->comment}}">
-                                                    <button class="btn" title="{{__('messages.comment_add')}}"><i
+                                                <form action="{{env('APP_URL').'/user/document_comment/'.$doc->id}}"
+                                                      method="get">
+                                                    <button class="btn" title="Добавить комментарий"><i
                                                             class="fa fa-bars"></i>
                                                     </button>
                                                 </form>
@@ -81,8 +78,8 @@
                                             <td>
                                                 <form action="{{env('APP_URL').'/user/documents/'.$doc->id}}"
                                                       method="post">
-                                                    @method('DELETE')
                                                     @csrf
+                                                    @method('DELETE')
                                                     <button onclick="return confirm('{{__('messages.are_you_sure')}}')"
                                                             class="btn"
                                                             title="{{__('messages.delete')}}"><i
@@ -93,7 +90,6 @@
                                             <td>
                                                 <form action="{{env('APP_URL').'/user/documents/'.$doc->id}}"
                                                       method="get">
-                                                    @csrf
                                                     <button class="btn"
                                                             title="Просмотреть"><i
                                                             class="fa fa-bitcoin"></i></button>

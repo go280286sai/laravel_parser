@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\User;
 
 use App\Events\OlxApartmentEvent;
+use App\Func\MyFunc;
 use App\Http\Controllers\Controller;
 use App\Jobs\OlxApartmentJob;
 use App\Jobs\RealPriceJob;
 use App\Jobs\Send_mail_clientJob;
 use App\Models\Client;
 use App\Models\OlxApartment;
-use App\Models\Rate;
 use App\Models\Research;
 use App\Models\Setting;
 use Illuminate\Contracts\View\View;
@@ -17,8 +17,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as Back;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 
@@ -26,45 +24,24 @@ class OlxApartmentController extends Controller
 {
     public function index(): View
     {
-        if (Cache::has('olx')) {
-            $olx = Cache::get('olx');
-        } else {
-            $olx = Research::find(1);
-            Cache::put('olx', $olx);
-        }
+        $olx = Research::find(1);
         $OlxApartment = OlxApartment::all()->sortByDesc('date');
-        if (Cache::has('dollar')) {
-            $rate = Cache::get('dollar');
-        } else {
-            $rate = Rate::latest()->get('dollar');
-            Cache::put('dollar', $rate);
-        }
-        $token = DB::table('personal_access_tokens')->where('tokenable_id', '=', Auth::id())->select('token')->get();
-        if (count($token) > 0) {
-            $token = $token[0]->token;
-        } else {
-            $token = Auth::user()->createToken('API TOKEN')->plainTextToken;
-        }
+        $rate = MyFunc::getDollar();
+        $token = MyFunc::getToken();
 
         return view('admin.parser.apartment.olx.index',
             [
                 'title' => 'Parser OLX',
                 'apartments' => $OlxApartment,
                 'olx' => $olx,
-                'data' => $data ?? 0,
-                'rate' => $rate[0] ?? 0,
+                'rate' => $rate,
                 'token' => $token,
             ]);
     }
 
     public function report(): View
     {
-        if (Cache::has('dollar')) {
-            $rate = Cache::get('dollar');
-        } else {
-            $rate = Rate::latest()->get('dollar');
-            Cache::put('dollar', $rate);
-        }
+        $rate = MyFunc::getDollar();
         $group = DB::table('olx_apartments')
             ->select('rooms', 'floor', 'etajnost', 'location', DB::raw('ROUND(AVG(price),2) as price'),
                 DB::raw('COUNT(rooms) as count'), DB::raw('ROUND(AVG(real_price),2) as real_price'))
@@ -83,25 +60,22 @@ class OlxApartmentController extends Controller
         OlxApartmentJob::dispatch($request->all())->onQueue('olx_apartment');
     }
 
-    public function view(Request $request): View
+    public function view(string $id): View
     {
-        $location = OlxApartment::all('location')->groupBy('location')->toArray();
-        $id = $request->get('id');
+        $location = MyFunc::getLocation();
         $apartment = OlxApartment::find($id);
         $client_id = explode('/', $apartment['url']);
-        $apartment['url'] = $client_id[5];
         $contacts = Client::all();
-        $contact = Client::find($apartment['url']);
-        return view('admin.parser.apartment.olx.edit', ['loc' => array_keys($location), 'apartment' => $apartment,
+        $contact = Client::find($client_id[5]);
+
+        return view('admin.parser.apartment.olx.edit', ['loc' => $location, 'apartment' => $apartment,
             'contacts' => $contacts, 'contact' => $contact]);
     }
 
     public function edit(Request $request): string
     {
-        $fields = array_map(function ($item) {
-            return strip_tags($item);
-        }, $request->all());
-        $fields['url'] = env('APP_URL') . '/user/client/' . $fields['url'];
+        $fields = MyFunc::stripTags($request->all());
+        $fields['url'] = env('APP_URL').'/user/client/'.$fields['url'];
         OlxApartment::edit($fields);
 
         return to_route('olx_apartment');
@@ -118,7 +92,7 @@ class OlxApartmentController extends Controller
     {
         $data = OlxApartment::all();
         $now = Carbon::now()->format('d_m_Y');
-        $name = 'Olx_Apartment_' . $now;
+        $name = 'Olx_Apartment_'.$now;
 
         return Response::make($data)->header('Content-Type', 'application/json;charset=utf-8')
             ->header('Content-Disposition', "attachment;filename=$name.json");
@@ -152,35 +126,31 @@ class OlxApartmentController extends Controller
         return redirect()->route('olx_apartment');
     }
 
-    public function olx_soft_delete_item(Request $request): RedirectResponse
+    public function olx_soft_delete_item(string $id): RedirectResponse
     {
-        $item = $request->get('id');
-        OlxApartment::onlyTrashed()->find($item)->forceDelete();
+        OlxApartment::onlyTrashed()->find($id)->forceDelete();
 
         return redirect()->route('olx_apartment');
     }
 
-    public function olx_soft_recovery_item(Request $request): RedirectResponse
+    public function olx_soft_recovery_item(string $id): RedirectResponse
     {
-        $item = $request->get('id');
-        OlxApartment::onlyTrashed()->find($item)->restore();
+        OlxApartment::onlyTrashed()->find($id)->restore();
 
         return redirect()->route('olx_apartment');
     }
 
     public function create(): View
     {
-        $location = OlxApartment::all('location')->groupBy('location')->toArray();
+        $location = MyFunc::getLocation();
         $contacts = Client::all();
-        if (Cache::has('dollar')) {
-            $rate = Cache::get('dollar');
-        } else {
-            $rate = Rate::latest()->get('dollar');
-            Cache::put('dollar', $rate);
-        }
+        $rate = MyFunc::getDollar();
 
-        return view('admin.parser.apartment.olx.create', ['loc' => array_keys($location), 'rate' => $rate[0],
-            'contacts' => $contacts]);
+        return view('admin.parser.apartment.olx.create', [
+            'loc' => $location,
+            'rate' => $rate,
+            'contacts' => $contacts,
+        ]);
     }
 
     public function addCreate(Request $request): RedirectResponse
@@ -196,19 +166,16 @@ class OlxApartmentController extends Controller
             'description' => 'required',
         ]);
         $fields = $request->all();
-        $fields = array_map(function ($item) {
-            return strip_tags($item);
-        }, $fields);
+        $fields = MyFunc::stripTags($request->all());
         $fields['type'] = env('APP_NAME');
-        $fields['url'] = env('APP_URL') . '/user/client/' . $fields['client_id'];
+        $fields['url'] = env('APP_URL').'/user/client/'.$fields['client_id'];
         OlxApartmentJob::dispatch($fields)->onQueue('olx_apartment');
 
         return back();
     }
 
-    public function comment_view(Request $request): View
+    public function comment_view(string $id): View
     {
-        $id = $request->get('id');
         $data = OlxApartment::find($id);
 
         return view('admin.parser.apartment.olx.comment', ['data' => $data]);
@@ -216,8 +183,9 @@ class OlxApartmentController extends Controller
 
     public function comment_add(Request $request): RedirectResponse
     {
-        $id = $request->get('id');
-        $comment = $request->get('comment');
+        $object = MyFunc::stripTags($request->all());
+        $id = $object['id'];
+        $comment = $object['comment'];
         OlxApartment::addComment($id, $comment);
 
         return redirect()->route('olx_apartment');
@@ -258,10 +226,7 @@ class OlxApartmentController extends Controller
         }
     }
 
-    /**
-     * @return void
-     */
-    public function removeFavorite(Request $request)
+    public function removeFavorite(Request $request): void
     {
         $data = $request->get('checks');
         foreach ($data as $item) {
@@ -269,9 +234,6 @@ class OlxApartmentController extends Controller
         }
     }
 
-    /**
-     * @return void
-     */
     public function setting(Request $request): void
     {
         $arr = $request->get('data');
@@ -285,20 +247,15 @@ class OlxApartmentController extends Controller
         if ($request->get('data') !== null) {
             $mail = $request->get('email');
             $data = $request->get('data');
-            $object = $this->getArray($data);
+            $object = MyFunc::getListToArray($data);
             Send_mail_clientJob::dispatch($object[0], $mail)->onQueue('send_client');
+
             return redirect('/user/documents');
         } else {
             $text = $request->get('text');
-            $object = $this->getArray($text);
+            $object = MyFunc::getListToArray($text);
+
             return [$object[0], $object[1]];
         }
-    }
-
-    public function getArray(string $text): array
-    {
-        $array = explode(',', substr($text, 0, strlen($text) - 1));
-        $object = DB::table('olx_apartments')->whereIn('id', $array)->get();
-        return [$object, $array];
     }
 }

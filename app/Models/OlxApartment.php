@@ -39,13 +39,11 @@ class OlxApartment extends Model
         $object->save();
     }
 
-    /**
-     * @return BelongsTo
-     */
     public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
     }
+
     public static function cleanBase(): void
     {
         self::truncate();

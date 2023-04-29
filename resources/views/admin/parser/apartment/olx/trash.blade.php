@@ -17,16 +17,14 @@
                         <table>
                             <tr>
                                 <td>
-                                    <form action="{{env('APP_URL').'/user/olx_apartment_recovery_all'}}" method="post">
-                                        @csrf
+                                    <form action="{{env('APP_URL').'/user/olx_apartment_recovery_all'}}" method="get">
                                         <button title="{{__('messages.recovery_all')}}?"
                                                 onclick="return confirm('{{__('messages.are_you_sure')}}')"
                                                 class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn"><i>{{__('messages.recovery_all')}}</i></button>
                                     </form>
                                 </td>
                                 <td>
-                                    <form action="{{env('APP_URL').'/user/olx_apartment_delete_all'}}" method="post">
-                                        @csrf
+                                    <form action="{{env('APP_URL').'/user/olx_apartment_delete_all'}}" method="get">
                                         <button title="{{__('messages.delete_all')}}?"
                                                 onclick="return confirm('{{__('messages.are_you_sure')}}')"
                                                 class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn"><i>{{__('messages.delete_all')}}</i>
@@ -40,11 +38,11 @@
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Title</th>
-                            <th>Price</th>
-                            <th>Date</th>
-                            <th>Description</th>
-                            <th>Action</th>
+                            <th>Название</th>
+                            <th>Цена</th>
+                            <th>Дата</th>
+                            <th>Описание</th>
+                            <th>Действие</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -61,17 +59,13 @@
                                     {{\Illuminate\Support\Str::substr($item->description, 0, 200)}}
                                 </td>
                                 <td>
-                                    <form action="{{env('APP_URL').'/user/olx_apartment_recovery_item'}}" method="post">
-                                        @csrf
-                                        <input type="hidden" name="id" value="{{$item->id}}">
+                                    <form action="{{env('APP_URL').'/user/olx_apartment_recovery_item/'.$item->id}}" method="get">
                                         <button title="{{__('messages.recovery')}}?"
                                                 onclick="return confirm('{{__('messages.are_you_sure')}}')"
                                                 class="btn"><i
                                                 class="fa fa-bars"></i></button>
                                     </form>
-                                    <form action="{{env('APP_URL').'/user/olx_apartment_delete_item'}}" method="post">
-                                        @csrf
-                                        <input type="hidden" name="id" value="{{$item->id}}">
+                                    <form action="{{env('APP_URL').'/user/olx_apartment_delete_item/'.$item->id}}" method="post">
                                         <button title="{{__('messages.delete')}}?"
                                                 onclick="return confirm('{{__('messages.are_you_sure')}}')"
                                                 class="btn"><i
@@ -83,7 +77,7 @@
                     </table>
                 </div>
                 <div class="box-footer">
-                    <button class="btn btn-success" onclick="window.history.back()">Back</button>
+                    <button class="btn btn-success" onclick="window.history.back()">Назад</button>
                 </div>
             </div>
         </section>

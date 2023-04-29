@@ -21,9 +21,9 @@
                             <div class="form-group">
                                 @csrf
                                 <label for="title">Title</label>
-                                <input type="hidden" name="id" value="{{$id}}">
+                                <input type="hidden" name="id" value="{{$object->id}}">
                                 <textarea id="" cols="30" rows="10" class="form-control"
-                                          name="comment">{!! $comment??'' !!}</textarea>
+                                          name="comment">{!! $object->comment??'' !!}</textarea>
                             </div>
                         </div>
                     </div>

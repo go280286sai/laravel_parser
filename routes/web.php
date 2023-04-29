@@ -9,7 +9,6 @@ use App\Http\Controllers\User\ParserController;
 use App\Http\Controllers\User\ResearchController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Middleware\IsAuthUser;
-use App\Models\Document;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -60,14 +59,14 @@ Route::group(['prefix' => 'user', 'middleware' => IsAuthUser::class], function (
         Route::post('/addOlxApartment', 'addOlxApartment');
         Route::get('/apartment', 'index')->name('olx_apartment');
         Route::post('/saveJson', 'saveJson');
-        Route::get('olx_apartment_comment', 'comment_view');
+        Route::get('olx_apartment_comment/{id}', 'comment_view');
         Route::post('olx_apartment_comment', 'comment_add');
         Route::post('/olx_apartment_delete', 'remove');
         Route::get('/olx_apartment_delete_index', 'olx_soft_delete_index');
-        Route::post('/olx_apartment_delete_all', 'olx_soft_delete_all');
-        Route::post('/olx_apartment_delete_item', 'olx_soft_delete_item');
-        Route::post('/olx_apartment_recovery_all', 'olx_soft_recovery_all');
-        Route::post('/olx_apartment_recovery_item', 'olx_soft_recovery_item');
+        Route::get('/olx_apartment_delete_all', 'olx_soft_delete_all');
+        Route::get('/olx_apartment_delete_item/{id}', 'olx_soft_delete_item');
+        Route::get('/olx_apartment_recovery_all', 'olx_soft_recovery_all');
+        Route::get('/olx_apartment_recovery_item/{id}', 'olx_soft_recovery_item');
         Route::post('/checks_remove', 'checks_remove');
         Route::post('/set_status', 'setStatus');
         Route::post('/sendPushMessage', 'sendPushMessage');
@@ -78,7 +77,7 @@ Route::group(['prefix' => 'user', 'middleware' => IsAuthUser::class], function (
         Route::get('/create_apartment', 'create');
         Route::post('/addCreate', 'addCreate');
         Route::post('/setting', 'setting');
-        Route::post('/view', 'view');
+        Route::get('/view/{id}', 'view');
         Route::post('/edit', 'edit');
         Route::post('/getApartment', 'getApartments');
         Route::post('/sendClientMail', 'sendClientMail');
@@ -103,8 +102,7 @@ Route::group(['prefix' => 'user', 'middleware' => IsAuthUser::class], function (
         Route::post('/createSell', 'createSell');
     });
     Route::controller(DocumentController::class)->group(function () {
-        Route::post('/document_comment', 'comment');
+        Route::get('/document_comment/{id}', 'comment');
         Route::post('/document_comment_add', 'addComment');
-
     });
 });
