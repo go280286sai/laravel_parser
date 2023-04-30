@@ -111,11 +111,14 @@ class ClientController extends Controller
         return view('admin.client.comment', ['comment' => $comment]);
     }
 
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
     public function comment_add(Request $request): RedirectResponse
     {
-        $id = $request->get('id');
-        $comment = $request->get('comment');
-        Client::client_comment_add(['id' => $id, 'comment' => $comment]);
+        $object = MyFunc::stripTags($request->all());
+        Client::client_comment_add($object);
 
         return redirect('/user/client');
     }
@@ -138,17 +141,19 @@ class ClientController extends Controller
         $request->validate([
             'content' => 'required|string',
             'title' => 'required|string',
-            'email' => 'required',
         ]);
-        $email = $request->get('email');
-        $title = $request->get('title');
-        $text = $request->get('text');
-        Mail::to($email)->cc(Auth::user()->email)->send(new User_email($text));
-        Log::info('Answer the message: '.$email.' '.$title.' --'.Auth::user()->name);
+        $fields = MyFunc::stripTags($request->all());
+        Mail::to($fields['email'])->cc(Auth::user()->email)->send(new User_email($fields));
+        Log::info('Answer the message: '.$fields['email'].' '.$fields['title'].' --'.Auth::user()->name);
 
         return redirect('/user/client');
     }
 
+    /**
+     * @param string $client_id
+     * @param string $service_id
+     * @return View
+     */
     public function addBuy(string $client_id, string $service_id): View
     {
         $contacts = Client::find($client_id);
@@ -162,6 +167,11 @@ class ClientController extends Controller
         ]);
     }
 
+    /**
+     * @param string $client_id
+     * @param string $service_id
+     * @return View
+     */
     public function addSell(string $client_id, string $service_id): View
     {
         $contacts = Client::find($client_id);
@@ -177,6 +187,10 @@ class ClientController extends Controller
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
     public function createSell(Request $request): RedirectResponse
     {
         $request->validate([

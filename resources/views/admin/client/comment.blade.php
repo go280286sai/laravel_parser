@@ -26,15 +26,17 @@
                             <div class="form-group">
                                 @csrf
                                 <input type="hidden" name="id" value="{{$comment->id}}">
-                                <label for="exampleInputEmail1"></label>
-                                <label for=""></label><textarea id="" cols="30" rows="10" class="form-control"
-                                                                name="comment">{{$comment->comment}}</textarea>
+                                <label for="comment"></label>
+                                <textarea id="comment" cols="30" rows="10" class="form-control"
+                                          name="comment">{{$comment->comment}}</textarea>
                             </div>
                         </div>
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
-                        <button class="btn btn-default" onclick="window.history.back()">Назад</button>
+                        <div class="form-group">
+                            <a href="{{env('APP_URL').'/user/client'}}" class="btn btn-danger">Назад</a>
+                        </div>
                         <input type="submit" class="btn btn-success pull-right" name="submit" value="Отправить">
                     </div>
                 </form>

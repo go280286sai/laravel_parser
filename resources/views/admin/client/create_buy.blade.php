@@ -7,7 +7,7 @@
     <div class="content-wrapper">
         <section class="content-header">
             <h1>
-                Создать заявку
+                Создать заявку на покупку
             </h1>
         </section>
         <section class="content">
@@ -63,9 +63,9 @@
                     <div class="box-footer">
                         <input type="submit" class="btn btn-success pull-right"
                                value="Добавить заявку">
-                        <button class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn"
-                                onclick="window.history.back()">Назад
-                        </button>
+                        <div class="form-group">
+                            <a href="{{env('APP_URL').'/user/client'}}" class="btn btn-danger">Назад</a>
+                        </div>
                     </div>
                 </form>
 

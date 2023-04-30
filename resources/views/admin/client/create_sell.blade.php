@@ -7,7 +7,7 @@
     <div class="content-wrapper">
         <section class="content-header">
             <h1>
-                Добавить объявление
+                Добавить объявление на продажу
             </h1>
         </section>
         <section class="content">
@@ -62,7 +62,10 @@
                     </div>
                     <div class="box-footer">
                         <input type="submit" class="btn btn-success pull-right"
-                               value="Отправить"><button class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn" onclick="window.history.back()">Назад</button>
+                               value="Отправить">
+                        <div class="form-group">
+                            <a href="{{env('APP_URL').'/user/client'}}" class="btn btn-danger">Назад</a>
+                        </div>
                     </div>
                 </form>
             </div>

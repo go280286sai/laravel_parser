@@ -25,21 +25,33 @@ class Client extends Model
         'surname',
     ];
 
+    /**
+     * @return BelongsTo
+     */
     public function service(): BelongsTo
     {
         return  $this->belongsTo(Service::class);
     }
 
+    /**
+     * @return HasMany
+     */
     public function olx_apartment(): HasMany
     {
         return $this->hasMany(OlxApartment::class);
     }
 
+    /**
+     * @return HasMany
+     */
     public function document(): HasMany
     {
         return $this->hasMany(Document::class);
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function gender(): BelongsTo
     {
         return $this->belongsTo(Gender::class);
@@ -55,6 +67,10 @@ class Client extends Model
         $object->save();
     }
 
+    /**
+     * @param array $fields
+     * @return void
+     */
     public static function add(array $fields): void
     {
         $object = new self();
@@ -62,6 +78,11 @@ class Client extends Model
         $object->save();
     }
 
+    /**
+     * @param array $fields
+     * @param string $id
+     * @return void
+     */
     public static function edit(array $fields, string $id): void
     {
         $object = self::find($id);
@@ -69,6 +90,10 @@ class Client extends Model
         $object->save();
     }
 
+    /**
+     * @param string $id
+     * @return void
+     */
     public static function remove(string $id): void
     {
         $object = self::find($id);

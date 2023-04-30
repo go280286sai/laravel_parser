@@ -39,23 +39,25 @@
                                 <td>{{$i++}}</td>
                                 <td>{{$client->last_name.' '.$client->first_name.' '.$client->surname}}
                                 </td>
-                                <td><strong>{{__('admin.email')}}:</strong> {{$client->email}}
-                                    <br><strong>{{__('admin.gender')}}:</strong> {{$client->gender->name??'none'}}
-                                    <br><strong>{{__('admin.birthday')}}:</strong> {{$client->birthday??'none' }}
-                                    <br><strong>{{__('admin.phone_number')}}:</strong> {{$client->phone??'none'}}
-                                    <br><strong>{{__('admin.create_date')}}
-                                        :</strong> {{date_format($client->created_at, 'd-m-Y')}}
+                                <td><strong>Почта:</strong> {{$client->email}}
+                                    <br><strong>Пол:</strong> {{$client->gender->name??'none'}}
+                                    <br><strong>Дата рождения:</strong> {{$client->birthday??'none' }}
+                                    <br><strong>Номер телефона:</strong> {{$client->phone??'none'}}
+                                    <br><strong>Дата регистрации:</strong> {{date_format($client->created_at, 'd-m-Y')}}
                                 </td>
                                 <td>
                                     <table>
                                         <tr>
                                             <td>
-                                                <form action="{{env('APP_URL').'/user/add_buy/'.$client->id.'/1'}}" method="get">
+                                                <form action="{{env('APP_URL').'/user/add_buy/'.$client->id.'/1'}}"
+                                                      method="get">
                                                     <button class="btn" title="Купить"><i class="fa fa-dollar"></i>
                                                     </button>
                                                 </form>
-                                                <form action="{{env('APP_URL').'/user/add_sell/'.$client->id.'/2'}}" method="get">
-                                                    <button class="btn" title="Продать"><i class="fa fa-money"></i></button>
+                                                <form action="{{env('APP_URL').'/user/add_sell/'.$client->id.'/2'}}"
+                                                      method="get">
+                                                    <button class="btn" title="Продать"><i class="fa fa-money"></i>
+                                                    </button>
                                                 </form>
                                             </td>
                                             <td>

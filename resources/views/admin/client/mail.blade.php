@@ -24,24 +24,27 @@
                     <div class="box-body">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Кому</label>
-                                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="" value="{{$user['email']}}" name="email">
+                                <label for="email">Кому</label>
+                                <input type="text" class="form-control" id="email" value="{{$user['email']}}" disabled="disabled">
+                                <input type="hidden" class="form-control" value="{{$user['email']}}" name="email">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Тема</label>
-                                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="" name="title">
+                                <label for="title">Тема</label>
+                                <input type="text" class="form-control" id="title" placeholder="Тема" name="title">
                             </div>
                             <div class="form-group">
                                 @csrf
-                                <label for="exampleInputEmail1">Текст сообщения</label>
-                                <textarea id="" cols="30" rows="10" class="form-control"
+                                <label for="content">Текст сообщения</label>
+                                <textarea id="content" cols="30" rows="10" class="form-control"
                                           name="content">{{old('content')}}</textarea>
                             </div>
                         </div>
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
-                        <button class="btn btn-default" onclick="window.history.back()">Назад</button>
+                        <div class="form-group">
+                            <a href="{{env('APP_URL').'/user/client'}}" class="btn btn-danger">Назад</a>
+                        </div>
                         <input type="submit" class="btn btn-success pull-right" name="submit" value="Отправить">
                     </div>
                 </form>       <!-- /.box-footer-->
