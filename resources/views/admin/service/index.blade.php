@@ -26,8 +26,8 @@
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>{{__('admin.title')}}</th>
-                            <th>{{__('admin.action')}}</th>
+                            <th>Название</th>
+                            <th>Действие</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -38,13 +38,14 @@
                                 </td>
                                 <td>
                                     <form action="{{env('APP_URL').'/user/service/'.$item->id.'/edit/'}}" method="get">
-                                        @csrf
-                                        <button type="submit" title="Редактировать" class="btn"><i class="fa fa-bars"></i></button>
+                                        <button type="submit" title="Редактировать" class="btn"><i
+                                                class="fa fa-bars"></i></button>
                                     </form>
                                     <form action="{{env('APP_URL').'/user/service/'.$item->id}}" method="post">
                                         @method('DELETE')
                                         @csrf
-                                        <button title="Удалить" type="submit" class="btn"><i class="fa fa-trash"></i></button>
+                                        <button title="Удалить" type="submit" class="btn"><i class="fa fa-trash"></i>
+                                        </button>
                                     </form>
                                 </td>
                             </tr>

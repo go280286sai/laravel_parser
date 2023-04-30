@@ -9,19 +9,20 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                {{__('admin.edit_tag')}}
+                Редактировать услугу
             </h1>
         </section>
         <!-- Main content -->
         <section class="content">
             <!-- Default box -->
             <div class="box">
-                <form action="{{env('APP_URL').'/user/service/'.$service->id}}" method="post">@method('PUT')
+                <form action="{{env('APP_URL').'/user/service/'.$service->id}}" method="post">
+                    @method('PUT')
                     <div class="box-body">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="exampleInputEmail1">{{__('admin.title')}}</label>
-                                <input type="text" class="form-control" id="exampleInputEmail1" placeholder=""
+                                <label for="title">Название</label>
+                                <input type="text" class="form-control" id="title"
                                        name="title"
                                        value="{{$service->service}}">
                                 @csrf
@@ -30,8 +31,10 @@
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
-                        <button class="btn btn-default" onclick="window.history.back()">{{__('admin.back')}}</button>
-                        <input type="submit" class="btn btn-warning pull-right" value="{{__('admin.edit')}}">
+                        <div class="form-group">
+                            <a href="{{env('APP_URL').'/user/service'}}" class="btn btn-danger">Назад</a>
+                        </div>
+                        <input type="submit" class="btn btn-warning pull-right" value="Редактировать">
                     </div>
                     <!-- /.box-footer-->
                 </form>
