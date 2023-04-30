@@ -22,6 +22,9 @@ use Illuminate\Support\Facades\Response;
 
 class OlxApartmentController extends Controller
 {
+    /**
+     * @return View
+     */
     public function index(): View
     {
         $olx = Research::find(1);
@@ -39,6 +42,9 @@ class OlxApartmentController extends Controller
             ]);
     }
 
+    /**
+     * @return View
+     */
     public function report(): View
     {
         $rate = MyFunc::getDollar();
@@ -52,6 +58,10 @@ class OlxApartmentController extends Controller
         return view('admin.parser.apartment.olx.report', ['group' => $group, 'rate' => $rate]);
     }
 
+    /**
+     * @param Request $request
+     * @return void
+     */
     public function addOlxApartment(Request $request): void
     {
         $request->validate([
@@ -60,6 +70,10 @@ class OlxApartmentController extends Controller
         OlxApartmentJob::dispatch($request->all())->onQueue('olx_apartment');
     }
 
+    /**
+     * @param string $id
+     * @return View
+     */
     public function view(string $id): View
     {
         $location = MyFunc::getLocation();
@@ -72,15 +86,22 @@ class OlxApartmentController extends Controller
             'contacts' => $contacts, 'contact' => $contact]);
     }
 
+    /**
+     * @param Request $request
+     * @return string
+     */
     public function edit(Request $request): string
     {
         $fields = MyFunc::stripTags($request->all());
-        $fields['url'] = env('APP_URL').'/user/client/'.$fields['url'];
+        $fields['url'] = env('APP_URL') . '/user/client/' . $fields['url'];
         OlxApartment::edit($fields);
 
         return to_route('olx_apartment');
     }
 
+    /**
+     * @return RedirectResponse
+     */
     public function cleanDb(): RedirectResponse
     {
         OlxApartment::cleanBase();
@@ -88,16 +109,24 @@ class OlxApartmentController extends Controller
         return back();
     }
 
+    /**
+     * @param Request $request
+     * @return Back
+     */
     public function saveJson(Request $request): Back
     {
         $data = OlxApartment::all();
         $now = Carbon::now()->format('d_m_Y');
-        $name = 'Olx_Apartment_'.$now;
+        $name = 'Olx_Apartment_' . $now;
 
         return Response::make($data)->header('Content-Type', 'application/json;charset=utf-8')
             ->header('Content-Disposition', "attachment;filename=$name.json");
     }
 
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
     public function remove(Request $request): RedirectResponse
     {
         OlxApartment::removeId($request->get('id'));
@@ -105,6 +134,9 @@ class OlxApartmentController extends Controller
         return back();
     }
 
+    /**
+     * @return View
+     */
     public function olx_soft_delete_index(): View
     {
         $data = OlxApartment::onlyTrashed()->get();
@@ -112,6 +144,9 @@ class OlxApartmentController extends Controller
         return view('admin.parser.apartment.olx.trash', ['trash' => $data]);
     }
 
+    /**
+     * @return RedirectResponse
+     */
     public function olx_soft_delete_all(): RedirectResponse
     {
         OlxApartment::onlyTrashed()->forceDelete();
@@ -119,6 +154,9 @@ class OlxApartmentController extends Controller
         return redirect()->route('olx_apartment');
     }
 
+    /**
+     * @return RedirectResponse
+     */
     public function olx_soft_recovery_all(): RedirectResponse
     {
         OlxApartment::onlyTrashed()->restore();
@@ -126,6 +164,10 @@ class OlxApartmentController extends Controller
         return redirect()->route('olx_apartment');
     }
 
+    /**
+     * @param string $id
+     * @return RedirectResponse
+     */
     public function olx_soft_delete_item(string $id): RedirectResponse
     {
         OlxApartment::onlyTrashed()->find($id)->forceDelete();
@@ -133,6 +175,10 @@ class OlxApartmentController extends Controller
         return redirect()->route('olx_apartment');
     }
 
+    /**
+     * @param string $id
+     * @return RedirectResponse
+     */
     public function olx_soft_recovery_item(string $id): RedirectResponse
     {
         OlxApartment::onlyTrashed()->find($id)->restore();
@@ -140,6 +186,9 @@ class OlxApartmentController extends Controller
         return redirect()->route('olx_apartment');
     }
 
+    /**
+     * @return View
+     */
     public function create(): View
     {
         $location = MyFunc::getLocation();
@@ -153,6 +202,10 @@ class OlxApartmentController extends Controller
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
     public function addCreate(Request $request): RedirectResponse
     {
         $request->validate([
@@ -168,12 +221,16 @@ class OlxApartmentController extends Controller
         $fields = $request->all();
         $fields = MyFunc::stripTags($request->all());
         $fields['type'] = env('APP_NAME');
-        $fields['url'] = env('APP_URL').'/user/client/'.$fields['client_id'];
+        $fields['url'] = env('APP_URL') . '/user/client/' . $fields['client_id'];
         OlxApartmentJob::dispatch($fields)->onQueue('olx_apartment');
 
         return back();
     }
 
+    /**
+     * @param string $id
+     * @return View
+     */
     public function comment_view(string $id): View
     {
         $data = OlxApartment::find($id);
@@ -181,6 +238,10 @@ class OlxApartmentController extends Controller
         return view('admin.parser.apartment.olx.comment', ['data' => $data]);
     }
 
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
     public function comment_add(Request $request): RedirectResponse
     {
         $object = MyFunc::stripTags($request->all());
@@ -191,6 +252,10 @@ class OlxApartmentController extends Controller
         return redirect()->route('olx_apartment');
     }
 
+    /**
+     * @param Request $request
+     * @return void
+     */
     public function checks_remove(Request $request): void
     {
         $data = $request->get('checks');
@@ -199,17 +264,29 @@ class OlxApartmentController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return void
+     */
     public function setStatus(Request $request): void
     {
         OlxApartment::setStatus($request->get('id'));
     }
 
+    /**
+     * @param Request $request
+     * @return void
+     */
     public function sendPushMessage(Request $request): void
     {
         $text = $request->get('text');
         event(new OlxApartmentEvent($text));
     }
 
+    /**
+     * @param Request $request
+     * @return void
+     */
     public function setNewPrice(Request $request): void
     {
         $fields = $request->get('price');
@@ -218,6 +295,10 @@ class OlxApartmentController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return void
+     */
     public function addFavorite(Request $request): void
     {
         $data = $request->get('checks');
@@ -226,6 +307,10 @@ class OlxApartmentController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return void
+     */
     public function removeFavorite(Request $request): void
     {
         $data = $request->get('checks');
@@ -234,6 +319,10 @@ class OlxApartmentController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return void
+     */
     public function setting(Request $request): void
     {
         $arr = $request->get('data');
@@ -242,6 +331,10 @@ class OlxApartmentController extends Controller
         Setting::addSetting(['name' => $name[0], 'text' => $text[0]]);
     }
 
+    /**
+     * @param Request $request
+     * @return RedirectResponse|array
+     */
     public function getApartments(Request $request): RedirectResponse|array
     {
         if ($request->get('data') !== null) {

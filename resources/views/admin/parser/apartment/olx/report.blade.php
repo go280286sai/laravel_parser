@@ -36,7 +36,7 @@
                                     <td>{{$item->price}}грн.</td>
                                     <td>{{round($item->price/$rate->dollar,2)}}$</td>
                                     <td><p class={{(round($item->real_price/$rate->dollar,2)-round($item->price/$rate->dollar,2))>0?"text-red-700":"text-blue-700"}}>{{round($item->real_price/$rate->dollar,2)}}$  &ensp; &ensp; &ensp; &ensp;
-                                            {{round($item->real_price/$rate->dollar,2)-round($item->price/$rate->dollar,2)}}$</p></td>
+                                            {{round(($item->real_price/$rate->dollar - $item->price/$rate->dollar),2)}}$</p></td>
                                     <td>{{$item->count}}</td>
                                 </tr>
                             @endforeach
@@ -48,9 +48,9 @@
                     <img src="{{\App\Models\OlxApartment::getImage('importance.png')}}" alt="">
 
                     <div class="box-footer">
-                        <button class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn"
-                                onclick="window.history.back()">Back
-                        </button>
+                        <div class="form-group">
+                            <a href="{{env('APP_URL').'/user/apartment'}}" class="btn btn-danger">Назад</a>
+                        </div>
                     </div>
                 </div>
             </div>

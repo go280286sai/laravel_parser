@@ -7,7 +7,7 @@
     <div class="content-wrapper">
         <section class="content-header">
             <h1>
-                {{__('messages.olx_apartment')}}
+                Недвижимость
             </h1>
         </section>
         <section class="content">
@@ -16,7 +16,7 @@
                     <div class="form-group">
                         <form action="{{env('APP_URL')}}/user/url_edit" id="{{$olx->title}}">
                             <div class="mb-3">
-                                <p v-if="status" class="status_info">{{__('messages.data_update')}}</p>
+                                <p v-if="status" class="status_info">Обновлено</p>
                                 <label for="olx_apartment" class="form-label">URL</label>
                                 <input type="text" name="url" value="{{$olx->url}}" class="form-control"
                                        aria-describedby="emailHelp" id="url_olx">
@@ -24,7 +24,7 @@
                                 @csrf
                             </div>
                             <input type="button" v-on:click="updateInfo('{{$olx->title}}')" class="btn btn-success"
-                                   value="Save URL">
+                                   value="Сохранить URL">
                         </form>
                     </div>
                     <div class="form-group">
@@ -32,29 +32,33 @@
                             <tr>
                                 <td>
                                     <button v-on:click="getApartment" v-bind:disabled="update_status"
-                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">{{__('messages.start_update')}}</button>
+                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">Запустить
+                                        обновление
+                                    </button>
                                 </td>
                                 <td>
                                     <button v-on:click="getNewPrice('{{$token}}')"
                                             class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn"
-                                            v-bind:disabled="update_status_sync">{{__('messages.get_new_price')}}</button>
-
+                                            v-bind:disabled="update_status_sync">Выполнить синхронизацию
+                                    </button>
                                 </td>
                                 <td><a href="{{env('APP_URL')}}/user/olx_apartment_delete_index">
                                         <button
-                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">{{__('messages.delete_list')}}</button>
+                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">Список
+                                            удаленных
+                                        </button>
                                     </a></td>
                                 @if(\Illuminate\Support\Facades\Auth::user()->is_admin==1)
                                     <td>
                                         <form action="{{env('APP_URL')}}/user/saveJson" method="post">
                                             @csrf
                                             <button
-                                                class="mr-3 mt-6 bg-orange-600 hover:bg-orange-300 text-white btn" v-on:click="saveList">{{__('messages.save_as')}}</button>
+                                                class="mr-3 mt-6 bg-orange-600 hover:bg-orange-300 text-white btn"
+                                                v-on:click="saveList">Сохранить как
+                                            </button>
                                         </form>
                                     </td>
-
-@endif
-
+                                @endif
                                 <td><a href="{{env('APP_URL')}}/user/report">
                                         <button
                                             class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">Просмотреть
@@ -62,10 +66,10 @@
                                         </button>
                                     </a></td>
                                 @if(\Illuminate\Support\Facades\Auth::user()->is_admin==1)
-                                <td>
-                                    <button v-on:click="cleanDb"
-                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">{{__('messages.clean_db')}}</button>
-                                </td>
+                                    <td>
+                                        <button v-on:click="cleanDb"
+                                                class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">Удалить все данные</button>
+                                    </td>
                                 @endif
                             </tr>
                         </table>
@@ -105,18 +109,18 @@
                         <tr class="bg-orange-400">
                             <th scope="col">
                             </th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Rooms</th>
-                            <th scope="col">Floor</th>
-                            <th scope="col">Etajnost</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Corr_price</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Location</th>
-                            <th scope="col">Time</th>
-                            <th scope="col">Comment</th>
-                            <th scope="col">Action</th>
+                            <th scope="col">Заголовок</th>
+                            <th scope="col">Комнаты</th>
+                            <th scope="col">Этаж</th>
+                            <th scope="col">Этажность</th>
+                            <th scope="col">Описание</th>
+                            <th scope="col">Цена</th>
+                            <th scope="col">Прогноз</th>
+                            <th scope="col">Тип</th>
+                            <th scope="col">Расположение</th>
+                            <th scope="col">Время</th>
+                            <th scope="col">Комментарий</th>
+                            <th scope="col">Действие</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -175,8 +179,8 @@
                                     <form action="{{env('APP_URL')}}/user/olx_apartment_delete" method="post">
                                         @csrf
                                         <input type="hidden" name="id" value="{{$apartment->id}}">
-                                        <button onclick="return confirm('{{__('messages.are_you_sure')}}')" class="btn"
-                                                title="{{__('messages.delete')}}"><i class="fa fa-trash"></i></button>
+                                        <button onclick="return confirm('Вы уверенны')" class="btn"
+                                                title="Удалить"><i class="fa fa-trash"></i></button>
                                     </form>
 
                                 </td>
@@ -206,7 +210,7 @@
     </script>
     <script>
         const getStatusText = document.querySelectorAll('#apartmentStatus');
-        for (let i in getStatusText){
+        for (let i in getStatusText) {
             getStatus(getStatusText[i].value)
         }
         function getStatus(text) {
@@ -219,7 +223,8 @@
                 }).catch((err) => {
                     console.log(err.message);
                 })
-            }, 300000)}
+            }, 300000)
+        }
     </script>
 
 @endsection

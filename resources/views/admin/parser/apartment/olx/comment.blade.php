@@ -7,7 +7,7 @@
     <div class="content-wrapper">
         <section class="content-header">
             <h1>
-                {{__('messages.comment_add')}}
+                Добавить комментарий
             </h1>
         </section>
         <section class="content">
@@ -31,9 +31,11 @@
                         </div>
                     </div>
                     <div class="box-footer">
-                        <button class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn" onclick="window.history.back()">Back</button>
+                        <div class="form-group">
+                            <a href="{{env('APP_URL').'/user/apartment'}}" class="btn btn-danger">Назад</a>
+                        </div>
                         <input type="submit" class="btn btn-success pull-right" name="submit"
-                               value="Send">
+                               value="Добавить">
                     </div>
                 </form>
             </div>

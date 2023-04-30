@@ -2,7 +2,6 @@
 
 @section('style')
 @endsection
-<script src="https://unpkg.com/vue@next"></script>
 @section('text')
     <div class="content-wrapper">
         <section class="content-header">
