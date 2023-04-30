@@ -15,4 +15,11 @@ class ResearchController extends Controller
 
         return back();
     }
+
+    public function store(Request $request): RedirectResponse
+    {
+        Research::add($request->all());
+
+        return back();
+    }
 }

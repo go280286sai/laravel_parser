@@ -10,7 +10,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                {{__('admin.send_message')}}
+                Сообщение пользователю
             </h1>
         </section>
         <!-- Main content -->
@@ -24,25 +24,30 @@
                     <div class="box-body">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="exampleInputEmail1">{{__('admin.to')}}</label>
-                                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="" value="{{$user['email']}}" name="email">
+                                <label for="email">Кому</label>
+                                <input type="text" disabled="disabled" class="form-control" id="email"
+                                       value="{{$user['email']}}">
+                                <input type="hidden" value="{{$user['email']}}" name="email">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1">{{__('admin.title')}}</label>
-                                <input type="text" class="form-control" id="exampleInputEmail1" placeholder="" name="title">
+                                <label for="title">Тема</label>
+                                <input type="text" class="form-control" id="title" name="title"
+                                       value="{{old('title')}}">
                             </div>
                             <div class="form-group">
                                 @csrf
-                                <label for="exampleInputEmail1">{{__('admin.text')}}</label>
-                                <textarea id="" cols="30" rows="10" class="form-control"
+                                <label for="content">Текст сообщения</label>
+                                <textarea id="content" cols="30" rows="10" class="form-control"
                                           name="content">{{old('content')}}</textarea>
                             </div>
                         </div>
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
-                        <button class="btn btn-default" onclick="window.history.back()">{{__('admin.back')}}</button>
-                        <input type="submit" class="btn btn-success pull-right" name="submit" value="{{__('admin.send')}}">
+                        <div class="form-group">
+                            <a href="{{env('APP_URL').'/user/users'}}" class="btn btn-danger">Назад</a>
+                        </div>
+                        <input type="submit" class="btn btn-success pull-right" name="submit" value="Отправить">
                     </div>
                 </form>       <!-- /.box-footer-->
             </div>

@@ -105,4 +105,13 @@ class User extends Authenticatable
         $object = self::find($id);
         $object->delete();
     }
+
+    public function getAvatar(): string
+    {
+        if ($this->profile_photo_path == null) {
+            return '/profile-photos/no-user-image.png';
+        }
+
+        return '/'.$this->profile_photo_path;
+    }
 }

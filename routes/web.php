@@ -43,16 +43,13 @@ Route::middleware([
     })->name('dashboard');
 });
 Route::group(['prefix' => 'user', 'middleware' => IsAuthUser::class], function () {
-    Route::controller(ParserController::class)->group(function () {
-        Route::post('/runParser', 'index');
-        Route::post('/csv', 'getCsv');
-    });
     Route::controller(ResearchController::class)->group(function () {
         Route::post('url_edit', 'update');
+        Route::post('url_add', 'store');
     });
     Route::controller(MainController::class)->group(function () {
         Route::get('/dashboard', 'index');
-        Route::post('/exit', 'logout');
+        Route::get('/exit', 'logout');
     });
     Route::controller(OlxApartmentController::class)->group(function () {
         Route::post('/cleanDb', 'cleanDb');
@@ -82,16 +79,17 @@ Route::group(['prefix' => 'user', 'middleware' => IsAuthUser::class], function (
         Route::post('/getApartment', 'getApartments');
         Route::post('/sendClientMail', 'sendClientMail');
     });
-    Route::resource('/users', UserController::class);
     Route::resource('/service', ServiceController::class);
-    Route::resource('/client', ClientController::class);
-    Route::resource('/documents', DocumentController::class);
+
+//    UserController
+    Route::resource('/users', UserController::class);
     Route::controller(UserController::class)->group(function () {
-        Route::post('/comment', 'comment');
+        Route::get('/comment/{id}', 'comment');
         Route::post('/add_comment_user', 'add_comment_user');
-        Route::post('/createMessage', 'createMessage');
+        Route::get('/createMessage/{id}', 'createMessage');
         Route::post('/sendMessage', 'sendMessage');
     });
+    Route::resource('/client', ClientController::class);
     Route::controller(ClientController::class)->group(function () {
         Route::get('/client_comment/{id}', 'comment');
         Route::post('/client_comment_add', 'comment_add');
@@ -101,6 +99,7 @@ Route::group(['prefix' => 'user', 'middleware' => IsAuthUser::class], function (
         Route::get('/add_sell/{client_id}/{service_id}', 'addSell');
         Route::post('/createSell', 'createSell');
     });
+    Route::resource('/documents', DocumentController::class);
     Route::controller(DocumentController::class)->group(function () {
         Route::get('/document_comment/{id}', 'comment');
         Route::post('/document_comment_add', 'addComment');

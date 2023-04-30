@@ -34,9 +34,9 @@
                                     <td>{{$item->etajnost}}</td>
                                     <td>{{$item->location}}</td>
                                     <td>{{$item->price}}грн.</td>
-                                    <td>{{round($item->price/$rate[0]->dollar,2)}}$</td>
-                                    <td><p class={{(round($item->real_price/$rate[0]->dollar,2)-round($item->price/$rate[0]->dollar,2))>0?"text-red-700":"text-blue-700"}}>{{round($item->real_price/$rate[0]->dollar,2)}}$  &ensp; &ensp; &ensp; &ensp;
-                                            {{round($item->real_price/$rate[0]->dollar,2)-round($item->price/$rate[0]->dollar,2)}}$</p></td>
+                                    <td>{{round($item->price/$rate->dollar,2)}}$</td>
+                                    <td><p class={{(round($item->real_price/$rate->dollar,2)-round($item->price/$rate->dollar,2))>0?"text-red-700":"text-blue-700"}}>{{round($item->real_price/$rate->dollar,2)}}$  &ensp; &ensp; &ensp; &ensp;
+                                            {{round($item->real_price/$rate->dollar,2)-round($item->price/$rate->dollar,2)}}$</p></td>
                                     <td>{{$item->count}}</td>
                                 </tr>
                             @endforeach

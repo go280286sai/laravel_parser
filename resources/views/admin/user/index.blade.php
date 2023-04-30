@@ -10,7 +10,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                {{__('admin.users')}}
+                Список пользователей
             </h1>
         </section>
         <!-- Main content -->
@@ -20,18 +20,19 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="form-group">
-                        <a href="{{env('APP_URL').'/user/users/create'}}" class="btn btn-success">Добавить пользователя</a>
+                        <a href="{{env('APP_URL').'/user/users/create'}}" class="btn btn-success">Добавить
+                            пользователя</a>
                     </div>
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>{{__('admin.name')}}</th>
-                            <th>{{__('admin.contact_info')}}</th>
-                            <th>{{__('admin.avatar')}}</th>
-                            <th>{{__('admin.action')}}</th>
-                            <th>{{__('admin.options')}}</th>
-                            <th>{{__('admin.comments')}}</th>
+                            <th>Пользователь</th>
+                            <th>Контактная информация</th>
+                            <th>Аватар</th>
+                            <th>Действия</th>
+                            <th>Опции</th>
+                            <th>Комментарий</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -40,24 +41,12 @@
                                 <td>{{$user->id}}</td>
                                 <td>{{$user->name}}
                                     <br>
-                                    @if(\Illuminate\Support\Facades\Cache::get($user->id))
-                                        <strong class="green">{{__('admin.online')}}</strong>
-{{--                                        <form action="{{env('APP_URL').'/admin/chat_user/'.$user->id}}"--}}
-{{--                                              method="get">--}}
-{{--                                            @csrf--}}
-{{--                                            <button class="btn" title="{{__('admin.add_private_message')}}"><i class="fa fa-send"></i>--}}
-{{--                                            </button>--}}
-{{--                                        </form>--}}
-                                    @else
-                                        <strong class="red">{{__('admin.offline')}}</strong>
-                                    @endif
                                 </td>
-                                <td><strong>{{__('admin.email')}}:</strong> {{$user->email}}
-                                    <br><strong>{{__('admin.gender')}}:</strong> {{$user->gender->name??'none'}}
-                                    <br><strong>{{__('admin.birthday')}}:</strong> {{$user->birthday??'none' }}
-                                    <br><strong>{{__('admin.phone_number')}}:</strong> {{$user->phone??'none'}}
-                                    <br><strong>{{__('admin.create_date')}}
-                                        :</strong> {{date_format($user->created_at, 'd-m-Y')}}
+                                <td><strong>Почта:</strong> {{$user->email}}
+                                    <br><strong>Пол:</strong> {{$user->gender->name??'none'}}
+                                    <br><strong>День рождения:</strong> {{$user->birthday??'none' }}
+                                    <br><strong>Номер телефона:</strong> {{$user->phone??'none'}}
+                                    <br><strong>Дата регистрации:</strong> {{date_format($user->created_at, 'd-m-Y')}}
                                 </td>
                                 <td>
                                     <img src="{{$user->getAvatar()}}" alt="" class="img-responsive" width="150">
@@ -65,8 +54,7 @@
                                 <td>
                                     <form action="{{env('APP_URL').'/user/users/'.$user->id.'/edit'}}"
                                           method="get">
-                                        @csrf
-                                        <button class="btn" title="{{__('admin.edit')}}"><i class="fa fa-bars"></i>
+                                        <button class="btn" title="Редактировать"><i class="fa fa-bars"></i>
                                         </button>
                                     </form>
                                     <form action="{{env('APP_URL').'/user/users/'.$user->id}}" method="post">
@@ -74,22 +62,17 @@
                                         @method('DELETE')
                                         <input type="hidden" name="id" value="{{$user->id}}">
                                         <button onclick="return confirm('Удалить пользователя?')" class="btn"
-                                                title="{{__('admin.delete')}}"><i class="fa fa-trash"></i></button>
+                                                title="Удалить"><i class="fa fa-trash"></i></button>
                                     </form>
                                 </td>
                                 <td>
-                                    <form action="{{env('APP_URL').'/user/createMessage'}}"
-                                          method="post">
-                                        <input type="hidden" name="email" value="{{$user->id}}">
-                                        @csrf
-                                        <button class="btn" title="{{__('admin.send_message')}}"><i
+                                    <form action="{{env('APP_URL').'/user/createMessage/'.$user->id}}"
+                                          method="get">
+                                        <button class="btn" title="Отправить сообщение пользователю"><i
                                                 class="fa fa-mail-forward"></i></button>
                                     </form>
-                                    <form action="{{env('APP_URL').'/user/comment'}}" method="post">
-                                        <input type="hidden" name="id" value="{{$user->id}}">
-                                        <input type="hidden" name="comment" value="{!! $user->comment??'' !!}">
-                                        @csrf
-                                        <button class="btn" title="{{__('admin.add_comment')}}"><i
+                                    <form action="{{env('APP_URL').'/user/comment/'.$user->id}}" method="get">
+                                        <button class="btn" title="Добавить комментарий"><i
                                                 class="fa fa-comment"></i></button>
                                     </form>
                                 </td>

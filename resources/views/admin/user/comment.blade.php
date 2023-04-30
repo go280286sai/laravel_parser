@@ -10,7 +10,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                {{__('admin.add_comment')}}
+                Добавить комментарий
             </h1>
         </section>
         <!-- Main content -->
@@ -25,17 +25,19 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 @csrf
-                                <input type="hidden" name="id" value="{{$id}}">
-                                <label for="exampleInputEmail1"></label>
-                                <label for=""></label><textarea id="" cols="30" rows="10" class="form-control"
-                                                                name="comment">{{$comment}}</textarea>
+                                <input type="hidden" name="id" value="{{$object->id}}">
+                                <label for="comment"></label>
+                                <textarea id="comment" cols="30" rows="10" class="form-control"
+                                                                name="comment">{{$object->comment}}</textarea>
                             </div>
                         </div>
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
-                        <button class="btn btn-default" onclick="window.history.back()">{{__('admin.back')}}</button>
-                        <input type="submit" class="btn btn-success pull-right" name="submit" value="{{__('admin.send')}}">
+                        <div class="form-group">
+                            <a href="{{env('APP_URL').'/user/users'}}" class="btn btn-danger">Назад</a>
+                        </div>
+                        <input type="submit" class="btn btn-success pull-right" name="submit" value="Добавить">
                     </div>
                 </form>
                 <!-- /.box-footer-->

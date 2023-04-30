@@ -79,8 +79,7 @@
                                     <a href="{{env('APP_URL').'/user/profile'}}" class="btn btn-default btn-flat">{{__('messages.profile')}}</a>
                                 </div>
                                 <div class="pull-right">
-                                    <form action="{{env('APP_URL').'/user/exit'}}" method="post">
-                                        @csrf
+                                    <form action="{{env('APP_URL').'/user/exit'}}" method="get">
                                         <input type="submit" class="btn btn-default btn-flat" name="submit" value="{{__('messages.logout')}}">
                                     </form>
                                 </div>

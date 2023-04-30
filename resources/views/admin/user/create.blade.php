@@ -10,7 +10,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        {{__('admin.add_user')}}
+        Добавить пользователя
       </h1>
     </section>
     <!-- Main content -->
@@ -25,54 +25,56 @@
         <div class="box-body">
           <div class="col-md-6">
             <div class="form-group">
-              <label for="exampleInputEmail1">{{__('admin.name')}}</label>
-              <input type="text" name="name" class="form-control" id="exampleInputEmail1" placeholder="{{__('admin.name')}}" value="{{old('name')}}">
+              <label for="name">Пользователь</label>
+              <input type="text" name="name" class="form-control" id="name" placeholder="Пользователь" value="{{old('name')}}">
             </div>
               <div class="form-group">
-                  <label for="exampleInputEmail1">{{__('admin.birthday')}}</label>
+                  <label for="birthday">Дата рождения</label>
                   <label for="birthday"></label><input type="date" class="form-control" id="birthday" name="birthday"
-                                                       placeholder="{{__('admin.birthday')}}" value="{{old('birthday')}}">
+                                                       placeholder="Дата рождения" value="{{old('birthday')}}">
               </div>
             <div class="form-group">
-              <label for="exampleInputEmail1">{{__('admin.email')}}</label>
-              <input type="text" name="email" class="form-control" id="exampleInputEmail1" placeholder="{{__('admin.email')}}" value="{{old('email')}}">
+              <label for="email">Email</label>
+              <input type="text" name="email" class="form-control" id="email" placeholder="Email" value="{{old('email')}}">
             </div>
               <div class="form-group">
-                  <label for="exampleInputEmail1">{{__('admin.phone_number')}}</label>
+                  <label for="phone">Номер телефона</label>
                   <input type="number" class="form-control" id="phone" name="phone"
-                         placeholder="{{__('admin.phone_number')}}" value="{{old('phone')}}">
+                         placeholder="Номер телефона" value="{{old('phone')}}">
               </div>
               <div class="form-group">
-                  <label for="exampleInputEmail1">{{__('admin.gender')}}</label>
+                  <label for="gender_id">Пол</label>
                   <div class="form-control">
-                      <input class="form-check-input" type="radio" name="gender_id" id="flexRadioDefault1"
+                      <input class="form-check-input" type="radio" name="gender_id" id="gender_id"
                              value="1">
-                      <label class="form-check-label" for="flexRadioDefault1">
-                          {{__('admin.gender_male')}}
+                      <label class="form-check-label" for="gender_id">
+                          Мужской
                       </label>
                   </div>
                   <div class="form-control">
-                      <input class="form-check-input" type="radio" name="gender_id" id="flexRadioDefault2"
+                      <input class="form-check-input" type="radio" name="gender_id" id="gender_id"
                              value="2">
-                      <label class="form-check-label" for="flexRadioDefault2">
-                          {{__('admin.gender_female')}}
+                      <label class="form-check-label" for="gender_id">
+                          Женский
                       </label>
                   </div>
               </div>
               <div class="form-group">
-                  <label for="exampleInputEmail1"> {{__('admin.about')}}</label>
-                  <label for=""></label><textarea name="description" id="" cols="30" rows="10" class="form-control">{{old('description')}}</textarea>
+                  <label for="description">Обо мне</label>
+                 <textarea name="description" id="description" cols="30" rows="10" class="form-control">{{old('description')}}</textarea>
               </div>
             <div class="form-group">
-              <label for="exampleInputEmail1">{{__('admin.password')}}</label>
-              <input type="password" name="password" class="form-control" id="exampleInputEmail1" placeholder="{{__('admin.password')}}">
+              <label for="password">Пароль</label>
+              <input type="password" name="password" class="form-control" id="password" placeholder="Пароль">
             </div>
         </div>
       </div>
         <!-- /.box-body -->
         <div class="box-footer">
-            <button class="btn btn-default" onclick="window.history.back()">{{__('admin.back')}}</button>
-          <button class="btn btn-success pull-right">{{__('admin.add')}}</button>
+            <div class="form-group">
+                <a href="{{env('APP_URL').'/user/users'}}" class="btn btn-danger">Назад</a>
+            </div>
+          <button class="btn btn-success pull-right">Добавить</button>
         </div>
         <!-- /.box-footer-->
       </div>

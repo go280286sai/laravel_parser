@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Func\MyFunc;
 use App\Http\Controllers\Controller;
 use App\Mail\User_email;
 use App\Models\User;
@@ -80,26 +81,26 @@ class UserController extends Controller
         return redirect('/user/users');
     }
 
-    public function comment(Request $request): View
+    public function comment(string $id): View
     {
-        $id = $request->get('id');
-        $comment = $request->get('comment');
+        $object = User::find($id);
 
-        return view('admin.user.comment', ['id' => $id, 'comment' => $comment]);
+        return view('admin.user.comment', ['object' => $object]);
     }
 
     public function add_comment_user(Request $request): RedirectResponse
     {
-        User::add_comment_user($request->all());
+        $fields = MyFunc::stripTags($request->all());
+        User::add_comment_user($fields);
 
         return redirect('/user/users');
     }
 
-    public function createMessage(Request $request): View
+    public function createMessage(string $id): View
     {
-        $user = User::find($request->all());
+        $user = User::find($id);
 
-        return view('admin.user.mail', ['user' => $user[0]]);
+        return view('admin.user.mail', ['user' => $user]);
     }
 
     public function sendMessage(Request $request): RedirectResponse
@@ -107,13 +108,10 @@ class UserController extends Controller
         $request->validate([
             'content' => 'required|string',
             'title' => 'required|string',
-            'email' => 'required',
         ]);
-        $email = $request->get('email');
-        $title = $request->get('title');
-
-        Mail::to($email)->cc(Auth::user()->email)->send(new User_email($request->all()));
-        Log::info('Answer the message: '.$email.' '.$title.' --'.Auth::user()->name);
+        $fields = MyFunc::stripTags($request->all());
+        Mail::to($fields['email'])->cc(Auth::user()->email)->send(new User_email($fields));
+        Log::info('Answer the message: '.$fields['email'].' '.$fields['title'].' --'.Auth::user()->name);
 
         return redirect('/user/users');
     }
