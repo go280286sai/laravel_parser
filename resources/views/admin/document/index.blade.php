@@ -7,13 +7,12 @@
     <div class="content-wrapper">
         <section class="content-header">
             <h1>
-                Недвижимость
+                Заявки на покупку недвижимости
             </h1>
         </section>
         <section class="content">
             <div class="box">
                 <div class="box-body">
-
                     <div class="form-group">
                         <table>
                             <tr>

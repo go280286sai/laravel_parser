@@ -34,13 +34,8 @@
                                 <br>
                                 <label class="form-label" for="service_id">Выбрать услугу</label>
                                 <br>
-                                <select id="service_id" name="service_id" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                                    <option value="{{$doc->service_id}}" selected>{{$doc->service->service}}</option>
-                                    @foreach($service as $item)
-                                        {{$item->service}}
-                                        <option value="{{$item->id}}">{{$item->service}}</option>
-                                    @endforeach
-                                </select>
+                                <input type="text" disabled="disabled" value="{{$doc->service->service}}">
+                                <input type="hidden" name="service_id" id="service_id" value="{{$doc->service_id}}">
                                 <br>
                                 <label class="form-label" for="rooms">Количество комнат</label>
                                 <input type="number" id="rooms" name="rooms" class="form-control" value="{{$doc->rooms}}">
@@ -66,8 +61,10 @@
                     </div>
                     <div class="box-footer">
                         <input type="submit" class="btn btn-success pull-right"
-                               value="Send"><button class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn" onclick="window.history.back()">Back</button>
-                    </div>
+                               value="Обновить">
+                        <div class="form-group">
+                            <a href="{{env('APP_URL').'/user/documents'}}" class="btn btn-danger">Назад</a>
+                        </div>                    </div>
                 </form>
             </div>
         </section>

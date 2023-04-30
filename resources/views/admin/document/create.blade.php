@@ -60,7 +60,10 @@
                     </div>
                     <div class="box-footer">
                         <input type="submit" class="btn btn-success pull-right"
-                               value="Send"><button class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn" onclick="window.history.back()">Back</button>
+                               value="Добавить">
+                        <div class="form-group">
+                            <a href="{{env('APP_URL').'/user/documents'}}" class="btn btn-danger">Назад</a>
+                        </div>
                     </div>
                 </form>
 

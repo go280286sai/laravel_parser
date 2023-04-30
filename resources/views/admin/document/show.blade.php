@@ -81,9 +81,9 @@
                 </div>
                 <div id="body"></div>
                 <div class="box-footer">
-                    <button class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn"
-                            onclick="window.history.back()">Back
-                    </button>
+                    <div class="form-group">
+                        <a href="{{env('APP_URL').'/user/documents'}}" class="btn btn-danger">Назад</a>
+                    </div>
                 </div>
 
             </div>

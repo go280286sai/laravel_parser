@@ -106,6 +106,10 @@ class DocumentController extends Controller
         return redirect('/user/documents');
     }
 
+    /**
+     * @param string $id
+     * @return View
+     */
     public function comment(string $id): View
     {
         $object = Document::find($id);
@@ -113,6 +117,10 @@ class DocumentController extends Controller
         return view('admin.document.comment', ['object' => $object]);
     }
 
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
     public function addComment(Request $request): RedirectResponse
     {
         $fields = MyFunc::stripTags($request->all());
