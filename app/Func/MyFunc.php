@@ -56,7 +56,7 @@ class MyFunc
     public static function getListToArray(string $text): array
     {
         $array = explode(',', substr($text, 0, strlen($text) - 1));
-        $object = DB::table('olx_apartments')->whereIn('id', $array)->get();
+        $object = DB::table('olx_apartments')->where('deleted_at','=',null)->whereIn('id', $array)->get();
 
         return [$object, $array];
     }
