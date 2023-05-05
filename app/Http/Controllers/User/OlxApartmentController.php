@@ -43,22 +43,6 @@ class OlxApartmentController extends Controller
     }
 
     /**
-     * @return View
-     */
-    public function report(): View
-    {
-        $rate = MyFunc::getDollar();
-        $group = DB::table('olx_apartments')
-            ->select('rooms', 'floor', 'etajnost', 'location', DB::raw('ROUND(AVG(price),2) as price'),
-                DB::raw('COUNT(rooms) as count'), DB::raw('ROUND(AVG(real_price),2) as real_price'))
-            ->groupBy(['rooms', 'floor', 'etajnost', 'location'])
-            ->orderBy('rooms')
-            ->get();
-
-        return view('admin.parser.apartment.olx.report', ['group' => $group, 'rate' => $rate]);
-    }
-
-    /**
      * @param Request $request
      * @return void
      */

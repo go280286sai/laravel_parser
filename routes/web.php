@@ -7,6 +7,7 @@ use App\Http\Controllers\User\MainController;
 use App\Http\Controllers\User\OlxApartmentController;
 use App\Http\Controllers\User\ResearchController;
 use App\Http\Controllers\User\UserController;
+use App\Http\Middleware\IsAdminMiddleware;
 use App\Http\Middleware\IsAuthUser;
 use Illuminate\Support\Facades\Route;
 
@@ -50,23 +51,21 @@ Route::group(['prefix' => 'user', 'middleware' => IsAuthUser::class], function (
 
     //    OlxApartmentController
     Route::controller(OlxApartmentController::class)->group(function () {
-        Route::post('/cleanDb', 'cleanDb');
+        Route::post('/cleanDb', 'cleanDb')->middleware(IsAdminMiddleware::class);
         Route::post('/addOlxApartment', 'addOlxApartment');
         Route::get('/apartment', 'index')->name('olx_apartment');
-        Route::post('/saveJson', 'saveJson');
+        Route::post('/saveJson', 'saveJson')->middleware(IsAdminMiddleware::class);
         Route::get('olx_apartment_comment/{id}', 'comment_view');
         Route::post('olx_apartment_comment', 'comment_add');
         Route::post('/olx_apartment_delete', 'remove');
-        Route::get('/olx_apartment_delete_index', 'olx_soft_delete_index');
-        Route::get('/olx_apartment_delete_all', 'olx_soft_delete_all');
-        Route::get('/olx_apartment_delete_item/{id}', 'olx_soft_delete_item');
-        Route::get('/olx_apartment_recovery_all', 'olx_soft_recovery_all');
-        Route::get('/olx_apartment_recovery_item/{id}', 'olx_soft_recovery_item');
+        Route::get('/olx_apartment_delete_index', 'olx_soft_delete_index')->middleware(IsAdminMiddleware::class);
+        Route::get('/olx_apartment_delete_all', 'olx_soft_delete_all')->middleware(IsAdminMiddleware::class);
+        Route::get('/olx_apartment_delete_item/{id}', 'olx_soft_delete_item')->middleware(IsAdminMiddleware::class);
+        Route::get('/olx_apartment_recovery_all', 'olx_soft_recovery_all')->middleware(IsAdminMiddleware::class);
+        Route::get('/olx_apartment_recovery_item/{id}', 'olx_soft_recovery_item')->middleware(IsAdminMiddleware::class);
         Route::post('/checks_remove', 'checks_remove');
         Route::post('/set_status', 'setStatus');
-        Route::post('/sendPushMessage', 'sendPushMessage');
         Route::post('/setNewPrice', 'setNewPrice');
-        Route::get('/report', 'report');
         Route::post('add_favorite', 'addFavorite');
         Route::post('remove_favorite', 'removeFavorite');
         Route::get('/create_apartment', 'create');
@@ -79,11 +78,11 @@ Route::group(['prefix' => 'user', 'middleware' => IsAuthUser::class], function (
     });
 
     //    ServiceController
-    Route::resource('/service', ServiceController::class);
+    Route::resource('/service', ServiceController::class)->middleware(IsAdminMiddleware::class);
 
     //    UserController
     Route::resource('/users', UserController::class);
-    Route::controller(UserController::class)->group(function () {
+    Route::controller(UserController::class)->middleware(IsAdminMiddleware::class)->group(function () {
         Route::get('/comment/{id}', 'comment');
         Route::post('/add_comment_user', 'add_comment_user');
         Route::get('/createMessage/{id}', 'createMessage');
