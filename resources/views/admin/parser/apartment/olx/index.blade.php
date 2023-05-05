@@ -58,14 +58,6 @@
                                             </button>
                                         </form>
                                     </td>
-                                @endif
-                                <td><a href="{{env('APP_URL')}}/user/report">
-                                        <button
-                                            class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">Просмотреть
-                                            отчет
-                                        </button>
-                                    </a></td>
-                                @if(\Illuminate\Support\Facades\Auth::user()->is_admin==1)
                                     <td>
                                         <button v-on:click="cleanDb"
                                                 class="mr-3 bg-orange-600 hover:bg-orange-300 text-white btn">Удалить все данные</button>
